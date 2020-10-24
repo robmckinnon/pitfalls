@@ -1,0 +1,172 @@
+display = {}
+
+local L_INPUT = 1
+local S_INPUT = 2
+local B_INPUT = 3
+local N_INPUT = 4
+local F_INPUT = 5
+local T_INPUT = 6
+local M_INPUT = 7
+local O_INPUT = 8
+
+local TOP = 12
+local BOT = 28
+
+local s = screen
+
+function display.n_input()
+  return N_INPUT
+end
+
+function display.o_input()
+  return O_INPUT
+end
+  
+function display.redraw(base_freq, edit, octave, position, scale, intervals, midi_start)
+  s.clear()
+  display.drawsteps(edit, position, scale)
+  display.drawintervals(scale, intervals)
+  display.drawLs(edit, scale)
+  display.drawmidi(edit, scale, midi_start)
+  display.drawtuning(base_freq, edit, scale)
+  display.drawscalesize(edit, scale)
+  display.drawedo(scale)
+  display.drawtonic(edit, scale)
+  display.drawmode(edit, scale)
+  display.drawoctave(edit, octave, scale)
+  s.update()
+end
+
+function display.drawintervals(scale, intervals)
+  local err = nil
+  for i = 2,scale.length do
+    y = (i % 2 == 0 and BOT) or TOP
+    s.move(i*8-10,y)
+    err = intervals:interval_error(i)
+    if (err ~= nil) then
+      if (err > 0.005) then
+        s.level(1)
+      elseif (err > 0.0025) then
+        s.level(2)
+      elseif (err > 0.00125) then
+        s.level(3)
+      elseif (err > 0.000625) then
+        s.level(4)
+      else
+        s.level(5)
+      end
+      s.text(intervals:interval_label(i))
+    end
+  end
+end
+
+function display.drawsteps(edit, position, scale)
+  for i = 1,scale.length do
+    if i == edit then
+      s.level(15)
+    elseif (edit > scale.length) then
+      s.level(4)
+    else
+      s.level(2)
+    end  
+    s.move(i*8-8 + 2,20)
+    s.text(scale:step_size(i))
+
+    if i == position then
+      s.level(2)
+      s.move(i*8-8, 23)
+      s.line_rel(6,0)
+      s.stroke()
+    end
+  end
+end
+
+function display.drawLs(edit, scale)
+  s.move(0,40)
+  s.level((edit == scale.length + L_INPUT) and 15 or 2)
+  s.text("L : "..scale.large)
+
+  s.move(0,50)
+  s.level((edit == scale.length + S_INPUT) and 15 or 2)
+  s.text("s : "..scale.small)
+end
+
+local note = {
+  [60] = "C",
+  [61] = "C#",
+  [62] = "D",
+  [63] = "D#",
+  [64] = "E",
+  [65] = "F",
+  [66] = "F#",
+  [67] = "G",
+  [68] = "G#",
+  [69] = "A",
+  [70] = "A#",
+  [71] = "B"
+}
+
+function display.drawmidi(edit, scale, midi_start)
+  s.move(0,60)
+  s.level((edit == scale.length + B_INPUT) and 15 or 2)
+  s.text("base: "..note[midi_start])
+end
+
+function display.drawscalesize(edit, scale)
+  s.level((edit == scale.length + N_INPUT) and 15 or 2)
+  s.move(41,40)
+  s.text("notes: "..scale.length)
+end
+
+function display.drawedo(scale)
+  s.level(2)
+  s.move(41,50)
+  s.text("EDO: "..scale.edivisions)
+end
+
+function display.drawtuning(tuning, edit, scale)
+  s.move(41,60)
+  s.level((edit == scale.length + F_INPUT) and 15 or 2)
+  s.text(string.format("%.0f",tuning).." Hz")
+end
+
+function display.drawtonic(edit, scale)
+  s.level((edit == scale.length + T_INPUT) and 15 or 2)
+  s.move(84,40)
+  s.text("tonic: "..scale.tonic)
+end
+
+function display.drawmode(edit, scale)
+  s.level((edit == scale.length + M_INPUT) and 15 or 2)
+  s.move(84,50)
+  s.text("mode: "..scale.mode)
+end
+
+function display.drawoctave(edit, octave, scale)
+  s.level((edit == scale.length + O_INPUT) and 15 or 2)
+  s.move(84,60)
+  s.text("octave: "..octave)
+end
+
+local position = {
+  [L_INPUT] = "large",
+  [S_INPUT] = "small",
+  [B_INPUT] = "midi_start",
+  [N_INPUT] = "scale_size",
+  [F_INPUT] = "tuning",
+  [T_INPUT] = "tonic",
+  [M_INPUT] = "mode",
+  [O_INPUT] = "octave"
+}
+
+function display.edit_position(edit, scale)
+  local e = edit - scale.length
+  if e > 0 then
+    return position[e]
+  else
+    return "step"
+  end
+end
+
+return display
+
