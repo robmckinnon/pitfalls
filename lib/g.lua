@@ -1,4 +1,8 @@
-local grid = include('midigrid/lib/mg_128')
+local grid_lib = parameters.grid_lib()
+if grid_lib ~= "grid" then
+  fn.dprint("grid_lib", grid_lib)
+  local grid = include(grid_lib)
+end
 local g = grid.connect()
 
 function g.init()

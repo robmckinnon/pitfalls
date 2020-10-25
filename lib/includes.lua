@@ -22,6 +22,12 @@ include("pitfalls/lib/Pitches")
 -- draws display to screen
 display = include("pitfalls/lib/display")
 
+-- exposed norns parameters
+parameters = include("pitfalls/lib/parameters")
+
+-- init parameters before grid include
+parameters.init()
+
 -- grid interactions and leds
 g = include("pitfalls/lib/g")
 

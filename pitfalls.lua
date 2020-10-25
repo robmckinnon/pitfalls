@@ -13,10 +13,11 @@
 -- sequence of large (L)
 -- and small (s) steps.
 --
--- e.g. C Major diatonic is
+-- e.g.
+-- C Major diatonic is:
 -- LLsLLLs  L : 2  s : 1  base: C
 --
--- e.g. a 19 EDO, 7 note scale is
+-- A 19 EDO, 7 note scale is:
 -- LLsLLLs  L : 3  s : 2
 --
 -- Play scale keyboard on grid.
@@ -57,18 +58,10 @@ function positionrand() position = math.random(scale.length) end
 local change = {}
 
 function init()
-  local sequence = "LLsLLLs"
+  local sequence = params:get("sequence")
   scale = Scale:new(2, 1, sequence)
   scale:update_edo()
   g.init()
-
-  params:clear()
-  params:add_group("PITFALLS", 6)
-  params:add_text("sequence", "sequence", sequence)
-  params:add_number("tuning", "tuning", 400, 480, 440)
-  params:add_number("midi_start", "midi_start", 60, 71, 60)
-  params:add_control("cutoff", "cutoff", controlspec.new(50, 5000, 'exp', 0, 555, 'hz'))
-  params:add_number("octave", "octave", 0,8,3)
 
   params:set_action("cutoff", function(x) engine.cutoff(x) end)
   params:set_action("midi_start", function(x) update_pitches() end)
