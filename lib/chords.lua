@@ -1,4 +1,6 @@
-local chords = {
+local chords = {}
+
+chords.list = {
   ["sus2"] =                 {"M2", "P5"}, -- suspended second
   ["mu major"] =             {"M2", "M3", "P5"}, -- mu major
   ["double-down, down five"]={"S2", "S4"}, -- vvE
@@ -29,5 +31,30 @@ local chords = {
   ["dream"] =                {"P4", "d5", "P5"} -- dream
 }
 
-return chords
+function chords.match(intervals)
+  local intdeg = {}
+  local matches = {}
+  local match = nil
+  local degrees = nil
+  for deg,interval in pairs(intervals) do
+    intdeg[interval] = deg
+  end
+  for name,parts in pairs(chords.list) do
+    match = true
+    degrees = {}
+    for i,part in pairs(parts) do
+      if intdeg[part] == nil then
+        match = false
+      else
+        degrees[intdeg[part]] = part
+      end
+    end
+    if match then
+      matches[name] = degrees
+    end
+  end
 
+  return matches
+end
+
+return chords
