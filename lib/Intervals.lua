@@ -2,6 +2,7 @@ Intervals = {}
 
 function Intervals:new(scale)
   local s = setmetatable({}, { __index = Intervals })
+
   s.scale = scale
   s.int_labels = {}
   s.int_errors = {}

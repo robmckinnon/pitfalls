@@ -1,6 +1,6 @@
 local grid_lib = parameters.grid_lib()
+fn.dprint("grid_lib", grid_lib)
 if grid_lib ~= "grid" then
-  fn.dprint("grid_lib", grid_lib)
   local grid = include(grid_lib)
 end
 local g = grid.connect()

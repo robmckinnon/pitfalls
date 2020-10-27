@@ -66,10 +66,10 @@ function init()
   g.init()
 
   params:set_action("cutoff", function(x) engine.cutoff(x) end)
-  params:set_action("midi_start", function(x) update_pitches() end)
-  params:set_action("tuning", function(x) update_pitches() end)
+  params:set_action("midi_start", function(x) update_pitches(false) end)
+  params:set_action("tuning", function(x) update_pitches(false) end)
 
-  update_pitches()
+  update_pitches(true)
   display.drawintervals(scale, intervals)
 
   counter = metro.init(count, 0.125, -1)
@@ -116,8 +116,10 @@ function toggle_arppegiate()
   end
 end
 
-function update_pitches()
-  intervals = Intervals:new(scale)
+function update_pitches(update_intervals)
+  if update_intervals then
+    intervals = ScaleIntervals:new(scale)
+  end
   pitches = Pitches:new(scale, intervals, params:get("tuning"), params:get("midi_start"))
   g.update_grid(scale, intervals, pitches)
 end
@@ -140,31 +142,31 @@ end
 function change.step(d)
   if scale:change_step(d, edit) then
     params:set("sequence", scale:sequence(), true)
-    update_pitches()
+    update_pitches(true)
   end
 end
 
 function change.tonic(d)
   if scale:change_tonic(d) then
-    update_pitches()
+    update_pitches(false)
   end
 end
 
 function change.mode(d)
   if scale:change_mode(d) then
-    update_pitches()
+    update_pitches(true)
   end
 end
 
 function change.small(d)
   if scale:change_small(d) then
-    update_pitches()
+    update_pitches(true)
   end
 end
 
 function change.large(d)
   if scale:change_large(d) then
-    update_pitches()
+    update_pitches(true)
   end
 end
 
@@ -176,6 +178,6 @@ function change.scale_size(d)
     if d == -1 then
       edit = util.clamp(edit - 1, MIN_STEPS + display.n_input(), edit)
     end
-    update_pitches()
+    update_pitches(true)
   end
 end

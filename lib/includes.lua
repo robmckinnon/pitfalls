@@ -16,6 +16,9 @@ include("pitfalls/lib/Scale")
 -- represents intervals for scale in given mode
 include("pitfalls/lib/Intervals")
 
+-- represents intervals for all degrees of scale in given mode
+include("pitfalls/lib/ScaleIntervals")
+
 -- represents pitches seeded from a given scale
 include("pitfalls/lib/Pitches")
 
