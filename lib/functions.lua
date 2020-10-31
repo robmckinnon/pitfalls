@@ -55,6 +55,12 @@ function fn.printp(t)
   end
 end
 
+function fn.printip(t)
+  for i, v in ipairs(t) do
+    print(i, v)
+  end
+end
+
 function fn.ratio(division, edivisions)
   if division == 0 then
     return 1
@@ -79,5 +85,21 @@ function fn.wrap(t, n)
   end
 end
 
-return fn
+function fn.tablelength(t)
+  local count = 0
+  for i,v in pairs(t) do 
+    if v ~= nil then
+      count = count + 1 
+    end
+  end
+  return count
+end
 
+function fn.sortedkeys(t)
+  local tkeys = {}
+  for k in pairs(t) do table.insert(tkeys, k) end
+  table.sort(tkeys)
+  return tkeys
+end
+
+return fn

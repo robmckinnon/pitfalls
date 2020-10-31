@@ -22,26 +22,35 @@ function g.init()
     g.aleds[x] = {}
   end
 end
-  
+
+function g.led_on(f)
+  if g.freqxy[f]~=nil then
+    for i,xy in pairs(g.freqxy[f]) do
+      g:led(xy[1], xy[2], util.clamp(g.aleds[xy[1]][xy[2]], 1, 15))
+    end
+  end
+  g:refresh()
+end
+
+function g.led_off(f)
+  if g.freqxy[f]~=nil then
+    for i,xy in pairs(g.freqxy[f]) do
+      g:led(xy[1], xy[2], g.xleds[xy[1]][xy[2]])
+    end
+  end
+  g:refresh()
+end
+
 function g.key(x, y, z)
   local grid_h = g.rows
   local grid_w = g.cols
   local f = g.gfreqs[grid_h - y + 1][x]
   if z > 0 then
-    if g.freqxy[f]~=nil then
-      for i,xy in pairs(g.freqxy[f]) do
-        g:led(xy[1], xy[2], util.clamp(g.aleds[x][y], 1, 15))
-      end
-    end
+    g.led_on(f)
     engine.hz(f)
   else
-    if g.freqxy[f]~=nil then
-      for i,xy in pairs(g.freqxy[f]) do
-        g:led(xy[1], xy[2], g.xleds[x][y])
-      end
-    end
+    g.led_off(f)
   end
-  g:refresh()
 end
 
 function g.update_grid(scale, intervals, pitches)

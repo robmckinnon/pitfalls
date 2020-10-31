@@ -8,24 +8,24 @@
 --
 -- Define & play your own
 -- microtonal scales.
---
+-- 
 -- Set interval structure as a
 -- sequence of large (L)
 -- and small (s) steps.
 --
 -- e.g.
 -- C Major diatonic is:
--- LLsLLLs  L: 2  s: 1  base: C
+--   LLsLLLs  L: 2  s: 1  base: C
 --
 -- A 19 EDO, 7 note scale is:
--- LLsLLLs  L: 3  s: 2
+--   LLsLLLs  L: 3  s: 2
 --
 -- Play scale keyboard on grid.
---
+-- 
 -- E1 change cutoff filter
 -- E2 change value
 -- E3 select step or parameter
--- K1
+-- K1 
 -- K2 toggle arpeggiator
 -- K3 
 --
@@ -58,17 +58,19 @@ function metroslow() counter.time = 0.25 end
 function positionrand() position = math.random(scale.length) end
 
 local change = {}
+local arpeggiate = {}
 
 function init()
   local sequence = params:get("sequence")
   scale = Scale:new(2, 1, sequence)
   scale:update_edo()
-  g.init()
 
   params:set_action("cutoff", function(x) engine.cutoff(x) end)
   params:set_action("midi_start", function(x) update_pitches(false) end)
   params:set_action("tuning", function(x) update_pitches(false) end)
+  params:set_action("arpeggiate", function(x) update_arpeggiate() end)
 
+  g.init()
   update_pitches(true)
   display.drawintervals(scale, intervals)
 
@@ -79,8 +81,7 @@ function init()
 end
 
 function count()
-  position = (position % scale.length) + 1
-  engine.hz(pitches:octdegfreq(params:get("octave"), position))
+  arpeggiate[parameters.arpeggiate()]()
   redraw()
 end
 
@@ -92,7 +93,7 @@ function key(n,z)
   if n == 3 and z == 1 then
     -- increment_mode()
   elseif n == 2 and z == 1 then
-    toggle_arppegiate()
+    parameters.inc_arpeggiate()
   end
 end
 
@@ -119,6 +120,7 @@ end
 function update_pitches(update_intervals)
   if update_intervals then
     intervals = ScaleIntervals:new(scale)
+    chord_positions = {}
   end
   pitches = Pitches:new(scale, intervals, params:get("tuning"), params:get("midi_start"))
   g.update_grid(scale, intervals, pitches)
@@ -179,5 +181,124 @@ function change.scale_size(d)
       edit = util.clamp(edit - 1, MIN_STEPS + display.n_input(), edit)
     end
     update_pitches(true)
+  end
+end
+
+function update_arpeggiate(x)
+  print(parameters.arpeggiate())
+  if parameters.arpeggiate() == "off" then
+    run = false
+    counter:stop()
+  elseif parameters.arpeggiate() == "scale_up" then
+    position = scale.length
+    run = true
+    counter:start()
+  elseif parameters.arpeggiate() == "scale_down" then
+    position = 1
+  else
+    chord_positions = {}
+    last_degree = nil
+    remaining_positions = {}
+  end
+end
+
+local pitches_on = {}
+
+function pitches_off()
+  for f,i in pairs(pitches_on) do
+    if i ~= nil then
+      g.led_off(f)
+      pitches_on[f] = nil
+    end
+  end
+end
+  
+function pitch_on(i)
+  local f = pitches:octdegfreq(params:get("octave"), i)
+  g.led_on(f)
+  pitches_on[f] = i
+  engine.hz(f)
+end
+
+function arpeggiate.scale_up()
+  position = (position % scale.length) + 1
+  pitches_off()
+  pitch_on(position)
+end
+
+function arpeggiate.scale_down()
+  position = position - 1
+  position = position < 1 and scale.length or position
+  pitches_off()
+  pitch_on(position)
+end
+
+local chord_positions = {}
+local last_degree = nil
+local remaining_positions = {}
+
+function arpeggiate.chord()
+  if fn.tablelength(chord_positions) == 0 then
+    position = (position % scale.length) + 1
+    print("+1", position)
+    remaining_positions = {}
+    local degree = position
+    local matches = chords.match(intervals:interval_labels(degree))
+    local values = {}
+    for n,v in pairs(matches) do
+      values[#values+1] = v
+    end
+    if #values > 0 then
+      local degrees = values[math.random(#values)]
+      chord_positions[degree] = "P1"
+      for deg,int_label in pairs(degrees) do
+        chord_positions[(tonumber(deg) + degree) % scale.length + 1] = int_label
+      end
+    end
+    fn.printp(chord_positions)
+    last_degree = (degree % scale.length) + 1
+    print('---', last_degree)
+  end
+  if chord_positions[position] ~= nil then
+    chord_positions[position] = nil
+    remaining_positions = {}
+    for i,v in pairs(chord_positions) do
+      if v ~= nil then
+        remaining_positions[#remaining_positions + 1] = i
+      end
+    end
+    pitches_off()
+    pitch_on(position)
+    local count = fn.tablelength(chord_positions)
+    position = count > 0 and remaining_positions[1] or (position % scale.length) + 1
+    print(position)
+  end
+end
+
+function arpeggiate.chords()
+  position = math.random(scale.length)
+  -- (position % scale.length) + 1
+  if fn.tablelength(chord_positions) == 0 then
+    local degree = position
+    local matches = chords.match(intervals:interval_labels(degree))
+    local values = {}
+    for n,v in pairs(matches) do
+      values[#values+1] = v
+    end
+    if #values > 0 then
+      local degrees = values[math.random(#values)]
+      chord_positions[degree] = "P1"
+      for deg,int_label in pairs(degrees) do
+        chord_positions[(tonumber(deg) + degree) % scale.length + 1] = int_label
+      end
+    end
+  end
+  if chord_positions[position] ~= nil then
+    local f = nil
+    pitches_off()
+    for i,v in pairs(chord_positions) do
+      pitch_on(i)
+      chord_positions[i] = nil
+    end
   end
 end
