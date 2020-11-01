@@ -102,4 +102,9 @@ function fn.sortedkeys(t)
   return tkeys
 end
 
+-- http://tonalsoft.com/enc/t/tredek.aspx
+function tredek()
+  return 2 ^ (1/270)
+end
+  
 return fn

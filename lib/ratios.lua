@@ -1,5 +1,6 @@
 -- FJS Calculators - https://misotanni.github.io/fjs/en/calc.html 
 -- List of pitch intervals -https://en.wikipedia.org/wiki/List_of_pitch_intervals
+-- https://en.xen.wiki/w/Gallery_of_just_intervals
 -- Two letter codes changed to make different interval labels more unique.
 local ratiointervals = {
   [ 1] = " ", -- unison P1
@@ -13,9 +14,9 @@ local ratiointervals = {
   [ 9/7] = "S3", -- septimal major third SM3
   [ 4/3] = "P4", -- perfect fourth P4
   [11/8] = "n4", -- lesser undecimal tritone or undecimal semi-augmented fourth, undecimal superfourth
-  [25/18] = "A4", -- classic augmented fourth
+  [25/18] = "a4", -- classic augmented fourth
   [ 7/5] = "TT", -- lesser septimal tritone TT, sub-fifth, Huygens' tritone
-  [45/32] = "A4", -- just augmented fourth, diatonic tritone
+  [45/32] = "A4", -- just augmented fourth, diatonic tritone, smaller pental tritone
   [17/12] = "d5", -- larger septendecimal tritone
   [10/7] = "S4", -- greater septimal tritone, super-fourth, Euler's tritone, superaugmented fourth
   [13/9] = "d5", -- tridecimal diminished fifth, high tritone
