@@ -10,7 +10,7 @@
 
 ### Changelog
 
-#### v0.1.0 _einfach einem_
+#### v0.1.1 _einfach einem_
 
 * Define scale as a sequence of `Ls` steps.
 * Configure large `L` and small `s` step sizes, and scale `notes` length.
