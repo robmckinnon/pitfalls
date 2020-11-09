@@ -13,7 +13,7 @@ function fn.dprint(t, s)
 end
 
 function fn.gcd(a,b)
-  while b~=0 do 
+  while b~=0 do
     a,b=b,a%b
   end
   return math.abs(a)
@@ -26,11 +26,11 @@ end
 function fn.nearest_interval(v, ratiointervals)
   local min = 1
   local match = nil
-  for ratio, label in pairs(ratiointervals) do
+  for ratio, labels in pairs(ratiointervals.list) do
     diff = math.abs( (ratio - v) / ratio )
     if diff < min then
       min = diff
-      match = label
+      match = ratiointervals.key(ratio)
     end
   end
   return (min < 0.01 and match) or ""
@@ -39,11 +39,11 @@ end
 function fn.nearest_interval2(v, ratiointervals)
   local min = 1
   local match = nil
-  for ratio, label in pairs(ratiointervals) do
+  for ratio, labels in pairs(ratiointervals.list) do
     diff = math.abs( (ratio - v) / ratio )
     if diff < min then
       min = diff
-      match = label
+      match = ratiointervals.key(ratio)
     end
   end
   return (min < 0.01 and {min,match}) or {nil,""}
@@ -87,9 +87,9 @@ end
 
 function fn.tablelength(t)
   local count = 0
-  for i,v in pairs(t) do 
+  for i,v in pairs(t) do
     if v ~= nil then
-      count = count + 1 
+      count = count + 1
     end
   end
   return count
@@ -106,5 +106,5 @@ end
 function tredek()
   return 2 ^ (1/270)
 end
-  
+
 return fn
