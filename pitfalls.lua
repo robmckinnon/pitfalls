@@ -8,7 +8,7 @@
 --
 -- Define & play your own
 -- microtonal scales.
--- 
+--
 -- Set interval structure as a
 -- sequence of large (L)
 -- and small (s) steps.
@@ -21,13 +21,13 @@
 --   LLsLLLs  L: 3  s: 2
 --
 -- Play scale keyboard on grid.
--- 
+--
 -- E1 change cutoff filter
 -- E2 change value
 -- E3 select step or parameter
--- K1 
+-- K1
 -- K2 toggle arpeggiator
--- K3 
+-- K3
 --
 -- [0] http://anaphoria.com/
 --            wilsonintroMOS.html
@@ -212,7 +212,7 @@ function pitches_off()
     end
   end
 end
-  
+
 function pitch_on(i)
   local f = pitches:octdegfreq(params:get("octave"), i)
   g.led_on(f)
@@ -271,7 +271,7 @@ function arpeggiate.chord()
     pitch_on(position)
     local count = fn.tablelength(chord_positions)
     position = count > 0 and remaining_positions[1] or (position % scale.length) + 1
-    print(position)
+    fn.dprint(position)
   end
 end
 

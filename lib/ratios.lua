@@ -51,15 +51,15 @@ ratiointervals.list = {
 }
 
 function ratiointervals.key(ratio)
-  ratiointervals.list[ratio][1]
+  return ratiointervals.list[ratio][1]
 end
 
 function ratiointervals.label(ratio)
-  ratiointervals.list[ratio][2]
+  return ratiointervals.list[ratio][2]
 end
 
 function ratiointervals.fjs(ratio)
-  ratiointervals.list[ratio][3]
+  return ratiointervals.list[ratio][3]
 end
 
 return ratiointervals
