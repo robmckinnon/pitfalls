@@ -75,7 +75,7 @@ chords.list = {
   ["diminished seventh"] =   {"m3", "d5", "d7"}, -- "dim7" 300:360:425:512
   ["60:72:85:102"] =         {"m3", "d5", "T6"}, --
   ["half diminished"] =      {"m3", "d5", "m7"}, -- "m7b5" 180:216:255:320
-  ["dream"] =                {"P4", "d5", "P5"} -- 12:16:17:18
+  ["dream"] =                {"P4", "d5", "P5"}, -- 12:16:17:18
   ["7:8:10:12"] =            {"S2", "ST", "S6"}, --
   ["7:9:10:12"] =            {"S3", "ST", "S6"}, --
   ["14:18:20:26"] =          {"S3", "ST", "N7"}, --
@@ -96,7 +96,7 @@ chords.list = {
   ["7:9:11:12"] =            {"S3", "A5", "S6"}, --
   ["7sus4"] =                {"P4", "P5", "m7"}, -- suspended fourth seventh
   ["minor augmented 7th"] =  {"M3", "A5", "m7"}, -- augmented seventh
-  ["major seventh b 6th"] =  {"M3", "m6", "M7"}, -- "M7b6"
+  ["major seventh b 6th"] =  {"M3", "m6", "M7"} -- "M7b6"
 }
 
 function chords.match(intervals)
