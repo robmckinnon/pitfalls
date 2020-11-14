@@ -15,17 +15,17 @@ function Intervals:new(scale)
   for i = 1,scale.length do
     division = division + scale:step_value(i)
     s.divisions[i] = division
-    s.ratios[i+1] = fn.ratio(division, scale.edivisions)
-    
+    s.ratios[i+1] = pf.ratio(division, scale.edivisions)
+
     if (i < scale.length) then
-      local nearest = fn.nearest_interval2(s.ratios[i+1], ratiointervals)
+      local nearest = pf.nearest_interval2(s.ratios[i+1], ratiointervals)
       local closeness = nearest[1]
       local int_label = nearest[2]
       s.int_labels[i+1] = int_label
       s.int_errors[i+1] = closeness
       if int_label ~= "" then
         intervals[int_label] = s.ratios[i]
-        fn.dprint(i+1, int_label)
+        pf.dprint(i+1, int_label)
       end
     end
   end
@@ -71,8 +71,7 @@ end
 --     end
 --   end
 --   if match then
---     fn.dprint(lab, chord)
+--     pf.dprint(lab, chord)
 --   end
--- end  
+-- end
 -- print("--")
-

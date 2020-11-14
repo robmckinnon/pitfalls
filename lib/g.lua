@@ -66,9 +66,9 @@ function g.update_grid(scale, intervals, pitches)
     index = 1 + ((row - 1) * offset)
     for col = 1,grid_w do
       degree = pitches:degree(index)
-      fn.dprint("---", col)
-      fn.dprint("", degree)
-      fn.dprint("degree", degree)
+      pf.dprint("---", col)
+      pf.dprint("", degree)
+      pf.dprint("degree", degree)
       x = col
       y = grid_h - row + 1
       f = pitches:freq(index)
@@ -94,9 +94,9 @@ function g.update_grid(scale, intervals, pitches)
           g.aleds[x][y] = 16 - degree
         end  
       end
-      fn.dprint('x',x)
-      fn.dprint('y',y)
-      fn.dprint('c',g.xleds[x][y])
+      pf.dprint('x',x)
+      pf.dprint('y',y)
+      pf.dprint('c',g.xleds[x][y])
       g:led(x, y, g.xleds[x][y])
       index = index + 1
     end

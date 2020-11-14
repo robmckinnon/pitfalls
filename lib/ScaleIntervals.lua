@@ -18,21 +18,21 @@ function ScaleIntervals:new(scale)
   local mode = nil
   local tmp = nil
   for deg = 1,scale.length do
-    fn.dprint("deg", deg)
+    pf.dprint("deg", deg)
     mode = (scale.mode + deg - 1) % scale.length
     if mode == 0 then
       mode = scale.length
     end
-    fn.dprint("mode", mode)
+    pf.dprint("mode", mode)
     s.degree_to_mode[deg] = mode
     sscale:set_mode(mode)
-    fn.dprint("smode", sscale.mode)
-    fn.dprint(":sequence()", sscale:sequence())
-    fn.dprint(Intervals.new)
+    pf.dprint("smode", sscale.mode)
+    pf.dprint(":sequence()", sscale:sequence())
+    pf.dprint(Intervals.new)
     tmp = Intervals:new(sscale)
-    fn.dprint("tmp", tmp)
+    pf.dprint("tmp", tmp)
     s.degree_intervals[deg] = tmp
-    fn.dprint("int", s.degree_intervals[deg])
+    pf.dprint("int", s.degree_intervals[deg])
   end
 
   return s

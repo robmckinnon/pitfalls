@@ -40,7 +40,7 @@
 --
 
 include("pitfalls/lib/includes")
-fn.debug(false)
+pf.debug(false)
 
 local run = false
 local position = 1
@@ -238,7 +238,7 @@ local last_degree = nil
 local remaining_positions = {}
 
 function arpeggiate.chord()
-  if fn.tablelength(chord_positions) == 0 then
+  if pf.tablelength(chord_positions) == 0 then
     position = (position % scale.length) + 1
     print("+1", position)
     remaining_positions = {}
@@ -255,7 +255,7 @@ function arpeggiate.chord()
         chord_positions[(tonumber(deg) + degree) % scale.length + 1] = int_label
       end
     end
-    fn.printp(chord_positions)
+    pf.printp(chord_positions)
     last_degree = (degree % scale.length) + 1
     print('---', last_degree)
   end
@@ -269,16 +269,16 @@ function arpeggiate.chord()
     end
     pitches_off()
     pitch_on(position)
-    local count = fn.tablelength(chord_positions)
+    local count = pf.tablelength(chord_positions)
     position = count > 0 and remaining_positions[1] or (position % scale.length) + 1
-    fn.dprint(position)
+    pf.dprint(position)
   end
 end
 
 function arpeggiate.chords()
   position = math.random(scale.length)
   -- (position % scale.length) + 1
-  if fn.tablelength(chord_positions) == 0 then
+  if pf.tablelength(chord_positions) == 0 then
     local degree = position
     local matches = chords.match(intervals:interval_labels(degree))
     local values = {}

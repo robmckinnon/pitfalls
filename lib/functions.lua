@@ -1,29 +1,29 @@
-local fn = {}
+local pf = {}
 
-function fn.debug(bool)
+function pf.debug(bool)
   if bool == nil then return debug end
   debug = bool
   return debug
 end
 
-function fn.dprint(t, s)
-  if fn.debug() then
+function pf.dprint(t, s)
+  if pf.debug() then
     print(t, s)
   end
 end
 
-function fn.gcd(a,b)
+function pf.gcd(a,b)
   while b~=0 do
     a,b=b,a%b
   end
   return math.abs(a)
 end
 
-function fn.midi_to_hz(note)
+function pf.midi_to_hz(note)
   return (440/32) * (2 ^ ((note - 9) / 12))
 end
 
-function fn.nearest_interval(v, ratiointervals)
+function pf.nearest_interval(v, ratiointervals)
   local min = 1
   local match = nil
   for ratio, labels in pairs(ratiointervals.list) do
@@ -36,7 +36,7 @@ function fn.nearest_interval(v, ratiointervals)
   return (min < 0.01 and match) or ""
 end
 
-function fn.nearest_interval2(v, ratiointervals)
+function pf.nearest_interval2(v, ratiointervals)
   local min = 1
   local match = nil
   for ratio, labels in pairs(ratiointervals.list) do
@@ -49,19 +49,19 @@ function fn.nearest_interval2(v, ratiointervals)
   return (min < 0.01 and {min,match}) or {nil,""}
 end
 
-function fn.printp(t)
+function pf.printp(t)
   for i, v in pairs(t) do
     print(i, v)
   end
 end
 
-function fn.printip(t)
+function pf.printip(t)
   for i, v in ipairs(t) do
     print(i, v)
   end
 end
 
-function fn.ratio(division, edivisions)
+function pf.ratio(division, edivisions)
   if division == 0 then
     return 1
   else
@@ -69,8 +69,8 @@ function fn.ratio(division, edivisions)
   end
 end
 
-function fn.get_freq(base_freq, edo, index, oct, base_octave)
-  local f = base_freq * fn.ratio(index-1, edo)
+function pf.get_freq(base_freq, edo, index, oct, base_octave)
+  local f = base_freq * pf.ratio(index-1, edo)
   if (oct < base_octave) then
     f = f / (2 ^ (base_octave - oct))
   elseif (oct > base_octave) then
@@ -79,13 +79,13 @@ function fn.get_freq(base_freq, edo, index, oct, base_octave)
   return f
 end
 
-function fn.wrap(t, n)
+function pf.wrap(t, n)
   for i = 1, n do
     table.insert(t, 1, table.remove( t, #t ))
   end
 end
 
-function fn.tablelength(t)
+function pf.tablelength(t)
   local count = 0
   for i,v in pairs(t) do
     if v ~= nil then
@@ -95,7 +95,7 @@ function fn.tablelength(t)
   return count
 end
 
-function fn.sortedkeys(t)
+function pf.sortedkeys(t)
   local tkeys = {}
   for k in pairs(t) do table.insert(tkeys, k) end
   table.sort(tkeys)
@@ -103,8 +103,12 @@ function fn.sortedkeys(t)
 end
 
 -- http://tonalsoft.com/enc/t/tredek.aspx
-function tredek()
+function pf.tredek()
   return 2 ^ (1/270)
 end
 
-return fn
+function pf.tprint(t)
+  tabutil.print(t)
+end
+
+return pf

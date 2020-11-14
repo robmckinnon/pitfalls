@@ -107,7 +107,7 @@ end
 function Scale:change_large(d)
   local orig = self.large
   -- local value = self.large + d
-  -- while fn.gcd(self.small,value)~=1 do
+  -- while pf.gcd(self.small,value)~=1 do
   --   value = value + d
   -- end
   -- maxi = (d==1 and value) or (self.small + 1)
@@ -123,7 +123,7 @@ end
 function Scale:change_small(d)
   local orig = self.small
   local value = self.small + d
-  -- while fn.gcd(value,self.large)~=1 do
+  -- while pf.gcd(value,self.large)~=1 do
   --   value = value + d
   -- end
     

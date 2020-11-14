@@ -2,7 +2,7 @@
 engine.name = "PolyPerc"
 
 -- various functions
-fn = include("pitfalls/lib/functions")
+pf = include("pitfalls/lib/functions")
 
 -- maps ratio labels to ratio fractions
 ratiointervals = include("pitfalls/lib/ratios")
@@ -33,4 +33,3 @@ parameters.init()
 
 -- grid interactions and leds
 g = include("pitfalls/lib/g")
-
