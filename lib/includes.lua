@@ -23,7 +23,10 @@ include("pitfalls/lib/ScaleIntervals")
 include("pitfalls/lib/Pitches")
 
 -- draws display to screen
-display = include("pitfalls/lib/display")
+-- display = include("pitfalls/lib/display")
+
+-- draws display to screen
+display = include("pitfalls/lib/display_strings")
 
 -- exposed norns parameters
 parameters = include("pitfalls/lib/parameters")
