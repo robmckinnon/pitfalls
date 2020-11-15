@@ -60,25 +60,11 @@ function display.drawintervals(scale, intervals)
   end
 end
 
-function display.drawsteps(edit, position, scale)
-  for i = 1,scale.length do
-    if i == edit then
-      s.level(15)
-    elseif (edit > scale.length) then
-      s.level(4)
-    else
-      s.level(2)
-    end
-    s.move(i*8-8 + 2,20)
-    s.text(scale:step_size(i))
-
-    if i == position then
-      s.level(2)
-      s.move(i*8-8, 23)
-      s.line_rel(6,0)
-      s.stroke()
-    end
-  end
+function line_rel(l,x,y,dx,dy)
+  s.level(l)
+  s.move(x, y)
+  s.line_rel(dx,dy)
+  s.stroke()
 end
 
 function itext(input, edit, scale, x, y, t)
@@ -93,6 +79,22 @@ function text(l,x,y,t)
   s.level(l)
   s.move(x,y)
   s.text(t)
+end
+
+function display.drawsteps(edit, position, scale)
+  local l
+  for i = 1,scale.length do
+    l = (i == edit) and 15 or (
+      (edit > scale.length) and 4 or 2)
+
+    text(l,
+      i*8-8 + 2, 20,
+      scale:step_size(i)
+    )
+    if i == position then
+      line_rel(2, i*8-8, 23, 6, 0)
+    end
+  end
 end
 
 function display.drawLs(edit, scale)
