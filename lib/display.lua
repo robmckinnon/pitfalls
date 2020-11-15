@@ -40,23 +40,28 @@ end
 function display.drawintervals(scale, intervals)
   local err = nil
   for i = 2,scale.length do
-    y = (i % 2 == 0 and BOT) or TOP
-    s.move(i*8-10,y)
     err = intervals:interval_error(i)
     if (err ~= nil) then
-      if (err > 0.005) then
-        s.level(1)
-      elseif (err > 0.0025) then
-        s.level(2)
-      elseif (err > 0.00125) then
-        s.level(3)
-      elseif (err > 0.000625) then
-        s.level(4)
-      else
-        s.level(5)
-      end
-      s.text(intervals:interval_label(i))
+      text(
+        level_int(err),
+        i*8-10, (i % 2 == 0) and BOT or TOP,
+        intervals:interval_label(i)
+      )
     end
+  end
+end
+
+function level_int(err)
+  if (err > 0.005) then
+    return 1
+  elseif (err > 0.0025) then
+    return 2
+  elseif (err > 0.00125) then
+    return 3
+  elseif (err > 0.000625) then
+    return 4
+  else
+    return 5
   end
 end
 
@@ -82,18 +87,24 @@ function text(l,x,y,t)
 end
 
 function display.drawsteps(edit, position, scale)
-  local l
   for i = 1,scale.length do
-    l = (i == edit) and 15 or (
-      (edit > scale.length) and 4 or 2)
-
-    text(l,
+    text(level_step(i, edit, scale),
       i*8-8 + 2, 20,
       scale:step_size(i)
     )
     if i == position then
       line_rel(2, i*8-8, 23, 6, 0)
     end
+  end
+end
+
+function level_step(i, edit, scale)
+  if i == edit then
+    return 15
+  elseif (edit > scale.length) then
+    return 4
+  else
+    return 2
   end
 end
 
