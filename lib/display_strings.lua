@@ -88,13 +88,14 @@ end
 
 function display.drawsteps(edit, position, scale)
   for i = 1,scale.length do
-    text(level_step(i, edit, scale),
-      i*8-8 + 2, 20,
-      scale:step_size(i)
-    )
-    if i == position then
-      line_rel(2, i*8-8, 23, 6, 0)
-    end
+    line_rel(2, 28, i*4-3, 99, 0)
+    -- text(level_step(i, edit, scale),
+    --   i*8-8 + 2, 20,
+    --   scale:step_size(i)
+    -- )
+    -- if i == position then
+    --   line_rel(2, i*8-8, 23, 6, 0)
+    -- end
   end
 end
 
