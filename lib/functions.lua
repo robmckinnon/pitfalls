@@ -111,4 +111,70 @@ function pf.tprint(t)
   tabutil.print(t)
 end
 
+local s = screen
+
+function pf.level_int(err)
+  if (err > 0.005) then
+    return 1
+  elseif (err > 0.0025) then
+    return 2
+  elseif (err > 0.00125) then
+    return 3
+  elseif (err > 0.000625) then
+    return 4
+  else
+    return 5
+  end
+end
+
+function pf.level_step(i, edit, scale)
+  if i == edit then
+    return 15
+  elseif (edit > scale.length) then
+    return 4
+  else
+    return 2
+  end
+end
+
+function pf.line_rel(l,x,y,dx,dy)
+  s.level(l)
+  s.move(x, y)
+  s.line_rel(dx,dy)
+  s.stroke()
+end
+
+function pf.itext(input, edit, scale, x, y, t)
+  pf.text(
+    (edit == scale.length + input) and 15 or 2,
+    x, y,
+    t
+  )
+end
+
+function pf.text(l,x,y,t)
+  s.level(l)
+  s.move(x,y)
+  s.text(t)
+end
+
+local note = {
+  [60] = "C",
+  [61] = "C#",
+  [62] = "D",
+  [63] = "D#",
+  [64] = "E",
+  [65] = "F",
+  [66] = "F#",
+  [67] = "G",
+  [68] = "G#",
+  [69] = "A",
+  [70] = "A#",
+  [71] = "B"
+}
+
+function pf.note_label(midi)
+  return note[midi]
+end
+
 return pf
