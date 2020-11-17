@@ -68,13 +68,21 @@ function display.drawsteps(edit, position, scale)
   local x, y
   screen.font_size(7)
   for i = 1,scale.length do
-    y = i*4-2
-    -- pf.line_rel(1, 28, y, 99, 0)
-    x = (i % 2 == 0) and 4 or 0
+    x = (i-1)*6
+    y = 4
     pf.text(pf.level_step(i, edit, scale),
-       x, y+2,
-       scale:step_size(i)
+        x, y,
+        scale:step_size(i)
     )
+
+    -- y = i*4-2
+    -- x = (i % 2 == 0) and 4 or 0
+    -- pf.text(pf.level_step(i, edit, scale),
+    --    x, y+2,
+    --    scale:step_size(i)
+    -- )
+
+    -- pf.line_rel(1, 28, y, 99, 0)
     -- if i == position then
     --   line_rel(2, i*8-8, 23, 6, 0)
     -- end
