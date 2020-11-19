@@ -45,33 +45,16 @@ function display.redraw(base_freq, edit, octave, position, scale, intervals, mid
   s.update()
 end
 
-local INTERVAL_WIDTH = 90
-
-function display.drawintervals(scale, intervals)
-  local err, x, y
-  for i = 2,scale.length do
-    x = math.floor(intervals:ratio(i) * INTERVAL_WIDTH) - INTERVAL_WIDTH
-    y = (i)*4
-    pf.line_rel(1, 0,y,     x,0)
-    -- pf.line_rel(5, x+28,y-1, 0,3)
-
-    err = intervals:interval_error(i)
-    if (err ~= nil) then
-      pf.text(
-         pf.level_int(err),
-         x, y+2,
-         intervals:interval_label(i)
-      )
-    end
-  end
-end
+local INTERVAL_WIDTH = 88
+local INTEVAL_HEIGHT = 4
+local STEP_WIDTH = 6
 
 function display.drawsteps(edit, position, scale)
   local x, y
-  screen.font_size(7)
+  screen.font_size(8)
   for i = 1,scale.length do
-    x = (i-1)*5
-    y = 4
+    x = (i-1)*STEP_WIDTH
+    y = 12
     pf.text(pf.level_step(i, edit, scale),
         x, y,
         scale:step_size(i)
@@ -92,57 +75,82 @@ function display.drawsteps(edit, position, scale)
   screen.font_size(8)
 end
 
-local MAR = 100
+function display.drawintervals(scale, intervals)
+  local err, x, y
+  for i = 2,scale.length do
+    x = math.floor(intervals:ratio(i) * INTERVAL_WIDTH) - INTERVAL_WIDTH
+    y = (i*INTEVAL_HEIGHT) + 14
+    pf.line_rel(1, 0,y,     x,0)
+    -- pf.line_rel(5, x+28,y-1, 0,3)
+
+    err = intervals:interval_error(i)
+    if (err ~= nil) then
+      pf.text(
+         pf.level_int(err),
+         x, y+2,
+         intervals:interval_label(i)
+      )
+    end
+  end
+end
+
+local MAR = 87
+local MAR0 = MAR-10
+local MAR1 = MAR
+local MAR2 = MAR+10
+local MAR3 = MAR2+7
+
 function display.drawLs(edit, scale)
   pf.itext(L_INPUT, edit, scale,
-    MAR,13,
+    MAR0,9,
     "L: "..scale.large)
 
   pf.itext(S_INPUT, edit, scale,
-    MAR,22,
+    MAR0,17,
     "s: "..scale.small)
 end
 
 function display.drawmidi(edit, scale, midi_start)
   pf.itext(B_INPUT, edit, scale,
-    MAR,29,
+    MAR0,25,
     "b: "..pf.note_label(midi_start))
 end
 
 function display.drawscalesize(edit, scale)
   pf.itext(N_INPUT, edit, scale,
-    MAR,36,
+    MAR0,33,
     "n: "..scale.length)
 end
-
-function display.drawedo(scale)
-  pf.text(2,
-    90,6,
-    "EDO: "..scale.edivisions)
-end
+-- 29
 
 function display.drawtuning(tuning, edit, scale)
   pf.itext(F_INPUT, edit, scale,
-    MAR,43,
+    MAR3,9,
     string.format("%.0f",tuning).."H")
 end
 
 function display.drawtonic(edit, scale)
   pf.itext(T_INPUT, edit, scale,
-    MAR,50,
+    MAR3,17,
     "t: "..scale.tonic)
 end
 
 function display.drawmode(edit, scale)
   pf.itext(M_INPUT, edit, scale,
-    MAR,57,
+    MAR3,25,
     "m: "..scale.mode)
 end
 
 function display.drawoctave(edit, octave, scale)
   pf.itext(O_INPUT, edit, scale,
-    MAR,64,
+    MAR3,33,
     "o: "..octave)
+end
+
+function display.drawedo(scale)
+  pf.text(2,
+    90,55,
+    scale.edivisions.." EDO")
 end
 
 function display.edit_position(edit, scale)

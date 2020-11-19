@@ -50,8 +50,6 @@ local intervals = nil
 local pitches = nil
 
 local edit = 1
-local MAX_STEPS = 16
-local MIN_STEPS = 3
 
 function metrofast() counter.time = 0.125 end
 function metroslow() counter.time = 0.25 end
@@ -175,10 +173,10 @@ end
 function change.scale_size(d)
   if scale:change_length(d) then
     if d == 1 then
-      edit = util.clamp(edit + 1, 1 + display.n_input(), MAX_STEPS + display.n_input())
+      edit = util.clamp(edit + 1, 1 + display.n_input(), scale.max_steps + display.n_input())
     end
     if d == -1 then
-      edit = util.clamp(edit - 1, MIN_STEPS + display.n_input(), edit)
+      edit = util.clamp(edit - 1, scale.min_steps + display.n_input(), edit)
     end
     update_pitches(true)
   end

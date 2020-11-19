@@ -1,5 +1,3 @@
-local MAX_STEPS = 16
-local MIN_STEPS = 3
 local MAX_STEP_SIZE = 1001
 local L = 2
 local S = 1
@@ -22,6 +20,8 @@ function Scale:new(large, small, sequence)
   s.edivisions = nil
   s.tonic = 1
   s.mode = 1
+  s.max_steps = 12
+  s.min_steps = 3
   return s
 end
 
@@ -51,9 +51,17 @@ function Scale:offset(i)
     else
       return offset
     end
-  end  
+  end
 end
-  
+
+function Scale.set_max_steps(max)
+  self.max_steps = max
+end
+
+function Scale.set_min_steps(min)
+  self.min_steps = min
+end
+
 function Scale:set_large(l)
   self.large = l
 end
@@ -112,7 +120,7 @@ function Scale:change_large(d)
   -- end
   -- maxi = (d==1 and value) or (self.small + 1)
   self:set_large(util.clamp(self.large + d, self.small + 1, self.large + 1))
-  
+
   local changed = self.large~=orig
   if changed then
     self:update_edo()
@@ -126,9 +134,9 @@ function Scale:change_small(d)
   -- while pf.gcd(value,self.large)~=1 do
   --   value = value + d
   -- end
-    
+
   self:set_small(util.clamp(value, 1, self.large - 1))
-  
+
   local changed = self.small~=orig
   if changed then
     self:update_edo()
@@ -139,10 +147,10 @@ end
 function Scale:change_length(d)
   local orig = self.length
   if d == 1 then
-    self.length = util.clamp(self.length + 1, 1, MAX_STEPS)
+    self.length = util.clamp(self.length + 1, 1, self.max_steps)
   end
   if d == -1 then
-    self.length = util.clamp(self.length - 1, MIN_STEPS, self.length)
+    self.length = util.clamp(self.length - 1, self.min_steps, self.length)
   end
 
   local changed = self.length~=orig
@@ -152,7 +160,7 @@ function Scale:change_length(d)
       self.step[self.length] = self.stepbackup[self.length] or L
     end
     if d == -1 then
-      if (self.length > MIN_STEPS) then
+      if (self.length > self.min_steps) then
         table.remove(self.step, #self.step)
       end
     end
@@ -160,4 +168,3 @@ function Scale:change_length(d)
   end
   return changed
 end
-
