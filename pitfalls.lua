@@ -58,6 +58,8 @@ function positionrand() position = math.random(scale.length) end
 local change = {}
 local arpeggiate = {}
 
+local display = display_strings
+
 function init()
   local sequence = params:get("sequence")
   scale = Scale:new(2, 1, sequence)
@@ -90,6 +92,12 @@ end
 function key(n,z)
   if n == 3 and z == 1 then
     -- increment_mode()
+    if display == display_strings then
+      display = display_orig
+    else
+      display = display_strings
+    end
+    redraw()
   elseif n == 2 and z == 1 then
     parameters.inc_arpeggiate()
   end
