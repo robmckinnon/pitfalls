@@ -45,7 +45,7 @@ function display.drawintervals(scale, intervals)
       pf.text(
         pf.level_int(err),
         i*8-10, (i % 2 == 0) and BOT or TOP,
-        intervals:interval_label(i)
+        intervals:uniq_interval_label(i)
       )
     end
   end

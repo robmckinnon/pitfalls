@@ -58,7 +58,47 @@ function positionrand() position = math.random(scale.length) end
 local change = {}
 local arpeggiate = {}
 
-local display = display_strings
+local display = display_circle
+
+local s = screen
+local PI = 3.14159265359
+local C = 2*PI
+local qC = PI / 2
+local cx = (128-64)/2
+local cy = (64+16)/2
+
+function display.draw_step_bars(scale, intervals)
+  local steps = scale.length
+  local radians,err,level,radius,ratio,val
+  local tC
+  if (scale.tonic == 1 or scale.tonic == scale.edivisions) then
+    tC = 0
+  else
+    tC = (scale.tonic / scale.edivisions) * C
+  end
+  s.move(cx, cy)
+  s.line_width(1)
+  for i=1,steps do
+    ratio = intervals:ratio(i)
+    err = intervals:interval_error(i)
+    level = pf.level_int(err)
+    s.level(level > 2 and level - 1 or 1)
+    radians = ratio * C - qC + tC
+
+    s.arc(cx, cy, 22, radians, radians)
+    s.stroke()
+
+    val = radians % C
+    radius = (val > 3.6) and 23 or ((val > 2.25) and 32 or 23)
+    s.arc(cx, cy, radius, radians, radians)
+    if (err ~= nil and err < 0.01) then
+      s.level(level)
+      -- s.text(string.format("%.3f", val))
+      s.text(intervals:uniq_interval_label(i))
+    end
+    s.move(cx, cy)
+  end
+end
 
 function init()
   local sequence = params:get("sequence")
@@ -93,6 +133,8 @@ function key(n,z)
   if n == 3 and z == 1 then
     -- increment_mode()
     if display == display_strings then
+      display = display_circle
+    elseif display == display_circle then
       display = display_orig
     else
       display = display_strings

@@ -22,7 +22,8 @@ end
 function display.redraw(base_freq, edit, octave, position, scale, intervals, midi_start)
   s.clear()
   display.drawsteps(edit, position, scale)
-  display.drawintervals(scale, intervals)
+  -- display.drawintervals(scale, intervals)
+  display.draw_step_bars(scale, intervals)
   display.drawLs(edit, scale)
   display.drawmidi(edit, scale, midi_start)
   display.drawtuning(base_freq, edit, scale)
@@ -37,6 +38,7 @@ end
 local INTERVAL_WIDTH = 88
 local INTEVAL_HEIGHT = 4
 local STEP_WIDTH = 6
+local PI = 3.14159265359
 
 function display.drawsteps(edit, position, scale)
   local x, y
@@ -65,7 +67,7 @@ function display.drawintervals(scale, intervals)
       pf.text(
          pf.level_int(err),
          x, y+2,
-         intervals:uniq_interval_label(i)
+         intervals:interval_label(i)
       )
     end
   end

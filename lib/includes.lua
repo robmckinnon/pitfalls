@@ -24,9 +24,8 @@ include("pitfalls/lib/Pitches")
 
 -- draws display to screen
 display_orig = include("pitfalls/lib/display")
-
--- draws display to screen
 display_strings = include("pitfalls/lib/display_strings")
+display_circle = include("pitfalls/lib/display_circle")
 
 -- exposed norns parameters
 parameters = include("pitfalls/lib/parameters")

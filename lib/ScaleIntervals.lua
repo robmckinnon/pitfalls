@@ -10,7 +10,7 @@ ScaleIntervals = {}
 
 function ScaleIntervals:new(scale)
   local s = setmetatable({}, { __index = ScaleIntervals })
-  
+
   local sscale = Scale:new(scale.large, scale.small, scale:sequence())
   sscale:update_edo()
   s.degree_to_mode = {}
@@ -42,7 +42,7 @@ function ScaleIntervals:intervals(deg)
   deg = deg or 1
   return self.degree_intervals[deg]
 end
-  
+
 function ScaleIntervals:ratio(i, deg)
   return self:intervals(deg).ratios[ i ]
 end
@@ -55,6 +55,10 @@ function ScaleIntervals:interval_label(i, deg)
   return self:intervals(deg).int_labels[ i ]
 end
 
+function ScaleIntervals:uniq_interval_label(i, deg)
+  return self:intervals(deg).uniq_labels[ i ]
+end
+
 function ScaleIntervals:interval_error(i, deg)
   return self:intervals(deg).int_errors[ i ]
 end
@@ -62,4 +66,3 @@ end
 function ScaleIntervals:nearest_degree_to(r, threshold)
   return self.degree_intervals[1]:nearest_degree_to(r, threshold)
 end
-
