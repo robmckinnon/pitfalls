@@ -36,13 +36,14 @@ end
 
 local INTERVAL_WIDTH = 88
 local INTEVAL_HEIGHT = 4
-local STEP_WIDTH = 6
+local STEP_WIDTH = 7
+local STEP_MARGIN = 1
 
 function display.drawsteps(edit, position, scale)
   local x, y
   screen.font_size(8)
   for i = 1,scale.length do
-    x = (i-1)*STEP_WIDTH
+    x = (i-1)*STEP_WIDTH + STEP_MARGIN
     y = 12
     pf.text(pf.level_step(i, edit, scale),
         x, y,
@@ -57,7 +58,7 @@ function display.drawintervals(scale, intervals)
   for i = 2,scale.length do
     x = math.floor(intervals:ratio(i) * INTERVAL_WIDTH) - INTERVAL_WIDTH
     y = (i*INTEVAL_HEIGHT) + 14
-    pf.line_rel(1, 0,y,     x,0)
+    pf.line_rel(1, 0,y,     util.clamp(x-1,0,x),0)
     -- pf.line_rel(5, x+28,y-1, 0,3)
 
     err = intervals:interval_error(i)
@@ -78,56 +79,64 @@ local MAR2 = MAR+10
 local MAR3 = MAR2+7
 
 function display.drawLs(edit, scale)
-  pf.itext(L_INPUT, edit, scale,
-    MAR0,9,
-    "L: "..scale.large)
+  display_orig.drawLs(edit, scale)
+  -- pf.itext(L_INPUT, edit, scale,
+  --   MAR0,9,
+  --   "L: "..scale.large)
 
-  pf.itext(S_INPUT, edit, scale,
-    MAR0,17,
-    "s: "..scale.small)
+  -- pf.itext(S_INPUT, edit, scale,
+  --   MAR0,17,
+  --   "s: "..scale.small)
 end
 
 function display.drawmidi(edit, scale, midi_start)
-  pf.itext(B_INPUT, edit, scale,
-    MAR0,25,
-    "b: "..pf.note_label(midi_start))
+  display_orig.drawmidi(edit, scale, midi_start)
+  -- pf.itext(B_INPUT, edit, scale,
+  --   MAR0,25,
+  --   "b: "..pf.note_label(midi_start))
 end
 
 function display.drawscalesize(edit, scale)
-  pf.itext(N_INPUT, edit, scale,
-    MAR0,33,
-    "n: "..scale.length)
+  display_orig.drawscalesize(edit, scale)
+  -- pf.itext(N_INPUT, edit, scale,
+  --   MAR0,33,
+  --   "n: "..scale.length)
 end
 -- 29
 
 function display.drawtuning(tuning, edit, scale)
-  pf.itext(F_INPUT, edit, scale,
-    MAR3,9,
-    string.format("%.0f",tuning).."H")
+  display_orig.drawtuning(tuning, edit, scale)
+  -- pf.itext(F_INPUT, edit, scale,
+  --   MAR3,9,
+  --   string.format("%.0f",tuning).."Hz")
 end
 
 function display.drawtonic(edit, scale)
-  pf.itext(T_INPUT, edit, scale,
-    MAR3,17,
-    "t: "..scale.tonic)
+  display_orig.drawtonic(edit, scale)
+  -- pf.itext(T_INPUT, edit, scale,
+  --   MAR3,17,
+  --   "t: "..scale.tonic)
 end
 
 function display.drawmode(edit, scale)
-  pf.itext(M_INPUT, edit, scale,
-    MAR3,25,
-    "m: "..scale.mode)
+  display_orig.drawmode(edit, scale)
+  -- pf.itext(M_INPUT, edit, scale,
+  --   MAR3,25,
+  --   "m: "..scale.mode)
 end
 
 function display.drawoctave(edit, octave, scale)
-  pf.itext(O_INPUT, edit, scale,
-    MAR3,33,
-    "o: "..octave)
+  display_orig.drawoctave(edit, octave, scale)
+  -- pf.itext(O_INPUT, edit, scale,
+  --   MAR3,33,
+  --   "o: "..octave)
 end
 
 function display.drawedo(scale)
-  pf.text(2,
-    90,55,
-    scale.edivisions.." EDO")
+  display_orig.drawedo(scale)
+  -- pf.text(2,
+  --   90,55,
+  --   scale.edivisions.." EDO")
 end
 
 function display.edit_position(edit, scale)

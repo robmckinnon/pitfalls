@@ -114,7 +114,7 @@ end
 local s = screen
 
 function pf.level_int(err)
-  if (err > 0.005) then
+  if (err == nil or err > 0.005) then
     return 1
   elseif (err > 0.0025) then
     return 2
