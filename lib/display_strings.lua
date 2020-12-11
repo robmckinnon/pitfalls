@@ -1,14 +1,5 @@
 local display = {}
 
-local L_INPUT = 1
-local S_INPUT = 2
-local B_INPUT = 3
-local N_INPUT = 4
-local F_INPUT = 5
-local T_INPUT = 6
-local M_INPUT = 7
-local O_INPUT = 8
-
 local s = screen
 
 function display.n_input()
@@ -23,14 +14,14 @@ function display.redraw(base_freq, edit, octave, position, scale, intervals, mid
   s.clear()
   display.drawsteps(edit, position, scale)
   display.drawintervals(scale, intervals)
-  display.drawLs(edit, scale)
-  display.drawmidi(edit, scale, midi_start)
-  display.drawtuning(base_freq, edit, scale)
-  display.drawscalesize(edit, scale)
-  display.drawedo(scale)
-  display.drawtonic(edit, scale)
-  display.drawmode(edit, scale)
-  display.drawoctave(edit, octave, scale)
+  display_orig.drawLs(edit, scale)
+  display_orig.drawmidi(edit, scale, midi_start)
+  display_orig.drawtuning(base_freq, edit, scale)
+  display_orig.drawscalesize(edit, scale)
+  display_orig.drawedo(scale)
+  display_orig.drawtonic(edit, scale)
+  display_orig.drawmode(edit, scale)
+  display_orig.drawoctave(edit, octave, scale)
   s.update()
 end
 
@@ -89,44 +80,6 @@ function display.drawintervals(scale, intervals)
       )
     end
   end
-end
-
-local MAR = 87
-local MAR0 = MAR-10
-local MAR1 = MAR
-local MAR2 = MAR+10
-local MAR3 = MAR2+7
-
-function display.drawLs(edit, scale)
-  display_orig.drawLs(edit, scale)
-end
-
-function display.drawmidi(edit, scale, midi_start)
-  display_orig.drawmidi(edit, scale, midi_start)
-end
-
-function display.drawscalesize(edit, scale)
-  display_orig.drawscalesize(edit, scale)
-end
-
-function display.drawtuning(tuning, edit, scale)
-  display_orig.drawtuning(tuning, edit, scale)
-end
-
-function display.drawtonic(edit, scale)
-  display_orig.drawtonic(edit, scale)
-end
-
-function display.drawmode(edit, scale)
-  display_orig.drawmode(edit, scale)
-end
-
-function display.drawoctave(edit, octave, scale)
-  display_orig.drawoctave(edit, octave, scale)
-end
-
-function display.drawedo(scale)
-  display_orig.drawedo(scale)
 end
 
 function display.edit_position(edit, scale)
