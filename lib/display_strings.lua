@@ -2,14 +2,6 @@ local display = {}
 
 local s = screen
 
-function display.n_input()
-  return display_orig.n_input()
-end
-
-function display.o_input()
-  return display_orig.o_input()
-end
-
 function display.redraw(base_freq, edit, octave, position, scale, intervals, midi_start)
   s.clear()
   display.drawsteps(edit, position, scale)
@@ -41,6 +33,7 @@ function display.drawsteps(edit, position, scale)
         x, y,
         scale:step_size(i)
     )
+    display_orig.arp_position(i, position)
   end
   screen.font_size(8)
 end

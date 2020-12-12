@@ -11,7 +11,7 @@ ScaleIntervals = {}
 function ScaleIntervals:new(scale)
   local s = setmetatable({}, { __index = ScaleIntervals })
 
-  local sscale = Scale:new(scale.large, scale.small, scale:sequence())
+  local sscale = Scale:new(scale.large, scale.small, scale:sequence(), scale.medium)
   sscale:update_edo()
   s.degree_to_mode = {}
   s.degree_intervals = {}

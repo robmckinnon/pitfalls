@@ -1,13 +1,14 @@
 local display = {}
 
-local L_INPUT = 1
-local S_INPUT = 2
-local B_INPUT = 3
-local N_INPUT = 4
-local F_INPUT = 5
-local T_INPUT = 6
-local M_INPUT = 7
-local O_INPUT = 8
+local N_INPUT = 1
+local L_INPUT = 2
+local M_INPUT = 3
+local S_INPUT = 4
+local B_INPUT = 5
+local F_INPUT = 6
+local T_INPUT = 7
+local D_INPUT = 8
+local O_INPUT = 9
 
 local TOP = 13
 local BOT = 28
@@ -57,6 +58,12 @@ function display.drawintervals(scale, intervals)
   end
 end
 
+function display.arp_position(i, position)
+  if i == position then
+    pf.line_rel(2, i*STEP_WIDTH -7, 22 + ADJ, 6, 0)
+  end
+end
+
 function display.drawsteps(edit, position, scale)
   local x,y
   for i = 1,scale.length do
@@ -70,9 +77,7 @@ function display.drawsteps(edit, position, scale)
       x, y,
       scale:step_size(i)
     )
-    if i == position then
-      pf.line_rel(2, i*STEP_WIDTH -8, 23 + ADJ, 6, 0)
-    end
+    display.arp_position(i, position)
   end
 end
 
@@ -96,28 +101,38 @@ local MAR0 = MAR-10
 local MAR1 = MAR
 local MAR2 = MAR+10
 local MAR3 = MAR2+7
-
 local A = -2
-function display.drawLs(edit, scale)
-  pf.itext(L_INPUT, edit, scale,
+
+function display.drawscalesize(edit, scale)
+  pf.itext(N_INPUT, edit, scale,
     MAR1,17+A,
-    "L"..scale.large)
+    "size: "..scale.length)
+end
+
+function display.drawLs(edit, scale)
+  if scale:has_medium() then
+    pf.itext(L_INPUT, edit, scale,
+      MAR1-(MAR3+5 - MAR1), 25+A,
+      "L"..scale.large)
+
+    pf.itext(M_INPUT, edit, scale,
+      MAR1, 25+A,
+      "M"..scale.medium)
+  else
+    pf.itext(L_INPUT, edit, scale,
+      MAR1, 25+A,
+      "L"..scale.large)
+  end
 
   pf.itext(S_INPUT, edit, scale,
-    MAR3+5,17+A,
+    MAR3+5, 25+A,
     "s"..scale.small)
 end
 
 function display.drawmidi(edit, scale, midi_start)
   pf.itext(B_INPUT, edit, scale,
-    MAR1,25+A,
-    "fixed: "..note[midi_start])
-end
-
-function display.drawscalesize(edit, scale)
-  pf.itext(N_INPUT, edit, scale,
     MAR1,33+A,
-    "size: "..scale.length)
+    "fixed: "..note[midi_start])
 end
 
 function display.drawedo(scale)
@@ -139,7 +154,7 @@ function display.drawtonic(edit, scale)
 end
 
 function display.drawmode(edit, scale)
-  pf.itext(M_INPUT, edit, scale,
+  pf.itext(D_INPUT, edit, scale,
     MAR1,57+A,
     "mode: "..scale.mode)
 end
@@ -151,13 +166,14 @@ function display.drawoctave(edit, octave, scale)
 end
 
 local position = {
+  [N_INPUT] = "scale_size",
   [L_INPUT] = "large",
+  [M_INPUT] = "medium",
   [S_INPUT] = "small",
   [B_INPUT] = "midi_start",
-  [N_INPUT] = "scale_size",
   [F_INPUT] = "tuning",
   [T_INPUT] = "tonic",
-  [M_INPUT] = "mode",
+  [D_INPUT] = "mode",
   [O_INPUT] = "octave"
 }
 

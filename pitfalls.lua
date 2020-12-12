@@ -185,7 +185,7 @@ function change_value(d)
 end
 
 function change.edit_position(d)
-  edit = util.clamp(edit + d, 1, scale.length + display.o_input())
+  edit = util.clamp(edit + d, 1, scale.length + display_orig.o_input())
   redraw()
 end
 
@@ -214,6 +214,12 @@ function change.small(d)
   end
 end
 
+function change.medium(d)
+  if scale:change_medium(d) then
+    update_pitches(true)
+  end
+end
+
 function change.large(d)
   if scale:change_large(d) then
     update_pitches(true)
@@ -223,10 +229,10 @@ end
 function change.scale_size(d)
   if scale:change_length(d) then
     if d == 1 then
-      edit = util.clamp(edit + 1, 1 + display.n_input(), scale.max_steps + display.n_input())
+      edit = util.clamp(edit + 1, 1 + display_orig.n_input(), scale.max_steps + display_orig.n_input())
     end
     if d == -1 then
-      edit = util.clamp(edit - 1, scale.min_steps + display.n_input(), edit)
+      edit = util.clamp(edit - 1, scale.min_steps + display_orig.n_input(), edit)
     end
     update_pitches(true)
   end
