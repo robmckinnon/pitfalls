@@ -15,6 +15,10 @@ local BOT = 28
 
 local s = screen
 
+function display.m_input()
+  return M_INPUT
+end
+
 function display.n_input()
   return N_INPUT
 end

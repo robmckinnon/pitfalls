@@ -186,8 +186,14 @@ end
 
 function change.edit_position(d)
   edit = util.clamp(edit + d, 1, scale.length + display_orig.o_input())
+  if (edit - scale.length) == display_orig.m_input() then
+    if scale:has_medium() == false then
+      edit = edit + d
+    end
+  end
   redraw()
 end
+
 
 function change.step(d)
   if scale:change_step(d, edit) then
