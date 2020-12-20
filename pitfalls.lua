@@ -112,6 +112,7 @@ function init()
 
   g.init()
   update_pitches(true)
+  pf.pop_named_sequences(named_scales.lookup)
   display.drawintervals(scale, intervals)
 
   counter = metro.init(count, 0.125, -1)

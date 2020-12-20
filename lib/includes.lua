@@ -10,6 +10,9 @@ ratiointervals = include("pitfalls/lib/ratios")
 -- maps chord labels to interval labels
 chords = include("pitfalls/lib/chords")
 
+-- maps n, LMs, sequence to scale names
+named_scales = include("pitfalls/lib/named_scales")
+
 -- represents scale with sequence of L,s steps
 include("pitfalls/lib/Scale")
 

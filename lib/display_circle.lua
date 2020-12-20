@@ -8,6 +8,7 @@ function display.redraw(base_freq, edit, octave, position, scale, intervals, mid
   -- display.drawintervals(scale, intervals)
   display.draw_step_bars(scale, intervals)
 
+  display_orig.drawname(edit, scale, 5)
   display_orig.drawLs(edit, scale)
   display_orig.drawmidi(edit, scale, midi_start)
   display_orig.drawtuning(base_freq, edit, scale)

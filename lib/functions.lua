@@ -1,4 +1,5 @@
 local pf = {}
+local tab = require 'tabutil'
 
 function pf.debug(bool)
   if bool == nil then return debug end
@@ -49,6 +50,15 @@ function pf.nearest_interval2(v, ratiointervals)
   return (min < 0.01 and {min,match}) or {nil,""}
 end
 
+function pf.string_width(s, text, width)
+  local size = s.text_extents(text)
+  while (size > width) do
+    text = string.sub(text, 1, string.len(text) - 1)
+    size = s.text_extents(text)
+  end
+  return text
+end
+
 function pf.printp(t)
   for i, v in pairs(t) do
     print(i, v)
@@ -59,6 +69,76 @@ function pf.printip(t)
   for i, v in ipairs(t) do
     print(i, v)
   end
+end
+
+local S = "s"
+local M = "M"
+local L = "L"
+local western=require 'musicutil'
+
+function pf.pop_named_sequences(lookup)
+  local ls_seq, name, l, m, s, n
+  for i=1,#western.SCALES do
+    name = western.SCALES[i].name
+    ls_seq = pf.seq_ls(western.generate_scale(60, name))
+    n = ls_seq.n
+    l = ls_seq.l or 0
+    m = ls_seq.m
+    s = ls_seq.s
+    if lookup[n] ~= nil then
+      if lookup[n][l] ~= nil then
+        if lookup[n][l][s] ~= nil then
+          if ls_seq.m ~= nil then
+            if lookup[n][l][s][m] ~= nil then
+              if lookup[n][l][s][m][ls_seq.seq] ~= nil then
+                lookup[n][l][s][m][ls_seq.seq] = name
+              end
+            end
+          else
+            if lookup[n][l][s][ls_seq.seq] ~= nil then
+              lookup[n][l][s][ls_seq.seq] = name
+            end
+          end
+        end
+      end
+    end
+  end
+end
+
+function pf.seq_ls(t)
+  local last
+  local seq = {}
+  for i, v in ipairs(t) do
+    if last == nil then
+      last = v
+    else
+      seq[i-1] = v - last
+    end
+    last = v
+  end
+  local lms = pf.uniqvalues(seq)
+  local s=lms[1]
+  local m,l
+  if (#lms == 3) then
+    m=lms[2]
+    l=lms[3]
+  end
+  if (#lms == 2) then
+    l=lms[2]
+  end
+
+  local sequence = ""
+  for i, v in ipairs(seq) do
+    if s==v then
+      sequence = sequence .. S
+    elseif l==v then
+      sequence = sequence .. L
+    else
+      sequence = sequence .. M
+    end
+  end
+
+  return {seq=sequence, n=#seq, s=s, m=m, l=l}
 end
 
 function pf.ratio(division, edivisions)
@@ -102,13 +182,23 @@ function pf.sortedkeys(t)
   return tkeys
 end
 
+function pf.uniqvalues(t)
+  local hash = {}
+  for _,v in pairs(t) do
+    if (not hash[v]) then
+      hash[v] = true
+    end
+  end
+  return pf.sortedkeys(hash)
+end
+
 -- http://tonalsoft.com/enc/t/tredek.aspx
 function pf.tredek()
   return 2 ^ (1/270)
 end
 
 function pf.tprint(t)
-  tabutil.print(t)
+  tab.print(t)
 end
 
 local s = screen

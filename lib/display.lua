@@ -29,6 +29,7 @@ end
 
 function display.redraw(base_freq, edit, octave, position, scale, intervals, midi_start)
   s.clear()
+  display.drawname(edit, scale, BOT + 3, 0)
   display.drawsteps(edit, position, scale)
   display.drawintervals(scale, intervals)
   display.drawLs(edit, scale)
@@ -85,6 +86,39 @@ function display.drawsteps(edit, position, scale)
   end
 end
 
+function display.drawname(edit, scale, y, x)
+  local name = nil
+  local m = named_scales.lookup[scale.length]
+  if m ~= nil then
+    m = m[scale.large]
+    if m ~= nil then
+      m = m[scale.small]
+      if m ~= nil then
+        if scale:has_medium() then
+          if m[scale.medium] ~= nil then
+            name = m[scale.medium][scale:sequence()]
+          end
+        else
+          name = m[scale:sequence()]
+        end
+        if name ~= nil then
+          name = named_scales.names[name] or name
+        end
+      end
+    end
+  end
+
+  if name ~= nil then
+    name = pf.string_width(s, name, 80)
+    if x ~= 0 then
+      x = 80 - s.text_extents(name)
+    end
+    pf.text(2,
+      x, y,
+      name)
+  end
+end
+
 local note = {
   [60] = "C",
   [61] = "C#",
@@ -109,27 +143,27 @@ local A = -2
 
 function display.drawscalesize(edit, scale)
   pf.itext(N_INPUT, edit, scale,
-    MAR1,17+A,
+    MAR1,17+A - 2,
     "size: "..scale.length)
 end
 
 function display.drawLs(edit, scale)
   if scale:has_medium() then
     pf.itext(L_INPUT, edit, scale,
-      MAR1-(MAR3+5 - MAR1), 25+A,
+      MAR1-(MAR3+5 - MAR1), 25+A - 1,
       "L"..scale.large)
 
     pf.itext(M_INPUT, edit, scale,
-      MAR1, 25+A,
+      MAR1, 25+A - 1,
       "M"..scale.medium)
   else
     pf.itext(L_INPUT, edit, scale,
-      MAR1, 25+A,
+      MAR1, 25+A - 1,
       "L"..scale.large)
   end
 
   pf.itext(S_INPUT, edit, scale,
-    MAR3+5, 25+A,
+    MAR3+5, 25+A - 1,
     "s"..scale.small)
 end
 
@@ -141,7 +175,7 @@ end
 
 function display.drawedo(scale)
   pf.text(2,
-    MAR1,9+A,
+    MAR1,9+A - 2,
     scale.edivisions.." EDO")
 end
 
