@@ -10,12 +10,12 @@
 -- microtonal scales.
 --
 -- Set interval structure as a
--- sequence of large (L)
--- and small (s) steps.
+-- sequence of large (L), small (s),
+-- and medium (M) steps.
 --
 -- e.g.
 -- C Major diatonic is:
---   LLsLLLs  L: 2  s: 1  base: C
+--   LLsLLLs  L: 2  s: 1  fixed: C
 --
 -- A 19 EDO, 7 note scale is:
 --   LLsLLLs  L: 3  s: 2
@@ -27,13 +27,13 @@
 -- E3 select step or parameter
 -- K1
 -- K2 toggle arpeggiator
--- K3
+-- K3 toggle display mode
 --
 -- [0] http://anaphoria.com/
 --            wilsonintroMOS.html
 -- .................................................................
 --
--- pitfalls v0.1.0 "einfach einem" release
+-- pitfalls v0.2.0 "giojoso geola" release
 -- copyright 02020 robmckinnon
 -- GNU GPL v3.0
 -- .................................................................

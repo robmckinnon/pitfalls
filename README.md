@@ -10,6 +10,18 @@
 
 ### Changelog
 
+#### v0.2.0 _giojoso geola_
+
+* Add "circle" display - show intervals on circle spokes.
+* Add "strings" display - show line lengths proportionate to interval ratios.
+* K3 toggles original, circle, and strings display.
+* Add M medium step to scale sequences.
+* Add more just intervals and chords.
+* Label scale in display with an exisiting scale name when it exists in
+  [MusicUtil](https://monome.org/docs/norns/api/modules/MusicUtil.html),
+  the [Xenharmonic Wiki](https://en.xen.wiki/w/Main_Page), or
+  [Scala](http://www.huygens-fokker.org/docs/modename.html).
+
 #### v0.1.1 _einfach einem_
 
 * Define scale as a sequence of `Ls` steps.

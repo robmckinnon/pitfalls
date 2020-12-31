@@ -11,6 +11,8 @@ ratiointervals = include("pitfalls/lib/ratios")
 chords = include("pitfalls/lib/chords")
 
 -- maps n, LMs, sequence to scale names
+-- sourced from https://en.xen.wiki/w/Main_Page
+-- and http://www.huygens-fokker.org/docs/modename.html
 named_scales = include("pitfalls/lib/named_scales")
 
 -- represents scale with sequence of L,s steps
