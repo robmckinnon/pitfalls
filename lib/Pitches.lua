@@ -3,7 +3,7 @@ local BASE_OCTAVE = 4
 Pitches = {}
 
 function get_freqx(base_freq, edo, index, oct, base_octave)
-  local f = base_freq * fn.ratio(index-1, edo)
+  local f = base_freq * pf.ratio(index-1, edo)
   if (oct < base_octave) then
     f = f / (2 ^ (base_octave - oct))
   elseif (oct > base_octave) then
@@ -26,7 +26,7 @@ function Pitches:new(scale, intervals, tuning, midi_start)
   local base_freq = midi_to_hz(midi_start, tuning)
   for oct = 0,8 do
     p.octdegfreqs[oct+1] = {}
-    f = fn.get_freq(base_freq, scale.edivisions, scale.tonic, oct, BASE_OCTAVE)
+    f = pf.get_freq(base_freq, scale.edivisions, scale.tonic, oct, BASE_OCTAVE)
     for deg = 1,scale.length do
       index = index + 1
       p.freqs[index] = f * intervals:ratio(deg)

@@ -1,31 +1,48 @@
 Intervals = {}
 
+local BLANK = ""
+
 function Intervals:new(scale)
   local s = setmetatable({}, { __index = Intervals })
 
   s.scale = scale
   s.int_labels = {}
+  s.uniq_labels = {}
   s.int_errors = {}
   s.divisions = {}
   s.ratios = {}
 
   local division = 0
-  local intervals = {}
+  local lab_to_err = {}
+  local lab_to_ind = {}
+
   s.ratios[1] = 1
   for i = 1,scale.length do
     division = division + scale:step_value(i)
     s.divisions[i] = division
-    s.ratios[i+1] = fn.ratio(division, scale.edivisions)
-    
+    s.ratios[i+1] = pf.ratio(division, scale.edivisions)
+
     if (i < scale.length) then
-      local nearest = fn.nearest_interval2(s.ratios[i+1], ratiointervals)
+      local nearest = pf.nearest_interval2(s.ratios[i+1], ratiointervals)
       local closeness = nearest[1]
       local int_label = nearest[2]
       s.int_labels[i+1] = int_label
       s.int_errors[i+1] = closeness
-      if int_label ~= "" then
-        intervals[int_label] = s.ratios[i]
-        fn.dprint(i+1, int_label)
+
+      s.uniq_labels[i+1] = BLANK
+
+      if int_label ~= "" and int_label ~= "P1" and int_label ~= "P8" then
+        if (lab_to_err[int_label] == nil) then
+          s.uniq_labels[i+1] = int_label
+          lab_to_ind[int_label] = i+1
+          lab_to_err[int_label] = closeness
+        elseif (closeness < lab_to_err[int_label]) then
+          s.uniq_labels[lab_to_ind[int_label]] = BLANK
+          s.uniq_labels[i+1] = int_label
+          lab_to_ind[int_label] = i+1
+          lab_to_err[int_label] = closeness
+        end
+        pf.dprint(i+1, int_label)
       end
     end
   end
@@ -39,6 +56,12 @@ end
 
 function Intervals:interval_label(i)
   return self.int_labels[ i ]
+end
+
+function Intervals:uniq_interval_label(i)
+  print(i)
+  tabutil.print(self.uniq_labels)
+  return self.uniq_labels[ i ]
 end
 
 function Intervals:interval_error(i)
@@ -71,8 +94,7 @@ end
 --     end
 --   end
 --   if match then
---     fn.dprint(lab, chord)
+--     pf.dprint(lab, chord)
 --   end
--- end  
+-- end
 -- print("--")
-

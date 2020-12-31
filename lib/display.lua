@@ -1,18 +1,23 @@
-display = {}
+local display = {}
 
-local L_INPUT = 1
-local S_INPUT = 2
-local B_INPUT = 3
-local N_INPUT = 4
-local F_INPUT = 5
-local T_INPUT = 6
-local M_INPUT = 7
-local O_INPUT = 8
+local N_INPUT = 1
+local L_INPUT = 2
+local M_INPUT = 3
+local S_INPUT = 4
+local B_INPUT = 5
+local F_INPUT = 6
+local T_INPUT = 7
+local D_INPUT = 8
+local O_INPUT = 9
 
-local TOP = 12
+local TOP = 13
 local BOT = 28
 
 local s = screen
+
+function display.m_input()
+  return M_INPUT
+end
 
 function display.n_input()
   return N_INPUT
@@ -21,9 +26,10 @@ end
 function display.o_input()
   return O_INPUT
 end
-  
+
 function display.redraw(base_freq, edit, octave, position, scale, intervals, midi_start)
   s.clear()
+  display.drawname(edit, scale, BOT + 3, 0)
   display.drawsteps(edit, position, scale)
   display.drawintervals(scale, intervals)
   display.drawLs(edit, scale)
@@ -37,58 +43,80 @@ function display.redraw(base_freq, edit, octave, position, scale, intervals, mid
   s.update()
 end
 
+local ADJ = -8
+local STEP_WIDTH = 7
+
 function display.drawintervals(scale, intervals)
-  local err = nil
+  local err,x,y
+
   for i = 2,scale.length do
-    y = (i % 2 == 0 and BOT) or TOP
-    s.move(i*8-10,y)
     err = intervals:interval_error(i)
     if (err ~= nil) then
-      if (err > 0.005) then
-        s.level(1)
-      elseif (err > 0.0025) then
-        s.level(2)
-      elseif (err > 0.00125) then
-        s.level(3)
-      elseif (err > 0.000625) then
-        s.level(4)
-      else
-        s.level(5)
-      end
-      s.text(intervals:interval_label(i))
+      x = i*STEP_WIDTH -11
+      y = ( (i % 2 == 0) and BOT or TOP ) + ADJ
+      pf.text(
+        pf.level_int(err),
+        x, y,
+        intervals:uniq_interval_label(i)
+      )
     end
+  end
+end
+
+function display.arp_position(i, position)
+  if i == position then
+    pf.line_rel(2, i*STEP_WIDTH -7, 22 + ADJ, 6, 0)
   end
 end
 
 function display.drawsteps(edit, position, scale)
+  local x,y
   for i = 1,scale.length do
-    if i == edit then
-      s.level(15)
-    elseif (edit > scale.length) then
-      s.level(4)
-    else
-      s.level(2)
-    end  
-    s.move(i*8-8 + 2,20)
-    s.text(scale:step_size(i))
-
-    if i == position then
-      s.level(2)
-      s.move(i*8-8, 23)
-      s.line_rel(6,0)
-      s.stroke()
+    x = i*STEP_WIDTH -8 + 2
+    y = 20 + ADJ
+    if i == 1 then
+      print(x)
+      print(y)
     end
+    pf.text(pf.level_step(i, edit, scale),
+      x, y,
+      scale:step_size(i)
+    )
+    display.arp_position(i, position)
   end
 end
 
-function display.drawLs(edit, scale)
-  s.move(0,40)
-  s.level((edit == scale.length + L_INPUT) and 15 or 2)
-  s.text("L : "..scale.large)
+function display.drawname(edit, scale, y, x)
+  local name = nil
+  local m = named_scales.lookup[scale.length]
+  if m ~= nil then
+    m = m[scale.large]
+    if m ~= nil then
+      m = m[scale.small]
+      if m ~= nil then
+        if scale:has_medium() then
+          if m[scale.medium] ~= nil then
+            name = m[scale.medium][scale:sequence()]
+          end
+        else
+          name = m[scale:sequence()]
+        end
+        if name ~= nil then
+          name = named_scales.names[name] or name
+        end
+      end
+    end
+  end
 
-  s.move(0,50)
-  s.level((edit == scale.length + S_INPUT) and 15 or 2)
-  s.text("s : "..scale.small)
+  if name ~= nil then
+    name = pf.string_width(s, name, 80)
+    if x ~= 0 then
+      x = 80 - s.text_extents(name)
+    end
+    pf.text(2,
+      x, y,
+      name)
+  end
 end
 
 local note = {
@@ -106,56 +134,84 @@ local note = {
   [71] = "B"
 }
 
-function display.drawmidi(edit, scale, midi_start)
-  s.move(0,60)
-  s.level((edit == scale.length + B_INPUT) and 15 or 2)
-  s.text("base: "..note[midi_start])
-end
+local MAR = 87
+local MAR0 = MAR-10
+local MAR1 = MAR
+local MAR2 = MAR+10
+local MAR3 = MAR2+7
+local A = -2
 
 function display.drawscalesize(edit, scale)
-  s.level((edit == scale.length + N_INPUT) and 15 or 2)
-  s.move(41,40)
-  s.text("notes: "..scale.length)
+  pf.itext(N_INPUT, edit, scale,
+    MAR1,17+A - 2,
+    "size: "..scale.length)
+end
+
+function display.drawLs(edit, scale)
+  if scale:has_medium() then
+    pf.itext(L_INPUT, edit, scale,
+      MAR1-(MAR3+5 - MAR1), 25+A - 1,
+      "L"..scale.large)
+
+    pf.itext(M_INPUT, edit, scale,
+      MAR1, 25+A - 1,
+      "M"..scale.medium)
+  else
+    pf.itext(L_INPUT, edit, scale,
+      MAR1, 25+A - 1,
+      "L"..scale.large)
+  end
+
+  pf.itext(S_INPUT, edit, scale,
+    MAR3+5, 25+A - 1,
+    "s"..scale.small)
+end
+
+function display.drawmidi(edit, scale, midi_start)
+  pf.itext(B_INPUT, edit, scale,
+    MAR1,33+A,
+    "fixed: "..note[midi_start])
 end
 
 function display.drawedo(scale)
-  s.level(2)
-  s.move(41,50)
-  s.text("EDO: "..scale.edivisions)
+  pf.text(2,
+    MAR1,9+A - 2,
+    scale.edivisions.." EDO")
 end
 
 function display.drawtuning(tuning, edit, scale)
-  s.move(41,60)
-  s.level((edit == scale.length + F_INPUT) and 15 or 2)
-  s.text(string.format("%.0f",tuning).." Hz")
+  pf.itext(F_INPUT, edit, scale,
+    MAR1,41+A,
+    string.format("%.1f",tuning).." Hz")
 end
 
 function display.drawtonic(edit, scale)
-  s.level((edit == scale.length + T_INPUT) and 15 or 2)
-  s.move(84,40)
-  s.text("tonic: "..scale.tonic)
+  pf.itext(T_INPUT, edit, scale,
+    MAR1,49+A,
+    "tonic: "..scale.tonic)
 end
 
 function display.drawmode(edit, scale)
-  s.level((edit == scale.length + M_INPUT) and 15 or 2)
-  s.move(84,50)
-  s.text("mode: "..scale.mode)
+  pf.itext(D_INPUT, edit, scale,
+    MAR1,57+A,
+    "mode: "..scale.mode)
 end
 
 function display.drawoctave(edit, octave, scale)
-  s.level((edit == scale.length + O_INPUT) and 15 or 2)
-  s.move(84,60)
-  s.text("octave: "..octave)
+  pf.itext(O_INPUT, edit, scale,
+    MAR1,65+A,
+    "oct.: "..octave)
 end
 
 local position = {
+  [N_INPUT] = "scale_size",
   [L_INPUT] = "large",
+  [M_INPUT] = "medium",
   [S_INPUT] = "small",
   [B_INPUT] = "midi_start",
-  [N_INPUT] = "scale_size",
   [F_INPUT] = "tuning",
   [T_INPUT] = "tonic",
-  [M_INPUT] = "mode",
+  [D_INPUT] = "mode",
   [O_INPUT] = "octave"
 }
 
@@ -169,4 +225,3 @@ function display.edit_position(edit, scale)
 end
 
 return display
-

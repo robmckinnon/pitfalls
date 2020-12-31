@@ -1,67 +1,147 @@
-local fn = {}
+local pf = {}
+local tab = require 'tabutil'
 
-function fn.debug(bool)
+function pf.debug(bool)
   if bool == nil then return debug end
   debug = bool
   return debug
 end
 
-function fn.dprint(t, s)
-  if fn.debug() then
+function pf.dprint(t, s)
+  if pf.debug() then
     print(t, s)
   end
 end
 
-function fn.gcd(a,b)
-  while b~=0 do 
+function pf.gcd(a,b)
+  while b~=0 do
     a,b=b,a%b
   end
   return math.abs(a)
 end
 
-function fn.midi_to_hz(note)
+function pf.midi_to_hz(note)
   return (440/32) * (2 ^ ((note - 9) / 12))
 end
 
-function fn.nearest_interval(v, ratiointervals)
+function pf.nearest_interval(v, ratiointervals)
   local min = 1
   local match = nil
-  for ratio, label in pairs(ratiointervals) do
+  for ratio, labels in pairs(ratiointervals.list) do
     diff = math.abs( (ratio - v) / ratio )
     if diff < min then
       min = diff
-      match = label
+      match = ratiointervals.key(ratio)
     end
   end
   return (min < 0.01 and match) or ""
 end
 
-function fn.nearest_interval2(v, ratiointervals)
+function pf.nearest_interval2(v, ratiointervals)
   local min = 1
   local match = nil
-  for ratio, label in pairs(ratiointervals) do
+  for ratio, labels in pairs(ratiointervals.list) do
     diff = math.abs( (ratio - v) / ratio )
     if diff < min then
       min = diff
-      match = label
+      match = ratiointervals.key(ratio)
     end
   end
   return (min < 0.01 and {min,match}) or {nil,""}
 end
 
-function fn.printp(t)
+function pf.string_width(s, text, width)
+  local size = s.text_extents(text)
+  while (size > width) do
+    text = string.sub(text, 1, string.len(text) - 1)
+    size = s.text_extents(text)
+  end
+  return text
+end
+
+function pf.printp(t)
   for i, v in pairs(t) do
     print(i, v)
   end
 end
 
-function fn.printip(t)
+function pf.printip(t)
   for i, v in ipairs(t) do
     print(i, v)
   end
 end
 
-function fn.ratio(division, edivisions)
+local S = "s"
+local M = "M"
+local L = "L"
+local western=require 'musicutil'
+
+function pf.pop_named_sequences(lookup)
+  local ls_seq, name, l, m, s, n
+  for i=1,#western.SCALES do
+    name = western.SCALES[i].name
+    ls_seq = pf.seq_ls(western.generate_scale(60, name))
+    n = ls_seq.n
+    l = ls_seq.l or 0
+    m = ls_seq.m
+    s = ls_seq.s
+    if lookup[n] ~= nil then
+      if lookup[n][l] ~= nil then
+        if lookup[n][l][s] ~= nil then
+          if ls_seq.m ~= nil then
+            if lookup[n][l][s][m] ~= nil then
+              if lookup[n][l][s][m][ls_seq.seq] ~= nil then
+                lookup[n][l][s][m][ls_seq.seq] = name
+              end
+            end
+          else
+            if lookup[n][l][s][ls_seq.seq] ~= nil then
+              lookup[n][l][s][ls_seq.seq] = name
+            end
+          end
+        end
+      end
+    end
+  end
+end
+
+function pf.seq_ls(t)
+  local last
+  local seq = {}
+  for i, v in ipairs(t) do
+    if last == nil then
+      last = v
+    else
+      seq[i-1] = v - last
+    end
+    last = v
+  end
+  local lms = pf.uniqvalues(seq)
+  local s=lms[1]
+  local m,l
+  if (#lms == 3) then
+    m=lms[2]
+    l=lms[3]
+  end
+  if (#lms == 2) then
+    l=lms[2]
+  end
+
+  local sequence = ""
+  for i, v in ipairs(seq) do
+    if s==v then
+      sequence = sequence .. S
+    elseif l==v then
+      sequence = sequence .. L
+    else
+      sequence = sequence .. M
+    end
+  end
+
+  return {seq=sequence, n=#seq, s=s, m=m, l=l}
+end
+
+function pf.ratio(division, edivisions)
   if division == 0 then
     return 1
   else
@@ -69,8 +149,8 @@ function fn.ratio(division, edivisions)
   end
 end
 
-function fn.get_freq(base_freq, edo, index, oct, base_octave)
-  local f = base_freq * fn.ratio(index-1, edo)
+function pf.get_freq(base_freq, edo, index, oct, base_octave)
+  local f = base_freq * pf.ratio(index-1, edo)
   if (oct < base_octave) then
     f = f / (2 ^ (base_octave - oct))
   elseif (oct > base_octave) then
@@ -79,32 +159,112 @@ function fn.get_freq(base_freq, edo, index, oct, base_octave)
   return f
 end
 
-function fn.wrap(t, n)
+function pf.wrap(t, n)
   for i = 1, n do
     table.insert(t, 1, table.remove( t, #t ))
   end
 end
 
-function fn.tablelength(t)
+function pf.tablelength(t)
   local count = 0
-  for i,v in pairs(t) do 
+  for i,v in pairs(t) do
     if v ~= nil then
-      count = count + 1 
+      count = count + 1
     end
   end
   return count
 end
 
-function fn.sortedkeys(t)
+function pf.sortedkeys(t)
   local tkeys = {}
   for k in pairs(t) do table.insert(tkeys, k) end
   table.sort(tkeys)
   return tkeys
 end
 
+function pf.uniqvalues(t)
+  local hash = {}
+  for _,v in pairs(t) do
+    if (not hash[v]) then
+      hash[v] = true
+    end
+  end
+  return pf.sortedkeys(hash)
+end
+
 -- http://tonalsoft.com/enc/t/tredek.aspx
-function tredek()
+function pf.tredek()
   return 2 ^ (1/270)
 end
-  
-return fn
+
+function pf.tprint(t)
+  tab.print(t)
+end
+
+local s = screen
+
+function pf.level_int(err)
+  if (err == nil or err > 0.005) then
+    return 1
+  elseif (err > 0.0025) then
+    return 2
+  elseif (err > 0.00125) then
+    return 3
+  elseif (err > 0.000625) then
+    return 4
+  else
+    return 5
+  end
+end
+
+function pf.level_step(i, edit, scale)
+  if i == edit then
+    return 15
+  elseif (edit > scale.length) then
+    return 4
+  else
+    return 2
+  end
+end
+
+function pf.line_rel(l,x,y,dx,dy)
+  s.level(l)
+  s.move(x, y)
+  s.line_rel(dx,dy)
+  s.stroke()
+end
+
+function pf.itext(input, edit, scale, x, y, t)
+  pf.text(
+    (edit == scale.length + input) and 15 or 2,
+    x, y,
+    t
+  )
+end
+
+function pf.text(l,x,y,t)
+  s.level(l)
+  s.move(x,y)
+  s.text(t)
+end
+
+local note = {
+  [60] = "C",
+  [61] = "C#",
+  [62] = "D",
+  [63] = "D#",
+  [64] = "E",
+  [65] = "F",
+  [66] = "F#",
+  [67] = "G",
+  [68] = "G#",
+  [69] = "A",
+  [70] = "A#",
+  [71] = "B"
+}
+
+function pf.note_label(midi)
+  return note[midi]
+end
+
+return pf

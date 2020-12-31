@@ -10,29 +10,29 @@ ScaleIntervals = {}
 
 function ScaleIntervals:new(scale)
   local s = setmetatable({}, { __index = ScaleIntervals })
-  
-  local sscale = Scale:new(scale.large, scale.small, scale:sequence())
+
+  local sscale = Scale:new(scale.large, scale.small, scale:sequence(), scale.medium)
   sscale:update_edo()
   s.degree_to_mode = {}
   s.degree_intervals = {}
   local mode = nil
   local tmp = nil
   for deg = 1,scale.length do
-    fn.dprint("deg", deg)
+    pf.dprint("deg", deg)
     mode = (scale.mode + deg - 1) % scale.length
     if mode == 0 then
       mode = scale.length
     end
-    fn.dprint("mode", mode)
+    pf.dprint("mode", mode)
     s.degree_to_mode[deg] = mode
     sscale:set_mode(mode)
-    fn.dprint("smode", sscale.mode)
-    fn.dprint(":sequence()", sscale:sequence())
-    fn.dprint(Intervals.new)
+    pf.dprint("smode", sscale.mode)
+    pf.dprint(":sequence()", sscale:sequence())
+    pf.dprint(Intervals.new)
     tmp = Intervals:new(sscale)
-    fn.dprint("tmp", tmp)
+    pf.dprint("tmp", tmp)
     s.degree_intervals[deg] = tmp
-    fn.dprint("int", s.degree_intervals[deg])
+    pf.dprint("int", s.degree_intervals[deg])
   end
 
   return s
@@ -42,7 +42,7 @@ function ScaleIntervals:intervals(deg)
   deg = deg or 1
   return self.degree_intervals[deg]
 end
-  
+
 function ScaleIntervals:ratio(i, deg)
   return self:intervals(deg).ratios[ i ]
 end
@@ -55,6 +55,10 @@ function ScaleIntervals:interval_label(i, deg)
   return self:intervals(deg).int_labels[ i ]
 end
 
+function ScaleIntervals:uniq_interval_label(i, deg)
+  return self:intervals(deg).uniq_labels[ i ]
+end
+
 function ScaleIntervals:interval_error(i, deg)
   return self:intervals(deg).int_errors[ i ]
 end
@@ -62,4 +66,3 @@ end
 function ScaleIntervals:nearest_degree_to(r, threshold)
   return self.degree_intervals[1]:nearest_degree_to(r, threshold)
 end
-
