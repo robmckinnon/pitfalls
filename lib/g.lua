@@ -46,9 +46,11 @@ function g.key(x, y, z)
   local grid_w = g.cols
   local f = g.gfreqs[grid_h - y + 1][x]
   if z > 0 then
+    midi_out.note_on_pitch_bend(f)
     g.led_on(f)
     engine.hz(f)
   else
+    midi_out.all_notes_off()
     g.led_off(f)
   end
 end

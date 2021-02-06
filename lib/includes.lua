@@ -38,5 +38,8 @@ parameters = include("pitfalls/lib/parameters")
 -- init parameters before grid include
 parameters.init()
 
+-- midi out to device
+midi_out = include("pitfalls/lib/midi")
+
 -- grid interactions and leds
 g = include("pitfalls/lib/g")
