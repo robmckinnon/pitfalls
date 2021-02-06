@@ -76,6 +76,73 @@ local M = "M"
 local L = "L"
 local western=require 'musicutil'
 
+function pf.name_to_sequence(name)
+  local is_western = false
+  local n, l, m, s, seq
+  for i=1,#western.SCALES do
+    if name == western.SCALES[i].name and is_western == false then
+      ls_seq = pf.seq_ls(western.generate_scale(60, name))
+      n = ls_seq.n
+      l = ls_seq.l or 0
+      m = ls_seq.m
+      s = ls_seq.s
+      seq = ls_seq.seq
+      is_western = true
+    end
+  end
+  if is_western == false then
+  end
+end
+
+function pf.reverse_name_lookup(lookup, names)
+  local reverse_name = {}
+  local names_list = {}
+  local m, seq, name
+  for n, np in pairs(lookup) do
+    for l, lp in pairs(np) do
+      for s, sp in pairs(lp) do
+        for m_or_seq, seqs_or_name in pairs(sp) do
+          if tonumber(m_or_seq) == nil then
+            m = nil
+            seq = m_or_seq
+            if tonumber(seqs_or_name) == nil then
+              name = seqs_or_name
+            else
+              name = names[seqs_or_name]
+            end
+            -- print("name "..name)
+            -- tab.print({n=n, l=l, s=s, m=nil, seq=seq})
+            if n > 2 then
+              reverse_name[name] = {n=n, l=l, s=s, m=nil, seq=seq}
+              if names_list[name] == nil then
+                table.insert(names_list, name)
+              end
+            end
+          else
+            m = m_or_seq
+            for seq, name in pairs(seqs_or_name) do
+              if tonumber(name) == nil then
+                name = name
+              else
+                name = names[name]
+              end
+              -- print("name "..name)
+              -- tab.print({n=n, l=l, s=s, m=nil, seq=seq})
+              if n > 2 then
+                reverse_name[name] = {n=n, l=l, s=s, m=m, seq=seq}
+                if names_list[name] == nil then
+                  table.insert(names_list, name)
+                end
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+  return {lookup=reverse_name, names=names_list}
+end
+
 function pf.pop_named_sequences(lookup)
   local ls_seq, name, l, m, s, n
   for i=1,#western.SCALES do

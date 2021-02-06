@@ -47,6 +47,10 @@ function Pitches:freq(index)
 end
 
 function Pitches:octdegfreq(oct, deg)
-  return self.octdegfreqs[oct+1][deg]
+  if self.octdegfreqs[oct+1] then
+    return self.octdegfreqs[oct+1][deg]
+  else
+    return nil
+  end
 end
 
