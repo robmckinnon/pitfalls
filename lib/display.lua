@@ -1,14 +1,23 @@
 local display = {}
 
-local N_INPUT = 1
-local L_INPUT = 2
-local M_INPUT = 3
-local S_INPUT = 4
-local B_INPUT = 5
-local F_INPUT = 6
-local T_INPUT = 7
-local D_INPUT = 8
-local O_INPUT = 9
+-- reverse scale name
+local R_INPUT = 1
+-- number of notes
+local N_INPUT = 2
+-- L,M,s step sizes
+local L_INPUT = 3
+local M_INPUT = 4
+local S_INPUT = 5
+-- Base MIDI note
+local B_INPUT = 6
+-- Base freq Hz
+local F_INPUT = 7
+-- Tonic note
+local T_INPUT = 8
+-- Mode degree
+local D_INPUT = 9
+-- Octave
+local O_INPUT = 10
 
 local TOP = 13
 local BOT = 28
@@ -109,13 +118,23 @@ function display.drawname(edit, scale, y, x)
   end
 
   if name ~= nil then
+    scale_no_index = 1
+    local names = named_scales.no_names[scale.length]
+    while names[scale_no_index] != name do
+      scale_no_index = scale_no_index + 1
+    end
     name = pf.string_width(s, name, 80)
     if x ~= 0 then
       x = 80 - s.text_extents(name)
     end
-    pf.text(2,
+    -- pf.text(2,
+    --   x, y,
+    --   name)
+    pf.itext(R_INPUT, edit, scale,
       x, y,
       name)
+  else
+    scale_no_index = nil
   end
 end
 
@@ -204,6 +223,7 @@ function display.drawoctave(edit, octave, scale)
 end
 
 local position = {
+  [R_INPUT] = "scale_name",
   [N_INPUT] = "scale_size",
   [L_INPUT] = "large",
   [M_INPUT] = "medium",

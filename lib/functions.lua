@@ -96,7 +96,9 @@ end
 
 function pf.reverse_name_lookup(lookup, names)
   local reverse_name = {}
+  local no_reverse_name = {}
   local names_list = {}
+  local no_names_list = {}
   local m, seq, name
   for n, np in pairs(lookup) do
     for l, lp in pairs(np) do
@@ -113,9 +115,17 @@ function pf.reverse_name_lookup(lookup, names)
             -- print("name "..name)
             -- tab.print({n=n, l=l, s=s, m=nil, seq=seq})
             if n > 2 then
+              no_reverse_name[n] = no_reverse_name[n] or {}
+              no_names_list[n] = no_names_list[n] or {}
+
               reverse_name[name] = {n=n, l=l, s=s, m=nil, seq=seq}
+              no_reverse_name[n][name] = {n=n, l=l, s=s, m=nil, seq=seq}
+
               if names_list[name] == nil then
                 table.insert(names_list, name)
+              end
+              if no_names_list[n][name] == nil then
+                table.insert(no_names_list[n], name)
               end
             end
           else
@@ -129,9 +139,17 @@ function pf.reverse_name_lookup(lookup, names)
               -- print("name "..name)
               -- tab.print({n=n, l=l, s=s, m=nil, seq=seq})
               if n > 2 then
+                no_reverse_name[n] = no_reverse_name[n] or {}
+                no_names_list[n] = no_names_list[n] or {}
+
                 reverse_name[name] = {n=n, l=l, s=s, m=m, seq=seq}
+                no_reverse_name[n][name] = {n=n, l=l, s=s, m=m, seq=seq}
+
                 if names_list[name] == nil then
                   table.insert(names_list, name)
+                end
+                if no_names_list[n][name] == nil then
+                  table.insert(no_names_list[n], name)
                 end
               end
             end
@@ -140,7 +158,8 @@ function pf.reverse_name_lookup(lookup, names)
       end
     end
   end
-  return {lookup=reverse_name, names=names_list}
+  return {lookup=reverse_name, names=names_list,
+    no_lookup=no_reverse_name, no_names=no_names_list}
 end
 
 function pf.pop_named_sequences(lookup)

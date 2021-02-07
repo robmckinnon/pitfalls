@@ -15,6 +15,8 @@ chords = include("pitfalls/lib/chords")
 -- and http://www.huygens-fokker.org/docs/modename.html
 named_scales = include("pitfalls/lib/named_scales")
 
+reverse_name = pf.reverse_name_lookup(named_scales.lookup, named_scales.names)
+
 -- represents scale with sequence of L,s steps
 include("pitfalls/lib/Scale")
 

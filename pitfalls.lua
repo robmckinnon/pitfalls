@@ -48,6 +48,7 @@ local position = 1
 local scale = nil
 local intervals = nil
 local pitches = nil
+local scale_no_index = nil
 
 local edit = 1
 
@@ -113,6 +114,7 @@ function init()
   g.init()
   midi_out.init()
   update_pitches(true)
+  -- mixin the MusicUtil scale names
   pf.pop_named_sequences(named_scales.lookup)
   display.drawintervals(scale, intervals)
 
@@ -196,7 +198,6 @@ function change.edit_position(d)
   redraw()
 end
 
-
 function change.step(d)
   if scale:change_step(d, edit) then
     params:set("sequence", scale:sequence(), true)
@@ -232,6 +233,22 @@ function change.large(d)
   if scale:change_large(d) then
     update_pitches(true)
   end
+end
+
+function change.scale_name(d)
+  local scales = named_scales.no_names[scale.length]
+  scale_no_index = util.clamp(scale_no_index + d, 1, #scales)
+
+  local name = scales[scale_no_index]
+  local data = named_scales.no_lookup[scale.length][name]
+
+  if data.m == nil do
+    scale = Scale:new(data.l, data.s, data.seq)
+  else
+    scale = Scale:new(data.l, data.s, data.seq, data.m)
+  end
+  scale:update_edo()
+  update_pitches(true)
 end
 
 function change.scale_size(d)
