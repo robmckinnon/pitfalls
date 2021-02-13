@@ -24,6 +24,10 @@ local BOT = 28
 
 local s = screen
 
+function display.scale_name_input()
+  return R_INPUT
+end
+
 function display.m_input()
   return M_INPUT
 end
@@ -116,25 +120,31 @@ function display.drawname(edit, scale, y, x)
       end
     end
   end
-
-  if name ~= nil then
+  name = name or "-"
+  scale_name = name
+  if name ~= "-" then
+    local edoname = name.." "..scale.edivisions.."EDO"
     scale_no_index = 1
-    local names = named_scales.no_names[scale.length]
-    while names[scale_no_index] != name do
+    local names = reverse_name.no_names[scale.length]
+    while scale_no_index < (#names) and (names[scale_no_index] ~= edoname) do
       scale_no_index = scale_no_index + 1
     end
     name = pf.string_width(s, name, 80)
     if x ~= 0 then
       x = 80 - s.text_extents(name)
     end
-    -- pf.text(2,
-    --   x, y,
-    --   name)
     pf.itext(R_INPUT, edit, scale,
       x, y,
       name)
   else
-    scale_no_index = nil
+    scale_no_index = 0
+    name = pf.string_width(s, name, 80)
+    if x ~= 0 then
+      x = 80 - s.text_extents(name)
+    end
+    pf.itext(R_INPUT, edit, scale,
+      x, y,
+      name)
   end
 end
 

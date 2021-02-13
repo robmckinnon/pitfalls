@@ -48,7 +48,6 @@ local position = 1
 local scale = nil
 local intervals = nil
 local pitches = nil
-local scale_no_index = nil
 
 local edit = 1
 
@@ -114,8 +113,8 @@ function init()
   g.init()
   midi_out.init()
   update_pitches(true)
-  -- mixin the MusicUtil scale names
-  pf.pop_named_sequences(named_scales.lookup)
+  -- -- mixin the MusicUtil scale names
+  -- pf.pop_named_sequences(named_scales.lookup)
   display.drawintervals(scale, intervals)
 
   counter = metro.init(count, 0.125, -1)
@@ -190,10 +189,10 @@ end
 
 function change.edit_position(d)
   edit = util.clamp(edit + d, 1, scale.length + display_orig.o_input())
-  if (edit - scale.length) == display_orig.m_input() then
-    if scale:has_medium() == false then
-      edit = edit + d
-    end
+  local input_index = edit - scale.length
+  if (input_index == display_orig.m_input() and scale:has_medium() == false) or
+    (input_index == display_orig.scale_name_input() and scale_name == nil) then
+    edit = edit + d
   end
   redraw()
 end
@@ -236,16 +235,16 @@ function change.large(d)
 end
 
 function change.scale_name(d)
-  local scales = named_scales.no_names[scale.length]
+  local scales = reverse_name.no_names[scale.length]
   scale_no_index = util.clamp(scale_no_index + d, 1, #scales)
 
   local name = scales[scale_no_index]
-  local data = named_scales.no_lookup[scale.length][name]
+  local data = reverse_name.no_lookup[scale.length][name]
 
-  if data.m == nil do
-    scale = Scale:new(data.l, data.s, data.seq)
+  if data.m == nil then
+     scale = Scale:new(data.l, data.s, data.seq)
   else
-    scale = Scale:new(data.l, data.s, data.seq, data.m)
+     scale = Scale:new(data.l, data.s, data.seq, data.m)
   end
   scale:update_edo()
   update_pitches(true)

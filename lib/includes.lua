@@ -1,6 +1,9 @@
 -- ships with norns
 engine.name = "PolyPerc"
 
+-- represents scale with sequence of L,s steps
+include("pitfalls/lib/Scale")
+
 -- various functions
 pf = include("pitfalls/lib/functions")
 
@@ -15,10 +18,14 @@ chords = include("pitfalls/lib/chords")
 -- and http://www.huygens-fokker.org/docs/modename.html
 named_scales = include("pitfalls/lib/named_scales")
 
+-- mixin the MusicUtil scale names
+pf.pop_named_sequences(named_scales.lookup)
+
 reverse_name = pf.reverse_name_lookup(named_scales.lookup, named_scales.names)
 
--- represents scale with sequence of L,s steps
-include("pitfalls/lib/Scale")
+
+-- -- represents scale with sequence of L,s steps
+-- include("pitfalls/lib/Scale")
 
 -- represents intervals for scale in given mode
 include("pitfalls/lib/Intervals")
@@ -30,6 +37,8 @@ include("pitfalls/lib/ScaleIntervals")
 include("pitfalls/lib/Pitches")
 
 -- draws display to screen
+scale_name = nil
+scale_no_index = nil
 display_orig = include("pitfalls/lib/display")
 display_strings = include("pitfalls/lib/display_strings")
 display_circle = include("pitfalls/lib/display_circle")
