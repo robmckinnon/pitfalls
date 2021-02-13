@@ -264,7 +264,7 @@ function change.scale_size(d)
 end
 
 function update_arpeggiate(x)
-  print(parameters.arpeggiate())
+  -- print(parameters.arpeggiate())
   if parameters.arpeggiate() == "off" then
     run = false
     counter:stop()
@@ -321,7 +321,7 @@ local remaining_positions = {}
 function arpeggiate.chord()
   if pf.tablelength(chord_positions) == 0 then
     position = (position % scale.length) + 1
-    print("+1", position)
+    -- print("+1", position)
     remaining_positions = {}
     local degree = position
     local matches = chords.match(intervals:interval_labels(degree))
@@ -336,9 +336,9 @@ function arpeggiate.chord()
         chord_positions[(tonumber(deg) + degree) % scale.length + 1] = int_label
       end
     end
-    pf.printp(chord_positions)
+    -- pf.printp(chord_positions)
     last_degree = (degree % scale.length) + 1
-    print('---', last_degree)
+    -- print('---', last_degree)
   end
   if chord_positions[position] ~= nil then
     chord_positions[position] = nil

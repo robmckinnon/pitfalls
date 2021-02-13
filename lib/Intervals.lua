@@ -59,7 +59,7 @@ function Intervals:interval_label(i)
 end
 
 function Intervals:uniq_interval_label(i)
-  print(i)
+  -- print(i)
   tabutil.print(self.uniq_labels)
   return self.uniq_labels[ i ]
 end
