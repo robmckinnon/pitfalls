@@ -178,12 +178,14 @@ function update_pitches(update_intervals)
 end
 
 function change_value(d)
-  local id = display.edit_position(edit, scale)
-  if pcall(params.get, params, id) then
-    params:delta(id, d)
-  else
-    change[display.edit_position(edit, scale)](d)
+  local input_key = display.edit_position(edit, scale)
+
+  if change[input_key] ~= nil then
+    change[input_key](d)
+  elseif pcall(params.get, params, input_key) then
+    params:delta(input_key, d)
   end
+
   redraw()
 end
 

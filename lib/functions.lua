@@ -146,10 +146,6 @@ function pf.reverse_name_lookup(lookup, names)
               edoname = name.." "..data.edo.."EDO"
               reverse_name[name] = data
               no_reverse_name[n][edoname] = data
-
-              if names_list[name] == nil then
-                table.insert(names_list, name)
-              end
             end
           else
             m = m_or_seq
@@ -167,10 +163,6 @@ function pf.reverse_name_lookup(lookup, names)
                 edoname = name.." "..data.edo.."EDO"
                 reverse_name[name] = data
                 no_reverse_name[n][edoname] = data
-
-                if names_list[name] == nil then
-                  table.insert(names_list, name)
-                end
               end
             end
           end
@@ -179,9 +171,10 @@ function pf.reverse_name_lookup(lookup, names)
     end
   end
 
+  local i
   for n, list in pairs(no_reverse_name) do
     local sorted = {}
-    local i = 0
+    i = 0
     for edoname, v in pf.spairs(list, function(t, a, b)
       if t[b].edo == t[a].edo then
         return t[b].name > t[a].name
@@ -193,6 +186,16 @@ function pf.reverse_name_lookup(lookup, names)
       sorted[i] = edoname
     end
     no_names_list[n] = sorted
+
+    for edoname, v in pf.spairs(list, function(t, a, b)
+      if t[b].name == t[a].name then
+        return t[b].edo > t[a].edo
+      else
+        return t[b].name > t[a].name
+      end
+    end) do
+      table.insert(names_list, v.name)
+    end
   end
 
   return {lookup=reverse_name, names=names_list,
