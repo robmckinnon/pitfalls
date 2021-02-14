@@ -111,7 +111,7 @@ function init()
   params:set_action("arpeggiate", function(x) update_arpeggiate() end)
 
   g.init()
-  midi_out.init()
+  -- midi_out.init()
   update_pitches(true)
   -- -- mixin the MusicUtil scale names
   -- pf.pop_named_sequences(named_scales.lookup)
@@ -285,7 +285,7 @@ end
 local pitches_on = {}
 
 function pitches_off()
-  midi_out.all_notes_off()
+  -- midi_out.all_notes_off()
   for f,i in pairs(pitches_on) do
     if i ~= nil then
       g.led_off(f)
@@ -299,7 +299,7 @@ function pitch_on(i)
   g.led_on(f)
   pitches_on[f] = i
   engine.hz(f)
-  midi_out.note_on_pitch_bend(f)
+  -- midi_out.note_on_pitch_bend(f)
 end
 
 function arpeggiate.scale_up()
