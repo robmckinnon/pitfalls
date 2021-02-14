@@ -1,19 +1,32 @@
 local display = {}
 
-local N_INPUT = 1
-local L_INPUT = 2
-local M_INPUT = 3
-local S_INPUT = 4
-local B_INPUT = 5
-local F_INPUT = 6
-local T_INPUT = 7
-local D_INPUT = 8
-local O_INPUT = 9
+-- reverse scale name
+local R_INPUT = 1
+-- number of notes
+local N_INPUT = 2
+-- L,M,s step sizes
+local L_INPUT = 3
+local M_INPUT = 4
+local S_INPUT = 5
+-- Base MIDI note
+local B_INPUT = 6
+-- Base freq Hz
+local F_INPUT = 7
+-- Tonic note
+local T_INPUT = 8
+-- Mode degree
+local D_INPUT = 9
+-- Octave
+local O_INPUT = 10
 
 local TOP = 13
 local BOT = 28
 
 local s = screen
+
+function display.scale_name_input()
+  return R_INPUT
+end
 
 function display.m_input()
   return M_INPUT
@@ -75,8 +88,8 @@ function display.drawsteps(edit, position, scale)
     x = i*STEP_WIDTH -8 + 2
     y = 20 + ADJ
     if i == 1 then
-      print(x)
-      print(y)
+      -- print(x)
+      -- print(y)
     end
     pf.text(pf.level_step(i, edit, scale),
       x, y,
@@ -107,13 +120,29 @@ function display.drawname(edit, scale, y, x)
       end
     end
   end
-
-  if name ~= nil then
+  name = name or "-"
+  scale_name = name
+  if name ~= "-" then
+    local edoname = name.." "..scale.edivisions.."EDO"
+    scale_no_index = 1
+    local names = reverse_name.no_names[scale.length]
+    while scale_no_index < (#names) and (names[scale_no_index] ~= edoname) do
+      scale_no_index = scale_no_index + 1
+    end
     name = pf.string_width(s, name, 80)
     if x ~= 0 then
       x = 80 - s.text_extents(name)
     end
-    pf.text(2,
+    pf.itext(R_INPUT, edit, scale,
+      x, y,
+      name)
+  else
+    scale_no_index = 0
+    name = pf.string_width(s, name, 80)
+    if x ~= 0 then
+      x = 80 - s.text_extents(name)
+    end
+    pf.itext(R_INPUT, edit, scale,
       x, y,
       name)
   end
@@ -204,6 +233,7 @@ function display.drawoctave(edit, octave, scale)
 end
 
 local position = {
+  [R_INPUT] = "scale_name",
   [N_INPUT] = "scale_size",
   [L_INPUT] = "large",
   [M_INPUT] = "medium",

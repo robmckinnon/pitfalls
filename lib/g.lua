@@ -46,9 +46,11 @@ function g.key(x, y, z)
   local grid_w = g.cols
   local f = g.gfreqs[grid_h - y + 1][x]
   if z > 0 then
+    -- midi_out.note_on_pitch_bend(f)
     g.led_on(f)
     engine.hz(f)
   else
+    -- midi_out.all_notes_off()
     g.led_off(f)
   end
 end
@@ -82,7 +84,7 @@ function g.update_grid(scale, intervals, pitches)
         end
         freqsxy[f][#(freqsxy[f])+1] = {x, y}
       end
-      
+
       if degree == 1 then
         g.xleds[x][y] = 16 - degree
         g.aleds[x][y] = 16 - degree - 1
@@ -92,7 +94,7 @@ function g.update_grid(scale, intervals, pitches)
           g.aleds[x][y] = 0
         else
           g.aleds[x][y] = 16 - degree
-        end  
+        end
       end
       pf.dprint('x',x)
       pf.dprint('y',y)

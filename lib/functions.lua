@@ -76,6 +76,132 @@ local M = "M"
 local L = "L"
 local western=require 'musicutil'
 
+function pf.name_to_sequence(name)
+  local is_western = false
+  local n, l, m, s, seq
+  for i=1,#western.SCALES do
+    if name == western.SCALES[i].name and is_western == false then
+      ls_seq = pf.seq_ls(western.generate_scale(60, name))
+      n = ls_seq.n
+      l = ls_seq.l or 0
+      m = ls_seq.m
+      s = ls_seq.s
+      seq = ls_seq.seq
+      is_western = true
+    end
+  end
+  if is_western == false then
+  end
+end
+
+function pf.spairs(t, order)
+  -- collect the keys
+  local keys = {}
+  for k in pairs(t) do keys[#keys+1] = k end
+
+  -- if order function given, sort by it by passing the table and keys a, b,
+  -- otherwise just sort the keys
+  if order then
+    table.sort(keys, function(a,b) return order(t, a, b) end)
+  else
+    table.sort(keys)
+  end
+
+  -- return the iterator function
+  local i = 0
+  return function()
+    i = i + 1
+    if keys[i] then
+      return keys[i], t[keys[i]]
+    end
+  end
+end
+
+function pf.reverse_name_lookup(lookup, names)
+  local reverse_name = {}
+  local no_reverse_name = {}
+  local names_list = {}
+  local no_names_list = {}
+  local m, seq, name, tscale, data, edoname
+  for n, np in pairs(lookup) do
+    if n > 2 then
+      no_reverse_name[n] = no_reverse_name[n] or {}
+    end
+    for l, lp in pairs(np) do
+      for s, sp in pairs(lp) do
+        for m_or_seq, seqs_or_name in pairs(sp) do
+          if tonumber(m_or_seq) == nil then
+            m = nil
+            seq = m_or_seq
+            if tonumber(seqs_or_name) == nil then
+              name = seqs_or_name
+            else
+              name = names[seqs_or_name]
+            end
+            if n > 2 then
+              tscale = Scale:new(l, s, seq)
+              tscale:update_edo()
+              data = {n=n, l=l, s=s, m=nil, seq=seq, edo=tscale.edivisions, name=name}
+
+              edoname = name.." "..data.edo.."EDO"
+              reverse_name[name] = data
+              no_reverse_name[n][edoname] = data
+            end
+          else
+            m = m_or_seq
+            for seq, name in pairs(seqs_or_name) do
+              if tonumber(name) == nil then
+                name = name
+              else
+                name = names[name]
+              end
+              if n > 2 then
+                tscale = Scale:new(l, s, seq, m)
+                tscale:update_edo()
+                data = {n=n, l=l, s=s, m=m, seq=seq, edo=tscale.edivisions, name=name}
+
+                edoname = name.." "..data.edo.."EDO"
+                reverse_name[name] = data
+                no_reverse_name[n][edoname] = data
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+
+  local i
+  for n, list in pairs(no_reverse_name) do
+    local sorted = {}
+    i = 0
+    for edoname, v in pf.spairs(list, function(t, a, b)
+      if t[b].edo == t[a].edo then
+        return t[b].name > t[a].name
+      else
+        return t[b].edo > t[a].edo
+      end
+    end) do
+      i = i + 1
+      sorted[i] = edoname
+    end
+    no_names_list[n] = sorted
+
+    for edoname, v in pf.spairs(list, function(t, a, b)
+      if t[b].name == t[a].name then
+        return t[b].edo > t[a].edo
+      else
+        return t[b].name > t[a].name
+      end
+    end) do
+      table.insert(names_list, v.name)
+    end
+  end
+
+  return {lookup=reverse_name, names=names_list,
+    no_lookup=no_reverse_name, no_names=no_names_list}
+end
+
 function pf.pop_named_sequences(lookup)
   local ls_seq, name, l, m, s, n
   for i=1,#western.SCALES do

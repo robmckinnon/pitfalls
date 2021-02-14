@@ -41,8 +41,8 @@ function display.drawsteps(edit, position, scale)
     x = (i-1)*STEP_WIDTH + STEP_MARGIN
     y = 12
     if i == 1 then
-      print(x)
-      print(y)
+      -- print(x)
+      -- print(y)
     end
     pf.text(pf.level_step(i, edit, scale),
         x, y,

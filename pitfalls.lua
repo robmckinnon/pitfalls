@@ -20,6 +20,8 @@
 -- A 19 EDO, 7 note scale is:
 --   LLsLLLs  L: 3  s: 2
 --
+-- Or browse named scales[1].
+--
 -- Play scale keyboard on grid.
 --
 -- E1 change cutoff filter
@@ -31,10 +33,12 @@
 --
 -- [0] http://anaphoria.com/
 --            wilsonintroMOS.html
+-- [1] http://www.huygens-fokker.org/
+--           docs/modename.html
 -- .................................................................
 --
--- pitfalls v0.2.0 "giojoso geola" release
--- copyright 02020 robmckinnon
+-- pitfalls v0.3.0 "tutti terpstra" release
+-- copyright 02021 robmckinnon
 -- GNU GPL v3.0
 -- .................................................................
 --
@@ -111,8 +115,10 @@ function init()
   params:set_action("arpeggiate", function(x) update_arpeggiate() end)
 
   g.init()
+  -- midi_out.init()
   update_pitches(true)
-  pf.pop_named_sequences(named_scales.lookup)
+  -- -- mixin the MusicUtil scale names
+  -- pf.pop_named_sequences(named_scales.lookup)
   display.drawintervals(scale, intervals)
 
   counter = metro.init(count, 0.125, -1)
@@ -176,25 +182,26 @@ function update_pitches(update_intervals)
 end
 
 function change_value(d)
-  local id = display.edit_position(edit, scale)
-  if pcall(params.get, params, id) then
-    params:delta(id, d)
-  else
-    change[display.edit_position(edit, scale)](d)
+  local input_key = display.edit_position(edit, scale)
+
+  if change[input_key] ~= nil then
+    change[input_key](d)
+  elseif pcall(params.get, params, input_key) then
+    params:delta(input_key, d)
   end
+
   redraw()
 end
 
 function change.edit_position(d)
   edit = util.clamp(edit + d, 1, scale.length + display_orig.o_input())
-  if (edit - scale.length) == display_orig.m_input() then
-    if scale:has_medium() == false then
-      edit = edit + d
-    end
+  local input_index = edit - scale.length
+  if (input_index == display_orig.m_input() and scale:has_medium() == false) or
+    (input_index == display_orig.scale_name_input() and scale_name == nil) then
+    edit = edit + d
   end
   redraw()
 end
-
 
 function change.step(d)
   if scale:change_step(d, edit) then
@@ -233,6 +240,22 @@ function change.large(d)
   end
 end
 
+function change.scale_name(d)
+  local scales = reverse_name.no_names[scale.length]
+  scale_no_index = util.clamp(scale_no_index + d, 1, #scales)
+
+  local name = scales[scale_no_index]
+  local data = reverse_name.no_lookup[scale.length][name]
+
+  if data.m == nil then
+     scale = Scale:new(data.l, data.s, data.seq)
+  else
+     scale = Scale:new(data.l, data.s, data.seq, data.m)
+  end
+  scale:update_edo()
+  update_pitches(true)
+end
+
 function change.scale_size(d)
   if scale:change_length(d) then
     if d == 1 then
@@ -246,7 +269,7 @@ function change.scale_size(d)
 end
 
 function update_arpeggiate(x)
-  print(parameters.arpeggiate())
+  -- print(parameters.arpeggiate())
   if parameters.arpeggiate() == "off" then
     run = false
     counter:stop()
@@ -266,6 +289,7 @@ end
 local pitches_on = {}
 
 function pitches_off()
+  -- midi_out.all_notes_off()
   for f,i in pairs(pitches_on) do
     if i ~= nil then
       g.led_off(f)
@@ -279,6 +303,7 @@ function pitch_on(i)
   g.led_on(f)
   pitches_on[f] = i
   engine.hz(f)
+  -- midi_out.note_on_pitch_bend(f)
 end
 
 function arpeggiate.scale_up()
@@ -301,7 +326,7 @@ local remaining_positions = {}
 function arpeggiate.chord()
   if pf.tablelength(chord_positions) == 0 then
     position = (position % scale.length) + 1
-    print("+1", position)
+    -- print("+1", position)
     remaining_positions = {}
     local degree = position
     local matches = chords.match(intervals:interval_labels(degree))
@@ -316,9 +341,9 @@ function arpeggiate.chord()
         chord_positions[(tonumber(deg) + degree) % scale.length + 1] = int_label
       end
     end
-    pf.printp(chord_positions)
+    -- pf.printp(chord_positions)
     last_degree = (degree % scale.length) + 1
-    print('---', last_degree)
+    -- print('---', last_degree)
   end
   if chord_positions[position] ~= nil then
     chord_positions[position] = nil
