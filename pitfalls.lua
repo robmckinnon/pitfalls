@@ -20,6 +20,8 @@
 -- A 19 EDO, 7 note scale is:
 --   LLsLLLs  L: 3  s: 2
 --
+-- Or browse named scales[1].
+--
 -- Play scale keyboard on grid.
 --
 -- E1 change cutoff filter
@@ -31,10 +33,12 @@
 --
 -- [0] http://anaphoria.com/
 --            wilsonintroMOS.html
+-- [1] http://www.huygens-fokker.org/
+--           docs/modename.html
 -- .................................................................
 --
--- pitfalls v0.2.0 "giojoso geola" release
--- copyright 02020 robmckinnon
+-- pitfalls v0.3.0 "tutti terpstra" release
+-- copyright 02021 robmckinnon
 -- GNU GPL v3.0
 -- .................................................................
 --
