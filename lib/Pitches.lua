@@ -15,7 +15,7 @@ end
 function midi_to_hz(n, tuning)
   return tuning * (2 ^ ((n - 69) / 12.0))
 end
-      
+
 function Pitches:new(scale, intervals, tuning, midi_start)
   local p = setmetatable({}, { __index = Pitches })
   p.freqs = {}
@@ -53,4 +53,3 @@ function Pitches:octdegfreq(oct, deg)
     return nil
   end
 end
-

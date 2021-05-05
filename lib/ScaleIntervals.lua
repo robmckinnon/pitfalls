@@ -55,6 +55,10 @@ function ScaleIntervals:interval_label(i, deg)
   return self:intervals(deg).int_labels[ i ]
 end
 
+function ScaleIntervals:interval_ratio(i, deg)
+  return self:intervals(deg).int_ratios[ i ]
+end
+
 function ScaleIntervals:uniq_interval_label(i, deg)
   return self:intervals(deg).uniq_labels[ i ]
 end

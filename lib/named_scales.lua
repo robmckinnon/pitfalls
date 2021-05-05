@@ -1328,7 +1328,19 @@ scales.names={
 "de Vries 11-tone, Mothra-11",
 "de Vries 13-tone",
 "de Vries 5-tone",
-"de Vries 9-tone, Semaphore-9"
+"de Vries 9-tone, Semaphore-9",
+"12-tone Chromatic (1/12-comma positive), Wustaf-12",
+"12-tone Chromatic (3/25-comma positive), Algebraic Leapfrog-12",
+"Chromatic Hypophrygian inverse, Phrygian Hungarian Minor",
+"Joan-7",
+"Joan-7, Score-7",
+"Meantone Chromatic (1/17-comma), Garibaldy-12",
+"Pelogic-7",
+"Porcupine-7",
+"Porcupine-7, Major",
+"Porcupine-8",
+"Prodigy-11",
+"Ultralocrian, Superlocrian Diminished, Mixolydian sharp 1, Altered Diminished 7"
 }
 scales.lookup={
 [2]={
@@ -1657,6 +1669,7 @@ scales.lookup={
     [4]={
       [5]={MsLML=1219}
     },
+    [5]={ssLsL=903},
     [10]={
       LssLs=1217,
       sLLLL=401
@@ -2100,7 +2113,7 @@ scales.lookup={
         sMMsLsM=548,
         sMMsMsL=547,
         sMsLsMM=593,
-        sMsMMsL=1279,
+        sMsMMsL=1341,
         ssLMLss=745,
         ssLMMMs=724,
         ssLMMsM=747,
@@ -2108,7 +2121,7 @@ scales.lookup={
         ssLMsMM=735,
         ssLMssL=245,
         ssLssLM=252,
-        ssLssML=249,
+        ssLssML=1332,
         ssMLssL=255,
         ssMMsML=1262
       },
@@ -2119,6 +2132,7 @@ scales.lookup={
       LsLLLsL=1218,
       LsLLsLL=47,
       LsLsLsL=1202,
+      LssLsss=1333,
       sLsLsLL=528,
       ssLsLsL=1135
     },
@@ -2193,6 +2207,7 @@ scales.lookup={
         LMMMsLM=583,
         LMsLMLs=65,
         LMsLMMM=501,
+        LsLLLMM=150,
         LsLLMML=268,
         LsMLMLs=68,
         LsMLMMM=317,
@@ -2323,12 +2338,12 @@ scales.lookup={
       sLssLLs=831,
       sLssLsL=846,
       sLssLss=637,
-      sLsssss=775,
+      sLsssss=1338,
       ssLLssL=827,
       ssLsLsL=848,
       ssLssLL=832,
       sssLssL=905,
-      sssLsss=774
+      sssLsss=1337
     }
   },
   [6]={
@@ -2448,8 +2463,8 @@ scales.lookup={
       sLsLsLs=631,
       sLssLss=636,
       sLsssLs=173,
-      sLsssss=775,
-      sssLsss=774
+      sLsssss=1338,
+      sssLsss=1337
     },
     [6]={
       LsLsLLs=154,
@@ -2472,7 +2487,7 @@ scales.lookup={
       [5]={sMLMsML=1211},
       LLLLsLL=398,
       LsLsLsL=1202,
-      LssLsss=1111
+      LssLsss=1334
     },
     [4]={
       [7]={
@@ -2492,7 +2507,8 @@ scales.lookup={
       LsLLsLL=123,
       LssLsLs=204,
       sLssLss=636,
-      sLsssLs=172
+      sLsssLs=172,
+      sssLssL=1336
     },
     [7]={
       LLLLLLs=1247,
@@ -2560,8 +2576,8 @@ scales.lookup={
       LsLsLss=802,
       Lssssss=916,
       sLssLss=636,
-      sLsssss=775,
-      sssLsss=774
+      sLsssss=1338,
+      sssLsss=1337
     },
     [8]={LsLsLLs=154}
   },
@@ -2611,6 +2627,7 @@ scales.lookup={
       LsLssLs=574
     },
     [3]={
+      [7]={LLMMLLs=1115},
       LLLLLLs=1178,
       sLsLsLL=527
     },
@@ -2636,8 +2653,8 @@ scales.lookup={
       LsLsLss=802,
       sLsLsLs=631,
       sLssLss=636,
-      sLsssss=775,
-      sssLsss=774
+      sLsssss=1338,
+      sssLsss=1337
     },
     [9]={
       LLLLLLs=1247,
@@ -2753,8 +2770,8 @@ scales.lookup={
       sLsLsLL=527
     },
     [11]={
-      sLsssss=775,
-      sssLsss=774
+      sLsssss=1338,
+      sssLsss=1337
     },
     [13]={LsLsLLs=154}
   },
@@ -2829,6 +2846,9 @@ scales.lookup={
     [4]={LsLsLss=574},
     [5]={LLsLLsL=502},
     [20]={LsLsLLs=154}
+  },
+  [24]={
+    [17]={sssLsss=1337}
   },
   [25]={
     [7]={sLsLsLL=527}
@@ -2957,7 +2977,7 @@ scales.lookup={
         sLsLsLsM=529,
         sMMLMLMM=369
       },
-      LLLLLLLs=776,
+      LLLLLLLs=1339,
       LLsLLLLL=514,
       sLsLssLs=1129
     },
@@ -2984,7 +3004,7 @@ scales.lookup={
         LMLMLsLM=311,
         MLsLMLML=856
       },
-      LLLLLLLs=776,
+      LLLLLLLs=1339,
       LsLsLsLs=310,
       sLsLsLsL=856
     },
@@ -3007,7 +3027,7 @@ scales.lookup={
   },
   [7]={
     [2]={
-      LLLLLLLs=776,
+      LLLLLLLs=1339,
       sLsLssLs=1129
     },
     [3]={
@@ -3030,7 +3050,7 @@ scales.lookup={
   [8]={
     [3]={
       [5]={LMLMLsLM=311},
-      LLLLLLLs=776,
+      LLLLLLLs=1339,
       LsLsLsLs=310,
       sLsLsLsL=856
     },
@@ -3043,7 +3063,7 @@ scales.lookup={
   [9]={
     [4]={
       [5]={
-        LLsLLsMs=594,
+        LLsLLsMs=267,
         LLssMLLs=586,
         LsLLsLsM=600
       },
@@ -3065,7 +3085,7 @@ scales.lookup={
   },
   [11]={
     [4]={
-      LLLLLLLs=776,
+      LLLLLLLs=1339,
       sLsLsLsL=856
     },
     [6]={LsLsLsLs=310},
@@ -3095,6 +3115,9 @@ scales.lookup={
     [6]={
       [13]={MMMLMMMs=1320}
     }
+  },
+  [17]={
+    [7]={LLLLLLLs=1339}
   }
 },
 [9]={
@@ -3420,7 +3443,8 @@ scales.lookup={
   [17]={
     [3]={sssLssssL=544},
     [5]={LLsLsLsLs=402},
-    [7]={sLssLssLs=190}
+    [7]={sLssLssLs=190},
+    [11]={ssssLssss=822}
   },
   [18]={
     [5]={LLsLLsLLs=866},
@@ -3717,6 +3741,7 @@ scales.lookup={
     },
     [5]={sLsLsLsLsL=1268},
     [6]={
+      LLLLLLLLLs=821,
       LsLLsLLLsL=1197,
       LsLsLLsLsL=539,
       LsLsLsLsLs=169,
@@ -4026,6 +4051,9 @@ scales.lookup={
     [9]={sLsLsLsLsLL=565}
   },
   [12]={
+    [2]={
+      [7]={MMsMMLMMsMM=1340}
+    },
     [5]={
       LLLsLLLsLLs=1123,
       LssLsssLsss=1181,
@@ -4534,7 +4562,7 @@ scales.lookup={
     },
     [12]={
       LLsLLsLLsLLs=1280,
-      LssLsLsLssLs=645,
+      LssLsLsLssLs=1335,
       sLLsLsLsLLsL=667
     }
   },
@@ -4545,7 +4573,7 @@ scales.lookup={
     [9]={
       [11]={LMLsLMLLsLML=2},
       [12]={LMLsLMLLsLML=2},
-      LssLsLsLssLs=8,
+      LssLsLsLssLs=1330,
       sLLsLsLsLLsL=669
     },
     [11]={
@@ -4603,7 +4631,7 @@ scales.lookup={
     },
     [10]={
       [14]={LMLsLMLLsLML=2},
-      LssLsLsLssLs=33
+      LssLsLsLssLs=1331
     },
     [11]={
       [14]={LMLsLMLLsLML=2},

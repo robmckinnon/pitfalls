@@ -44,7 +44,7 @@ function pf.nearest_interval2(v, ratiointervals)
     diff = math.abs( (ratio - v) / ratio )
     if diff < min then
       min = diff
-      match = ratiointervals.key(ratio)
+      match = ratio
     end
   end
   return (min < 0.01 and {min,match}) or {nil,""}
