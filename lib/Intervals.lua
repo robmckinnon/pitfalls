@@ -7,6 +7,7 @@ function Intervals:new(scale)
 
   s.scale = scale
   s.int_labels = {}
+  s.int_ratios = {}
   s.uniq_labels = {}
   s.int_errors = {}
   s.divisions = {}
@@ -25,10 +26,11 @@ function Intervals:new(scale)
     if (i < scale.length) then
       local nearest = pf.nearest_interval2(s.ratios[i+1], ratiointervals)
       local closeness = nearest[1]
-      local int_label = nearest[2]
+      local ratio = nearest[2]
+      local int_label = ratiointervals.key(ratio)
       s.int_labels[i+1] = int_label
       s.int_errors[i+1] = closeness
-
+      s.int_ratios[i+1] = (ratio == nil and "") or tostring(ratiointervals.nom(ratio)).."/"..tostring(ratiointervals.denom(ratio))
       s.uniq_labels[i+1] = BLANK
 
       if int_label ~= "" and int_label ~= "P1" and int_label ~= "P8" then
@@ -56,6 +58,10 @@ end
 
 function Intervals:interval_label(i)
   return self.int_labels[ i ]
+end
+
+function Intervals:interval_ratio(i)
+  return self.int_ratios[ i ]
 end
 
 function Intervals:uniq_interval_label(i)
