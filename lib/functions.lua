@@ -47,7 +47,7 @@ function pf.nearest_interval2(v, ratiointervals)
       match = ratio
     end
   end
-  return (min < 0.01 and {min,match}) or {nil,""}
+  return (min < 0.01 and {min,match}) or {nil,nil}
 end
 
 function pf.string_width(s, text, width)
