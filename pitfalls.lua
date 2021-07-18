@@ -37,7 +37,7 @@
 --           docs/modename.html
 -- .................................................................
 --
--- pitfalls v0.3.0 "tutti terpstra" release
+-- pitfalls v0.3.1 "tutti terpstra" release
 -- copyright 02021 robmckinnon
 -- GNU GPL v3.0
 -- .................................................................

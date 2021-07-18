@@ -10,11 +10,12 @@
 
 ### Changelog
 
-#### v0.3.0 _tutti terpstra_
+#### v0.3.1 _tutti terpstra_
 
 * Add "browse scale by name" input in norns screen UI
 * Update named scales list from [Scala](http://www.huygens-fokker.org/docs/modename.html)
 * Add initial pitch-bent MIDI out support (disabled for now)
+* Display interval ratios on display.lua view
 
 #### v0.2.0 _giojoso geola_
 
