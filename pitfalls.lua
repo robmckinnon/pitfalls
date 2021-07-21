@@ -5,6 +5,7 @@
 --      the unwary traveler will
 --      most certainly fall into."
 --                -- Erv Wilson [0]
+-- \/ \/ \/
 --
 -- Define & play your own
 -- microtonal scales.
@@ -37,7 +38,7 @@
 --           docs/modename.html
 -- .................................................................
 --
--- pitfalls v0.3.1 "tutti terpstra" release
+-- pitfalls 0.4.0 ostinato odington release
 -- copyright 02021 robmckinnon
 -- GNU GPL v3.0
 -- .................................................................
@@ -55,8 +56,8 @@ local pitches = nil
 
 local edit = 1
 
-function metrofast() counter.time = 0.125 end
-function metroslow() counter.time = 0.25 end
+function metrofast() counter.time = 0.25 end
+function metroslow() counter.time = 0.5 end
 function positionrand() position = math.random(scale.length) end
 
 local change = {}
@@ -294,6 +295,9 @@ function pitches_off()
     if i ~= nil then
       g.led_off(f)
       pitches_on[f] = nil
+      if skeys ~= nil then
+        skeys:off({name=mx_sample,hz=f})
+      end
     end
   end
 end
@@ -302,7 +306,11 @@ function pitch_on(i)
   local f = pitches:octdegfreq(params:get("octave"), i)
   g.led_on(f)
   pitches_on[f] = i
-  engine.hz(f)
+  if skeys == nil then
+    engine.hz(f)
+  else
+    skeys:on({name=mx_sample,hz=f,midi=0,velocity=120})
+  end
   -- midi_out.note_on_pitch_bend(f)
 end
 
