@@ -68,6 +68,7 @@ scale_no_index = nil
 display_orig = include("pitfalls/lib/display")
 display_strings = include("pitfalls/lib/display_strings")
 display_circle = include("pitfalls/lib/display_circle")
+display_patch = include("pitfalls/lib/display_patch")
 
 -- exposed norns parameters
 parameters = include("pitfalls/lib/parameters")
