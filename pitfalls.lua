@@ -141,6 +141,8 @@ function key(n,z)
   if n == 3 and z == 1 then
     -- increment_mode()
     if display == display_strings then
+      display = display_patch
+    elseif display == display_patch then
       display = display_circle
     elseif display == display_circle then
       display = display_orig
