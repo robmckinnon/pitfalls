@@ -62,48 +62,7 @@ function positionrand() position = math.random(scale.length) end
 
 local change = {}
 local arpeggiate = {}
-
 local display = display_circle
-
-local s = screen
-local PI = 3.14159265359
-local C = 2*PI
-local qC = PI / 2
-local cx = (128-64)/2
-local cy = (64+16)/2
-
-function display.draw_step_bars(scale, intervals)
-  local steps = scale.length
-  local radians,err,level,radius,ratio,val
-  local tC
-  if (scale.tonic == 1 or scale.tonic == scale.edivisions) then
-    tC = 0
-  else
-    tC = (scale.tonic / scale.edivisions) * C
-  end
-  s.move(cx, cy)
-  s.line_width(1)
-  for i=1,steps do
-    ratio = intervals:ratio(i)
-    err = intervals:interval_error(i)
-    level = pf.level_int(err)
-    s.level(level > 2 and level - 1 or 1)
-    radians = ratio * C - qC + tC
-
-    s.arc(cx, cy, 22, radians, radians)
-    s.stroke()
-
-    val = radians % C
-    radius = (val > 3.6) and 23 or ((val > 2.25) and 32 or 23)
-    s.arc(cx, cy, radius, radians, radians)
-    if (err ~= nil and err < 0.01) then
-      s.level(level)
-      -- s.text(string.format("%.3f", val))
-      s.text(intervals:uniq_interval_label(i))
-    end
-    s.move(cx, cy)
-  end
-end
 
 function init()
   local sequence = params:get("sequence")
@@ -197,11 +156,10 @@ function change_value(d)
 end
 
 function change.edit_position(d)
-  if (display == display_patch) then
-    edit = util.clamp(edit + d, 1, scale.length + display_orig.patch_input())
-  else
-    edit = util.clamp(edit + d, 1, scale.length + display_orig.o_input())
-  end
+  local clamp_input = (display == display_patch) and display_orig.patch_input() or display_orig.o_input();
+
+  edit = util.clamp(edit + d, 1, scale.length + clamp_input);
+
   local input_index = edit - scale.length
   if (input_index == display_orig.m_input() and scale:has_medium() == false) or
     (input_index == display_orig.scale_name_input() and scale_name == nil) then
