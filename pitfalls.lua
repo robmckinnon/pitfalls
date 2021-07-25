@@ -65,11 +65,13 @@ local arpeggiate = {}
 local display = display_circle
 
 function init()
+  -- see lib/parameters.lua for param setup
   local sequence = params:get("sequence")
   scale = Scale:new(2, 1, sequence)
   scale:update_edo()
 
   params:set_action("cutoff", function(x) engine.cutoff(x) end)
+  params:set_action("engine", function(x) engine.name = parameters.engine(x) end)
   params:set_action("midi_start", function(x) update_pitches(false) end)
   params:set_action("tuning", function(x) update_pitches(false) end)
   params:set_action("arpeggiate", function(x) update_arpeggiate() end)
