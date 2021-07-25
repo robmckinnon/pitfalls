@@ -19,6 +19,11 @@ local D_INPUT = 9
 -- Octave
 local O_INPUT = 10
 
+-- Engine
+local E_INPUT = 11
+-- Patch
+local P_INPUT = 12
+
 local TOP = 13
 local BOT = 28
 
@@ -38,6 +43,14 @@ end
 
 function display.o_input()
   return O_INPUT
+end
+
+function display.engine_input()
+  return E_INPUT
+end
+
+function display.patch_input()
+  return P_INPUT
 end
 
 function display.redraw(base_freq, edit, octave, position, scale, intervals, midi_start)
@@ -250,7 +263,9 @@ local position = {
   [F_INPUT] = "tuning",
   [T_INPUT] = "tonic",
   [D_INPUT] = "mode",
-  [O_INPUT] = "octave"
+  [O_INPUT] = "octave",
+  [E_INPUT] = "engine",
+  [P_INPUT] = "patch"
 }
 
 function display.edit_position(edit, scale)
