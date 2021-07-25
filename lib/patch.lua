@@ -29,4 +29,8 @@ else
   engine.name = "PolyPerc"
 end
 
+function patch.is_mx_samples()
+  return engine.name and engine.name == "MxSamples" or false
+end
+
 return patch

@@ -71,7 +71,10 @@ function init()
   scale:update_edo()
 
   params:set_action("cutoff", function(x) engine.cutoff(x) end)
-  params:set_action("engine", function(x) engine.name = parameters.engine(x) end)
+  params:set_action("engine", function(x)
+    local name = parameters.engine(x)
+    engine.load(name)
+  end)
   params:set_action("midi_start", function(x) update_pitches(false) end)
   params:set_action("tuning", function(x) update_pitches(false) end)
   params:set_action("arpeggiate", function(x) update_arpeggiate() end)
@@ -261,7 +264,7 @@ function pitches_off()
     if i ~= nil then
       g.led_off(f)
       pitches_on[f] = nil
-      if skeys ~= nil then
+      if patch.is_mx_samples() then
         skeys:off({name=mx_sample,hz=f})
       end
     end
@@ -272,10 +275,10 @@ function pitch_on(i)
   local f = pitches:octdegfreq(params:get("octave"), i)
   g.led_on(f)
   pitches_on[f] = i
-  if skeys == nil then
-    engine.hz(f)
-  else
+  if patch.is_mx_samples() then
     skeys:on({name=mx_sample,hz=f,midi=0,velocity=120})
+  else
+    engine.hz(f)
   end
   -- midi_out.note_on_pitch_bend(f)
 end
