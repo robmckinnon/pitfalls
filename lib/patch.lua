@@ -19,31 +19,34 @@ for f in io.popen("ls -a /home/we/dust/audio"):lines() do
   end
 end
 
+function patch.mx_samples()
+  return mx_samples
+end
+
 if pf.tablelength(mx_samples) > 0 then
-  mxsamples=include("mx.samples/lib/mx.samples")
-  engine.name="MxSamples"
-  mx_sample=mx_samples[1]
-  skeys = mxsamples:new()
-else
-  -- ships with norns
-  engine.name = "PolyPerc"
+   mxsamples=include("mx.samples/lib/mx.samples")
 end
 
 function patch.is_mx_samples()
   return engine.name and engine.name == "MxSamples" or false
 end
 
-function handle_load(x)
+function patch.handle_load(x)
   print("handle_load"..engine.name)
   if engine.name == "MxSamples" then
-    mx_sample=mx_samples[2]
     skeys = mxsamples:new()
   end
 end
 
 function patch.load_engine(name)
   if name ~= engine.name then
-    engine.load(name, handle_load)
+    engine.load(name, patch.handle_load)
+  end
+end
+
+function patch.load_patch(name)
+  if name ~= mx_sample then
+    mx_sample=name
   end
 end
 
