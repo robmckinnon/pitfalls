@@ -53,9 +53,9 @@ function display.patch_input()
   return P_INPUT
 end
 
-function display.redraw(base_freq, edit, octave, position, scale, intervals, midi_start)
+function display.redraw(base_freq, edit, octave, position, scale, intervals, midi_start, is_patch_view)
   s.clear()
-  display.drawname(edit, scale, BOT + 3, 0)
+  display.drawname(edit, scale, BOT + 3, 0, is_patch_view)
   display.drawsteps(edit, position, scale)
   display.drawintervals(scale, intervals)
   display.drawLs(edit, scale)
@@ -120,7 +120,7 @@ function display.drawsteps(edit, position, scale)
   end
 end
 
-function display.drawname(edit, scale, y, x)
+function display.drawname(edit, scale, y, x, is_patch_view)
   local name = nil
   local m = named_scales.lookup[scale.length]
   if m ~= nil then
@@ -143,6 +143,7 @@ function display.drawname(edit, scale, y, x)
   end
   name = name or "-"
   scale_name = name
+  local limit = is_patch_view and 120 or 80
   if name ~= "-" then
     local edoname = name.." "..scale.edivisions.."EDO"
     scale_no_index = 1
@@ -150,18 +151,26 @@ function display.drawname(edit, scale, y, x)
     while scale_no_index < (#names) and (names[scale_no_index] ~= edoname) do
       scale_no_index = scale_no_index + 1
     end
-    name = pf.string_width(s, name, 80)
+    if is_patch_view then
+      name = name
+    else
+      name = pf.string_width(s, name, limit)
+    end
     if x ~= 0 then
-      x = 80 - s.text_extents(name)
+      x = limit - s.text_extents(name)
     end
     pf.itext(R_INPUT, edit, scale,
       x, y,
       name)
   else
     scale_no_index = 0
-    name = pf.string_width(s, name, 80)
+    if is_patch_view then
+      name = name
+    else
+      name = pf.string_width(s, name, limit)
+    end
     if x ~= 0 then
-      x = 80 - s.text_extents(name)
+      x = limit - s.text_extents(name)
     end
     pf.itext(R_INPUT, edit, scale,
       x, y,
