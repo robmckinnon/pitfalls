@@ -2,8 +2,8 @@ local parameters = {}
 local grid_libs = {"grid", "midigrid/lib/mg_128", "midigrid/lib/midigrid"}
 local arp_opts = {"off", "scale_up", "scale_down", "chord", "chords"}
 local enable_opts = {"disabled", "enabled"}
--- local engines = {"PolyPerc", "MollyThePoly", "MxSamples"}
-local engines = {"PolyPerc", "MxSamples"}
+local engines = {"PolyPerc", "MollyThePoly", "MxSamples"}
+-- local engines = {"PolyPerc", "MxSamples"}
 
 local patches = patch.mx_samples()
 
