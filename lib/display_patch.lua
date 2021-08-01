@@ -22,8 +22,8 @@ end
 
 function display.drawpatch(edit, scale)
   pf.itext(display_orig.engine_input(), edit, scale, 0, 25, engine.name)
-  if (engine.name == "MxSamples") then
-    pf.itext(display_orig.patch_input(), edit, scale, 0, 36, mx_sample)
+  if patch.is_mx_samples() then
+    pf.itext(display_orig.patch_input(), edit, scale, 0, 36, patch.mx_sample())
   end
 end
 
