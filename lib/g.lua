@@ -48,10 +48,11 @@ function g.key(x, y, z)
   if z > 0 then
     -- midi_out.note_on_pitch_bend(f)
     g.led_on(f)
-    engine.hz(f)
+    patch.pitch_on(f)
   else
     -- midi_out.all_notes_off()
     g.led_off(f)
+    patch.pitch_off(f)
   end
 end
 
