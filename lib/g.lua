@@ -10,7 +10,6 @@ else
 end
 
 function g.init()
-  print("g.init", g)
   local grid_h = g.rows
   local grid_w = g.cols
   g.gfreqs = {}
