@@ -2,7 +2,7 @@ local parameters = {}
 local grid_libs = {"grid", "midigrid/lib/mg_128", "midigrid/lib/midigrid", "midigrid/lib/mg_256"}
 local arp_opts = {"off", "scale_up", "scale_down", "chord", "chords"}
 local enable_opts = {"disabled", "enabled"}
-local engines = {"PolyPerc", "MollyThePoly", "MxSamples"}
+local engines = {"Choir", "PolyPerc", "MollyThePoly", "MxSamples"}
 -- local engines = {"PolyPerc", "MxSamples"}
 
 local patches = patch.mx_samples()
@@ -53,7 +53,7 @@ function parameters.init()
   params:add_number("octave", "octave", 0,8,3)
   params:add_option("grid_lib", "grid_lib", grid_libs, 3)
   params:add_option("arpeggiate", "arpeggiate", arp_opts, 1)
-  params:add_option("engine", "engine", engines, 1)
+  params:add_option("engine", "engine", engines, 2)
   params:add_option("patch", "patch", patches, 1)
 
   add_midi_channel_params()
