@@ -3,13 +3,14 @@ local M = 3
 local L = 2
 local S = 1
 local LABELS = {"s", "L", "M"}
-
+local tab = require 'tabutil'
 Scale = {}
 
 function Scale:new(large, small, sequence, medium)
   local s = setmetatable({}, { __index = Scale })
   s.step = {}
   s.stepbackup = {L,L,S,L,L,L,S,L,L,L,S,L,L,L,S,L}
+
   for i = 1, #sequence do
     local char = sequence:sub(i,i)
     s.step[i] = (char == "L" and L) or ( (char == "M" and M) or S )
