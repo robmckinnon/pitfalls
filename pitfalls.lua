@@ -308,7 +308,7 @@ function pitches_off()
   end
 end
 
-function pitch_on(f, vel)
+function pitch_on(f, vel, deg)
   g.led_on(f)
   patch.pitch_on(f, vel)
   -- midi_out.note_on_pitch_bend(f)
@@ -317,7 +317,7 @@ end
 function pitch_on_position(i)
   local f = pitches:octdegfreq(params:get("octave"), i)
   pitches_on[f] = i
-  pitch_on(f, 120)
+  pitch_on(f, 120, i)
 end
 
 function arpeggiate.scale_up()
