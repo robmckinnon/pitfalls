@@ -5,6 +5,9 @@ local scale
 local intervals
 local pitches
 
+local pitch_on
+local pitch_off
+
 function midi_in.use_midi()
   -- return (params:get("output") == 2 or params:get("output") == 3)
   return true 
@@ -21,9 +24,11 @@ function midi_in.event(data)
   end
 end
 
-function midi_in.init()
+function midi_in.init(on_callback, off_callback)
   midi_in_device = midi.connect(1)
   midi_in_device.event = midi_in.event
+  pitch_on = on_callback
+  pitch_off = off_callback
 end
 
 function midi_in.update_pitches(new_scale, new_intervals, new_pitches)
@@ -41,18 +46,16 @@ function midi_in.deg(note)
 end
 
 function midi_in.pitch(note)
-  -- print(note, midi_in.oct(note), midi_in.deg(note))
-  local f = pitches:octdegfreq(midi_in.oct(note), midi_in.deg(note))
-  -- print(f)
-  return f
+  return pitches:octdegfreq(midi_in.oct(note), midi_in.deg(note))
 end
 
 function midi_in.note_on(msg)
-  patch.pitch_on(midi_in.pitch(msg.note), msg.vel)
+  -- patch.pitch_on(midi_in.pitch(msg.note), msg.vel)
+  pitch_on(midi_in.pitch(msg.note))
 end
 
 function midi_in.note_off(msg)
-  patch.pitch_off(midi_in.pitch(msg.note))
+  pitch_off(midi_in.pitch(msg.note))
 end
 
 return midi_in
