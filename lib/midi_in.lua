@@ -10,18 +10,20 @@ function midi_in.use_midi()
   return true 
 end
 
-function midi_in.init()
-  midi_in_device = midi.connect(1)
-  midi_in_device.event = function(data)
-    local d = midi.to_msg(data)
-    if (d.type ~= nil) then
-      if (d.type == "note_on") then
-        midi_in.note_on(d.note)
-      elseif (d.type == "note_off") then
-        midi_in.note_off(d.note)
-      end
+function midi_in.event(data)
+  local d = midi.to_msg(data)
+  if (d.type ~= nil) then
+    if (d.type == "note_on") then
+      midi_in.note_on(d)
+    elseif (d.type == "note_off") then
+      midi_in.note_off(d)
     end
   end
+end
+
+function midi_in.init()
+  midi_in_device = midi.connect(1)
+  midi_in_device.event = midi_in.event
 end
 
 function midi_in.update_pitches(new_scale, new_intervals, new_pitches)
@@ -39,18 +41,18 @@ function midi_in.deg(note)
 end
 
 function midi_in.pitch(note)
-  print(note, midi_in.oct(note), midi_in.deg(note))
+  -- print(note, midi_in.oct(note), midi_in.deg(note))
   local f = pitches:octdegfreq(midi_in.oct(note), midi_in.deg(note))
-  print(f)
+  -- print(f)
   return f
 end
 
-function midi_in.note_on(note)
-  patch.pitch_on(midi_in.pitch(note))
+function midi_in.note_on(msg)
+  patch.pitch_on(midi_in.pitch(msg.note), msg.vel)
 end
 
-function midi_in.note_off(note)
-  patch.pitch_off(midi_in.pitch(note))
+function midi_in.note_off(msg)
+  patch.pitch_off(midi_in.pitch(msg.note))
 end
 
 return midi_in
