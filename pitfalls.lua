@@ -263,6 +263,7 @@ function change.scale_size(d)
     if d == -1 then
       edit = util.clamp(edit - 1, scale.min_steps + display_orig.n_input(), edit)
     end
+    params:set("sequence", scale:sequence(), true)
     update_pitches(true)
   end
 end
