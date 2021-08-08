@@ -92,7 +92,7 @@ function init()
   patch.load_patch(parameters.patch())
   g.init()
   -- midi_out.init()
-  midi_in.init()
+  midi_in.init(pitch_on, pitch_off)
   update_pitches(true)
 
   -- -- mixin the MusicUtil scale names
@@ -273,6 +273,7 @@ function update_arpeggiate(x)
   if parameters.arpeggiate() == "off" then
     run = false
     counter:stop()
+    pitches_off()
     patch.note_off_all()
     patch.note_kill_all()
   elseif parameters.arpeggiate() == "scale_up" then
@@ -296,22 +297,26 @@ function pitches_off()
   -- midi_out.all_notes_off()
   for f,i in pairs(pitches_on) do
     if i ~= nil then
-      g.led_off(f)
       pitches_on[f] = nil
-      patch.pitch_on(f)
+      pitch_off(f)
     end
   end
 end
 
+function pitch_off(f)
+  g.led_off(f)
+  patch.pitch_off(f)
+end
+
 function pitch_on(f)
   g.led_on(f)
-  pitches_on[f] = i
   patch.pitch_on(f)
   -- midi_out.note_on_pitch_bend(f)
 end
 
 function pitch_on_position(i)
   local f = pitches:octdegfreq(params:get("octave"), i)
+  pitches_on[f] = i
   pitch_on(f)
 end
 
