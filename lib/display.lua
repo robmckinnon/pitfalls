@@ -53,6 +53,25 @@ function display.patch_input()
   return P_INPUT
 end
 
+local degrees_on = {}
+
+function display.degree_on(deg)
+  degrees_on[deg] = true
+end
+
+function display.degree_off(deg)
+  degrees_on[deg] = nil
+end
+
+function display.all_degrees_off()
+  degrees_on = {}
+end
+
+function display.is_degree_on(deg)
+  return degrees_on[deg] ~= nil
+end
+
+
 function display.redraw(base_freq, edit, octave, position, scale, intervals, midi_start, is_patch_view)
   s.clear()
   display.drawname(edit, scale, BOT + 3, 0, is_patch_view)
