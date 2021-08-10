@@ -49,7 +49,7 @@ function display.drawintervals(scale, intervals)
   else
     INTERVAL_HEIGHT = 7
   end
-  local err, x, y, lab
+  local err, x, y, lab, level
   x = INTERVAL_WIDTH + 5
   y = INTERVAL_HEIGHT + 14
   pf.line_rel(1, 0,MAX_H-y,     util.clamp(x-1,0,x),0)
@@ -61,7 +61,8 @@ function display.drawintervals(scale, intervals)
     y = (i*INTERVAL_HEIGHT) + 14
     err = intervals:interval_error(i)
     lab = intervals:uniq_interval_label(i)
-    pf.line_rel(lab == "" and 1 or pf.level_int(err),
+    level = display_orig.is_degree_on(i) and pf.level_int(err) + 2 or pf.level_int(err)
+    pf.line_rel(lab == "" and 1 or level,
       0,MAX_H-y,
       util.clamp(x-1, 0, x),0)
     -- pf.line_rel(5, x+28,y-1, 0,3)
