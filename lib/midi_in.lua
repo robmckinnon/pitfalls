@@ -42,7 +42,7 @@ function midi_in.oct(note)
 end
 
 function midi_in.deg(note)
-  return note % 12 + 1
+  return keyboard_mappings[scale.length][note % 12 + 1]
 end
 
 function midi_in.pitch(note)
