@@ -15,11 +15,14 @@
 -- and medium (M) steps.
 --
 -- e.g.
--- C Major diatonic is:
 --   LLsLLLs  L: 2  s: 1  fixed: C
+--   - is C Major diatonic scale
 --
--- A 19 EDO, 7 note scale is:
 --   LLsLLLs  L: 3  s: 2
+--   - is a 19 EDO, 7 note scale
+--
+--   LLsLLL   L: 3  s: 1
+--   - is a 16 EDO, 6 note scale
 --
 -- Or browse named scales[1].
 --
