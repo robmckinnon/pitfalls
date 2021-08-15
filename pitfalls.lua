@@ -381,7 +381,7 @@ function arpeggiate.chord()
     pitch_on_position(position)
     local count = pf.tablelength(chord_positions)
     position = count > 0 and remaining_positions[1] or math.random(scale.length)
-    pf.dprint(position)
+    -- pf.dprint(position)
   end
 end
 
