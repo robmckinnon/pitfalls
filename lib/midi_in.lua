@@ -24,8 +24,8 @@ function midi_in.event(data)
   end
 end
 
-function midi_in.init(on_callback, off_callback)
-  midi_in_device = midi.connect(1)
+function midi_in.init(virtual_port, on_callback, off_callback)
+  midi_in_device = midi.connect(virtual_port)
   midi_in_device.event = midi_in.event
   pitch_on = on_callback
   pitch_off = off_callback

@@ -95,7 +95,13 @@ function init()
   patch.load_patch(parameters.patch())
   g.init(pitch_on, pitch_off)
   -- midi_out.init()
-  midi_in.init(pitch_on, pitch_off)
+  local in_virtual_port = 1
+  local out_virtual_port = 2
+  
+  midi_in.init(in_virtual_port, pitch_on, pitch_off)
+  
+  midi_out.init(out_virtual_port)
+  
   update_pitches(true)
 
   -- -- mixin the MusicUtil scale names
@@ -301,11 +307,13 @@ function pitch_off(f, deg)
   display_orig.degree_off(deg)
   g.led_off(f)
   patch.pitch_off(f)
+  midi_out.note_off_pitch_bend(f)
+  -- midi_out.all_notes_off()
   redraw()
 end
 
 function pitches_off()
-  -- midi_out.all_notes_off()
+  midi_out.all_notes_off()
   for f,i in pairs(pitches_on) do
     if i ~= nil then
       pitches_on[f] = nil
@@ -320,8 +328,8 @@ function pitch_on(f, vel, deg)
   display_orig.degree_on(deg)
   g.led_on(f)
   patch.pitch_on(f, vel)
+  midi_out.note_on_pitch_bend(f)
   redraw()
-  -- midi_out.note_on_pitch_bend(f)
 end
 
 function pitch_on_position(i)
