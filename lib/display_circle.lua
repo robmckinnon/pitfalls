@@ -107,6 +107,7 @@ function display.drawintervals(scale, intervals)
       )
     end
   end
+  return nil
 end
 
 function display.edit_position(edit, scale)
