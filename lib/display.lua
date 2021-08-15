@@ -118,11 +118,11 @@ function display.drawintervals(scale, intervals)
   for j = 2,scale.length do
     err = intervals:interval_error(j)
 
-    if scale.length > 9 and j == 2 and err == nil then
-      offset = -1
-    end
-
-    if (err ~= nil) then
+    if (err == nil or intervals:interval_label(j) == "P1") then
+      if scale.length > 11 and j == 2 then
+        offset = -1
+      end
+    else
       i = j + offset
       x = i*STEP_WIDTH -11
       y = ( (i % 2 == 0) and BOT or TOP ) + ADJ
