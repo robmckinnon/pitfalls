@@ -54,7 +54,7 @@ keyboard_mappings = include("pitfalls/lib/keyboard_mappings")
 midi_in = include("pitfalls/lib/midi_in")
 
 -- midi out to device
-midi_out = include("pitfalls/lib/midi")
+midi_out = include("pitfalls/lib/midi_out")
 
 -- grid interactions and leds
 g = include("pitfalls/lib/g")
