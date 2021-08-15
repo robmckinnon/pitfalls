@@ -71,12 +71,17 @@ function display.is_degree_on(deg)
   return degrees_on[deg] ~= nil
 end
 
-
 function display.redraw(base_freq, edit, octave, position, scale, intervals, midi_start, is_patch_view)
   s.clear()
-  display.drawname(edit, scale, BOT + 3, 0, is_patch_view)
   display.drawsteps(edit, position, scale)
-  display.drawintervals(scale, intervals)
+  local chords_on = display.drawintervals(scale, intervals)
+
+  if chords_on == nil then
+    display.drawname(edit, scale, BOT + 3, 0, is_patch_view)
+  else
+    display.drawchords(chords_on, 0, 30)
+  end
+
   display.drawLs(edit, scale)
   display.drawmidi(edit, scale, midi_start)
   display.drawtuning(base_freq, edit, scale)
@@ -92,62 +97,74 @@ local ADJ = -8
 local STEP_WIDTH = 7
 
 function display.drawintervals(scale, intervals)
-  local err,x,y
+  local err,x,y,k, intervals_on, chords_on
 
   local lowest_deg = pf.lowest(degrees_on)
   if lowest_deg ~= nil then
-    print(lowest_deg)
+    -- print(lowest_deg)
     local labs = intervals:interval_labels(lowest_deg)
-    local intervals_on = {}
-    for k in pairs(degrees_on) do
-      k = (k - lowest_deg) + 1
+    intervals_on = {}
+    for d in pairs(degrees_on) do
+      k = (d - lowest_deg) + 1
       if k ~= 1 then
-        print(k)
-        intervals_on[k] = labs[k]
-        pf.tprint(intervals_on)
+        -- print(k)
+        intervals_on[d] = labs[k]
+        -- pf.tprint(intervals_on)
       end
     end
     local matches = chords.match(intervals_on)
     if pf.tablelength(matches) > 0 then
-      pf.tprint(matches)
+      -- pf.tprint(matches)
+      chords_on = matches
     end
   end
 
   local offset = 0
-  local i = 0
-  for j = 2,scale.length do
-    err = intervals:interval_error(j)
+  local i, col, row
 
-    if (err == nil or intervals:interval_label(j) == "P1") then
-      if scale.length > 11 and j == 2 then
+  for d = 2,scale.length do
+    err = intervals:interval_error(d)
+
+    if (err == nil or intervals:interval_label(d) == "P1") then
+      if scale.length > 11 and d == 2 then
         offset = -1
       end
     else
-      i = j + offset
+      i = d + offset
       x = i*STEP_WIDTH -11
       y = ( (i % 2 == 0) and BOT or TOP ) + ADJ
       pf.text(
         pf.level_int(err),
         x, y,
-        intervals:uniq_interval_label(j)
+        intervals:uniq_interval_label(d)
       )
-      if intervals:interval_ratio(j) ~= nil then
+      col = i < 7 and 1 or 2
+      row = (col == 1) and i - 1 or i - 6
+      if intervals_on ~= nil and intervals_on[d] ~= nil then
         pf.text(
           pf.level_int(err),
-          ( (i % 2 == 0) and 0 or 40 ),
-          ( (i % 2 == 0) and (34 + i*3) or (34 + (i-1)*3) ),
-          intervals:interval_label(j)
+          ( (col == 1) and 0 or 40 ),
+          ( 34 + row * 6 ),
+          intervals_on[d]
+        )
+      elseif intervals:interval_ratio(d) ~= nil and (intervals_on == nil or pf.tablelength(intervals_on) == 0) then
+        pf.text(
+          pf.level_int(err),
+          ( (col == 1) and 0 or 40 ),
+          ( 34 + row * 6 ),
+          intervals:interval_label(d)
         )
 
         pf.text(
           pf.level_int(err),
-          pad_px_interval_ratio(intervals, j) + ( (i % 2 == 0) and 13 or 52 ),
-          ( (i % 2 == 0) and (34 + i*3) or (34 + (i-1)*3) ),
-          pad_interval_ratio(intervals, j)
+          pad_px_interval_ratio(intervals, d) + ( (col == 1) and 13 or 52 ),
+          ( 34 + row * 6 ),
+          pad_interval_ratio(intervals, d)
         )
       end
     end
   end
+  return chords_on
 end
 
 function pad_px_interval_ratio(intervals, i)
@@ -189,6 +206,15 @@ function display.drawsteps(edit, position, scale)
     )
     display.arp_position(i, position)
   end
+end
+
+function first_key(t)
+  for k in pairs(t) do return k end
+end
+
+function display.drawchords(chords_on, x, y)
+  pf.tprint(chords_on)
+  pf.text(13, x, y, first_key(chords_on).." chord")
 end
 
 function display.drawname(edit, scale, y, x, is_patch_view)
