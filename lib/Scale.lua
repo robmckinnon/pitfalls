@@ -90,6 +90,10 @@ function Scale:set_mode(mode)
   self.mode = mode
 end
 
+function Scale:set_tonic(tonic)
+  self.tonic = tonic
+end
+
 function Scale:change_mode(d)
   local orig = self.mode
   self.mode = util.clamp(self.mode+d, 1, self.length)
