@@ -78,6 +78,7 @@ function init()
   scale:set_mode(params:get("mode"))
   scale:set_tonic(params:get("tonic"))
   scale:update_edo()
+  params:set("tonic", scale.tonic, true)
 
   params:set_action("cutoff", function(x) patch.cutoff(x) end)
   params:set_action("engine", function(x)
@@ -222,6 +223,7 @@ end
 function change.step(d)
   if scale:change_step(d, edit) then
     params:set("sequence", scale:sequence(), true)
+    params:set("tonic", scale.tonic, true)
     update_pitches(true)
   end
 end
@@ -243,6 +245,7 @@ end
 function change.small(d)
   if scale:change_small(d) then
     params:set("s", scale.small, true)
+    params:set("tonic", scale.tonic, true)
     update_pitches(true)
   end
 end
@@ -250,6 +253,7 @@ end
 function change.medium(d)
   if scale:change_medium(d) then
     params:set("M", scale.medium, true)
+    params:set("tonic", scale.tonic, true)
     update_pitches(true)
   end
 end
@@ -257,6 +261,7 @@ end
 function change.large(d)
   if scale:change_large(d) then
     params:set("L", scale.large, true)
+    params:set("tonic", scale.tonic, true)
     update_pitches(true)
   end
 end
@@ -278,6 +283,8 @@ function change.scale_name(d)
   params:set("L", scale.large, true)
   params:set("M", scale.medium, true)
   params:set("s", scale.small, true)
+  params:set("mode", scale.mode, true)
+  params:set("tonic", scale.tonic, true)
   update_pitches(true)
 end
 
@@ -290,6 +297,8 @@ function change.scale_size(d)
       edit = util.clamp(edit - 1, scale.min_steps + display_orig.n_input(), edit)
     end
     params:set("sequence", scale:sequence(), true)
+    params:set("mode", scale.mode, true)
+    params:set("tonic", scale.tonic, true)
     update_pitches(true)
   end
 end
