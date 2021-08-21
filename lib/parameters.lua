@@ -44,7 +44,8 @@ function add_midi_channel_params()
 end
 
 function parameters.init()
-  params:add_group("PITFALLS", 7 + (18 * 4 + 1) + 2)
+  -- params:add_group("PITFALLS", 7 + (18 * 4 + 1) + 2)
+  params:add_group("PITFALLS", 14)
   params:add_text("sequence", "sequence", "LLsLLLs")
   params:add_number("L", "L", 2)
   params:add_number("M", "M", 2)
@@ -60,7 +61,7 @@ function parameters.init()
   params:add_option("engine", "engine", engines, 2)
   params:add_option("patch", "patch", patches, 1)
 
-  add_midi_channel_params()
+  -- add_midi_channel_params()
 
   -- read default [scriptname]-01.pset from local data folder  
   params:read(norns.state.data .. "pitfalls-01.pset", true)
