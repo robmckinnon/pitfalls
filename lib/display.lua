@@ -71,8 +71,16 @@ function display.is_degree_on(deg)
   return degrees_on[deg] ~= nil
 end
 
+function display.pageline(pg)
+  pf.line_rel((pg == 1 and 3 or 1),     128, 1,     0,12)
+  pf.line_rel((pg == 2 and 3 or 1),     128,17,     0,12)
+  pf.line_rel((pg == 3 and 3 or 1),     128,33,     0,12)
+  pf.line_rel((pg == 4 and 3 or 1),     128,49,     0,12)
+end
+
 function display.redraw(base_freq, edit, octave, position, scale, intervals, midi_start, is_patch_view)
   s.clear()
+  display.pageline(2)
   display.drawsteps(edit, position, scale)
   local chords_on = display.drawintervals(scale, intervals)
 

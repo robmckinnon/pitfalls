@@ -24,13 +24,15 @@
 --   LLsLLL   L: 3  s: 1
 --   - is a 16 EDO, 6 note scale
 --
--- Or browse named scales[1].
+-- Or browse named scales. [1]
 --
 -- Play scale keyboard on grid.
 --
--- E1 change cutoff filter
+-- E1 change PolyPerc cutoff filter
+--    randomize MollyThePolly synth params
 -- E2 change value
 -- E3 select step or parameter
+--
 -- K1
 -- K2 toggle arpeggiator
 -- K3 toggle display mode
