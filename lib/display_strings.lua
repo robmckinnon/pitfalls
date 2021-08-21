@@ -4,6 +4,7 @@ local s = screen
 
 function display.redraw(base_freq, edit, octave, position, scale, intervals, midi_start, is_patch_view)
   s.clear()
+  display_orig.pageline(3)
   display.drawsteps(edit, position, scale)
   display.drawintervals(scale, intervals)
   display_orig.drawname(edit, scale, 5, is_patch_view)
