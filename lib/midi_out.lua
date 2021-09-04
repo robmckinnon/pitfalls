@@ -31,7 +31,7 @@ end
 local denom = math.log(2)
 
 function midi_out.hz_to_midi(freq)
-  return 12 * (math.log(freq / 440.0) / denom) + 69
+  return pf.hz_to_midi(freq)
 end
 
 function midi_out.note_off_pitch_bend(freq)

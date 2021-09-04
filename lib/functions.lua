@@ -20,8 +20,14 @@ function pf.gcd(a,b)
   return math.abs(a)
 end
 
+local base = 440/32
 function pf.midi_to_hz(note)
-  return (440/32) * (2 ^ ((note - 9) / 12))
+  return base * (2 ^ ((note - 9) / 12))
+end
+
+local denom = math.log(2)
+function pf.hz_to_midi(freq)
+  return 12 * (math.log(freq / 440.0) / denom) + 69
 end
 
 function pf.nearest_interval(v, ratiointervals)
