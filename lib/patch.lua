@@ -68,6 +68,7 @@ function patch.handle_load(x)
     engine.synthy_sustain(0.9)
     engine.synthy_release(5)
   end
+  params:write()
 end
 
 function patch.note_off_all()
@@ -122,7 +123,7 @@ function patch.pitch_on(f,vel)
   if f == nil or engine.is_loading or patch.no_engine() then
     return
   elseif patch.is_mx_samples() then
-    skeys:on({name=mx_sample,hz=f,midi=0,velocity=vel})
+    skeys:on({name=mx_sample,hz=f,midi=0,velocity=vel/2})
   elseif patch.is_molly() then
     engine.noteOn(f, f, vel/127)
   elseif patch.is_choir() then
