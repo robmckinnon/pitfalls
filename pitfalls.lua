@@ -53,15 +53,13 @@ include("pitfalls/lib/includes")
 pf.debug(false)
 
 local run = false
+local coroutine_id = nil
 
 local scale = nil
 local intervals = nil
 local pitches = nil
 
 local edit = 1
-
-function metrofast() counter.time = 0.25 end
-function metroslow() counter.time = 0.5 end
 
 local change = {}
 local display = display_circle
@@ -115,13 +113,32 @@ function init()
   display.drawintervals(scale, intervals)
 
   arpeggiate.init(pitches_off, pitch_on_position)
-  counter = metro.init(count, 0.125, -1)
   if run then
-    counter:start()
+    start_arppegiate()
   end
 end
 
-function count()
+function stop_arppegiate()
+  run = false
+  if coroutine_id ~= nil then
+    clock.cancel(coroutine_id)
+    coroutine_id = nil
+  end
+end
+
+function start_arppegiate()
+  run = true
+  coroutine_id = clock.run(step)
+end
+
+function step()
+  while run do
+    clock.sync(1/params:get("step_div"))
+    do_step()
+  end
+end
+
+function do_step()
   arpeggiate[parameters.arpeggiate()](scale, intervals)
   redraw()
 end
@@ -162,11 +179,9 @@ end
 
 function toggle_arppegiate()
   if run then
-    run = false
-    counter:stop()
+    stop_arppegiate()
   else
-    run = true
-    counter:start()
+    start_arppegiate()
   end
 end
 
@@ -306,15 +321,13 @@ end
 function update_arpeggiate(x)
   -- print(parameters.arpeggiate())
   if parameters.arpeggiate() == "off" then
-    run = false
-    counter:stop()
+    stop_arppegiate()
     pitches_off()
     patch.note_off_all()
     patch.note_kill_all()
   elseif parameters.arpeggiate() == "scale_up" then
     arpeggiate.set_position(scale.length)
-    run = true
-    counter:start()
+    start_arppegiate()
   elseif parameters.arpeggiate() == "scale_down" then
     arpeggiate.set_position(1)
     patch.note_off_all()
