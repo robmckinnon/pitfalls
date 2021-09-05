@@ -45,7 +45,7 @@ end
 
 function parameters.init()
   -- params:add_group("PITFALLS", 7 + (18 * 4 + 1) + 2)
-  params:add_group("PITFALLS", 14)
+  params:add_group("PITFALLS", 15)
   params:add_text("sequence", "sequence", "LLsLLLs")
   params:add_number("L", "L", 2)
   params:add_number("M", "M", 2)
@@ -60,6 +60,7 @@ function parameters.init()
   params:add_option("arpeggiate", "arpeggiate", arp_opts, 1)
   params:add_option("engine", "engine", engines, 2)
   params:add_option("patch", "patch", patches, 1)
+  params:add_number("step_div", "step_div", 1, 16, 4)
 
   -- add_midi_channel_params()
 
