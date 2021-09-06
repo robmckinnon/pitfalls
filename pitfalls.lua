@@ -60,6 +60,7 @@ local intervals = nil
 local pitches = nil
 
 local edit = 1
+local previous_edit = 1
 
 local change = {}
 local display = display_circle
@@ -134,7 +135,7 @@ end
 
 function step()
   while run do
-    clock.sync(1/params:get("step_div"))
+    clock.sync(1/params:get("tempo_div"))
     do_step()
   end
 end
@@ -152,10 +153,11 @@ function key(n,z)
   if n == 3 and z == 1 then
     -- increment_mode()
     if display == display_strings then
-      edit = scale.length
       display = display_patch
+      previous_edit = edit - scale.length
+      edit = display_orig.tempo_division_input() + scale.length
     elseif display == display_patch then
-      edit = scale.length
+      edit = previous_edit + scale.length
       display = display_circle
     elseif display == display_circle then
       display = display_orig
@@ -214,11 +216,13 @@ end
 function change.edit_position(d)
   local input_index = edit - scale.length
   local is_display_patch = display == display_patch
+
   local is_scale_name_input = input_index == display_orig.scale_name_input()
+  local is_tempo_div_input = input_index == display_orig.tempo_division_input()
 
   if is_display_patch and is_scale_name_input and d == 1 then
-    edit = display_orig.engine_input() + scale.length
-  elseif is_display_patch and input_index == display_orig.engine_input() and d == -1 then
+    edit = display_orig.tempo_division_input() + scale.length
+  elseif is_display_patch and input_index == display_orig.tempo_division_input() and d == -1 then
     edit = display_orig.scale_name_input() + scale.length
   else
     local clamp_input = is_display_patch and patch.is_mx_samples() and display_orig.patch_input()
@@ -317,6 +321,16 @@ function change.scale_size(d)
     params:set("tonic", scale.tonic, true)
     update_pitches(true)
   end
+end
+
+function change.tempo_div(d)
+  params:set("tempo_div",
+    util.clamp(
+      params:get("tempo_div") + d,
+      1,
+      64
+    )
+  )
 end
 
 function update_arpeggiate(x)

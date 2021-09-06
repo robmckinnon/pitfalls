@@ -19,10 +19,14 @@ local D_INPUT = 9
 -- Octave
 local O_INPUT = 10
 
+-- Tempo division
+local TD_INPUT = 11
+
 -- Engine
-local E_INPUT = 11
+local E_INPUT = 12
 -- Patch
-local P_INPUT = 12
+local P_INPUT = 13
+
 
 local TOP = 13
 local BOT = 28
@@ -31,6 +35,10 @@ local s = screen
 
 function display.scale_name_input()
   return R_INPUT
+end
+
+function display.tempo_division_input()
+  return TD_INPUT
 end
 
 function display.m_input()
@@ -234,7 +242,7 @@ function first_key(t)
 end
 
 function display.drawchords(chords_on, x, y)
-  pf.tprint(chords_on)
+  -- pf.tprint(chords_on)
   pf.text(13, x, y, first_key(chords_on).." chord")
 end
 
@@ -261,7 +269,8 @@ function display.drawname(edit, scale, y, x, is_patch_view)
   end
   name = name or "-"
   scale_name = name
-  local limit = is_patch_view and 120 or 80
+  local limit = is_patch_view and 120 or 74
+  local wlimit = is_patch_view and 120 or 80
   if name ~= "-" then
     local edoname = name.." "..scale.edivisions.."EDO"
     scale_no_index = 1
@@ -275,7 +284,7 @@ function display.drawname(edit, scale, y, x, is_patch_view)
       name = pf.string_width(s, name, limit)
     end
     if x ~= 0 then
-      x = limit - s.text_extents(name)
+      x = wlimit - s.text_extents(name)
     end
     pf.itext(R_INPUT, edit, scale,
       x, y,
@@ -288,7 +297,7 @@ function display.drawname(edit, scale, y, x, is_patch_view)
       name = pf.string_width(s, name, limit)
     end
     if x ~= 0 then
-      x = limit - s.text_extents(name)
+      x = wlimit - s.text_extents(name)
     end
     pf.itext(R_INPUT, edit, scale,
       x, y,
@@ -391,6 +400,7 @@ local position = {
   [T_INPUT] = "tonic",
   [D_INPUT] = "mode",
   [O_INPUT] = "octave",
+  [TD_INPUT] = "tempo_div",
   [E_INPUT] = "engine",
   [P_INPUT] = "patch"
 }
