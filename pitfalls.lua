@@ -324,10 +324,26 @@ function change.scale_size(d)
 end
 
 function change.tempo_div(d)
+  if params:get("tempo_div") == 1 then
+    if d == -1 then
+      d = -0.5
+    end
+  elseif params:get("tempo_div") == 0.5 then
+    if d == -1 then
+      d = -0.25
+    elseif d == 1 then
+      d = 0.5
+    end
+  elseif params:get("tempo_div") == 0.25 then
+    if d == 1 then
+      d = 0.25
+    end
+  end
+
   params:set("tempo_div",
     util.clamp(
       params:get("tempo_div") + d,
-      1,
+      0.25,
       64
     )
   )
