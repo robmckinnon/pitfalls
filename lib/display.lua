@@ -81,6 +81,7 @@ end
 function display.redraw(base_freq, edit, octave, position, scale, intervals, midi_start, is_patch_view)
   s.clear()
   display.pageline(2)
+  display.draw_arp_symbol()
   display.drawsteps(edit, position, scale)
   local chords_on = display.drawintervals(scale, intervals)
 
@@ -99,6 +100,18 @@ function display.redraw(base_freq, edit, octave, position, scale, intervals, mid
   display.drawmode(edit, scale)
   display.drawoctave(edit, octave, scale)
   s.update()
+end
+
+--                  {"off", "scale_up", "scale_down", "chord", "chords"}
+local arp_symbols = {   "",        ">",          "<",     "*",      "+"}
+
+function display.draw_arp_symbol()
+  if params:get("arpeggiate") ~= 0 then
+    pf.text(4,
+        0, 5,
+        arp_symbols[params:get("arpeggiate")]
+      )
+  end
 end
 
 local ADJ = -8
