@@ -113,7 +113,8 @@ function init()
   display.drawintervals(scale, intervals)
 
   arpeggiate.init(pitches_off, pitch_on_position)
-  if run then
+
+  if params:get("arpeggiate") ~= 0 then
     start_arppegiate()
   end
 end
