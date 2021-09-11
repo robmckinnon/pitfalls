@@ -58,6 +58,7 @@ local coroutine_id = nil
 local scale = nil
 local intervals = nil
 local pitches = nil
+local pitches_on = {}
 
 local edit = 1
 local previous_edit = 1
@@ -69,9 +70,9 @@ function init()
   -- see lib/parameters.lua for param setup
   local sequence = params:get("sequence")
   if string.find(sequence, "M") then
-    scale = Scale:new(params:get("L"), params:get("s"), sequence, params:get("M"))
+    scale = Scale:new(params:get("pitfalls_L"), params:get("s"), sequence, params:get("M"))
   else
-    scale = Scale:new(params:get("L"), params:get("s"), sequence)
+    scale = Scale:new(params:get("pitfalls_L"), params:get("s"), sequence)
   end
   scale:set_mode(params:get("mode"))
   scale:set_tonic(params:get("tonic"))
@@ -280,7 +281,7 @@ end
 
 function change.large(d)
   if scale:change_large(d) then
-    params:set("L", scale.large, true)
+    params:set("pitfalls_L", scale.large, true)
     params:set("tonic", scale.tonic, true)
     update_pitches(true)
   end
@@ -300,7 +301,7 @@ function change.scale_name(d)
   end
   scale:update_edo()
   params:set("sequence", scale:sequence(), true)
-  params:set("L", scale.large, true)
+  params:set("pitfalls_L", scale.large, true)
   params:set("M", scale.medium, true)
   params:set("s", scale.small, true)
   params:set("mode", scale.mode, true)
@@ -368,8 +369,6 @@ function update_arpeggiate(x)
   end
   params:write()
 end
-
-local pitches_on = {}
 
 function pitch_off(f, deg)
   display_orig.degree_off(deg)
