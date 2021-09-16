@@ -75,9 +75,9 @@ function init()
     scale = Scale:new(params:get("pitfalls_L"), params:get("pitfalls_s"), sequence)
   end
   scale:set_mode(params:get("mode"))
-  scale:set_tonic(params:get("tonic"))
+  scale:set_tonic(params:get("pitfalls_tonic"))
   scale:update_edo()
-  params:set("tonic", scale.tonic, true)
+  params:set("pitfalls_tonic", scale.tonic, true)
 
   params:set_action("cutoff", function(x) patch.cutoff(x) end)
   params:set_action("engine", function(x)
@@ -244,14 +244,14 @@ end
 function change.step(d)
   if scale:change_step(d, edit) then
     params:set("sequence", scale:sequence(), true)
-    params:set("tonic", scale.tonic, true)
+    params:set("pitfalls_tonic", scale.tonic, true)
     update_pitches(true)
   end
 end
 
 function change.tonic(d)
   if scale:change_tonic(d) then
-    params:set("tonic", scale.tonic, true)
+    params:set("pitfalls_tonic", scale.tonic, true)
     update_pitches(false)
   end
 end
@@ -266,7 +266,7 @@ end
 function change.small(d)
   if scale:change_small(d) then
     params:set("pitfalls_s", scale.small, true)
-    params:set("tonic", scale.tonic, true)
+    params:set("pitfalls_tonic", scale.tonic, true)
     update_pitches(true)
   end
 end
@@ -274,7 +274,7 @@ end
 function change.medium(d)
   if scale:change_medium(d) then
     params:set("pitfalls_M", scale.medium, true)
-    params:set("tonic", scale.tonic, true)
+    params:set("pitfalls_tonic", scale.tonic, true)
     update_pitches(true)
   end
 end
@@ -282,7 +282,7 @@ end
 function change.large(d)
   if scale:change_large(d) then
     params:set("pitfalls_L", scale.large, true)
-    params:set("tonic", scale.tonic, true)
+    params:set("pitfalls_tonic", scale.tonic, true)
     update_pitches(true)
   end
 end
@@ -305,7 +305,7 @@ function change.scale_name(d)
   params:set("pitfalls_M", scale.medium, true)
   params:set("pitfalls_s", scale.small, true)
   params:set("mode", scale.mode, true)
-  params:set("tonic", scale.tonic, true)
+  params:set("pitfalls_tonic", scale.tonic, true)
   update_pitches(true)
 end
 
@@ -319,7 +319,7 @@ function change.scale_size(d)
     end
     params:set("sequence", scale:sequence(), true)
     params:set("mode", scale.mode, true)
-    params:set("tonic", scale.tonic, true)
+    params:set("pitfalls_tonic", scale.tonic, true)
     update_pitches(true)
   end
 end
