@@ -402,7 +402,7 @@ local position = {
   [O_INPUT] = "pitfalls_octave",
   [TD_INPUT] = "tempo_div",
   [E_INPUT] = "pitfalls_engine",
-  [P_INPUT] = "patch"
+  [P_INPUT] = "pitfalls_patch"
 }
 
 function display.edit_position(edit, scale)
