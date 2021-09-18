@@ -88,7 +88,7 @@ function init()
     local name = parameters.patch()
     patch.load_patch(name)
   end)
-  params:set_action("midi_start", function(x) update_pitches(false) end)
+  params:set_action("pitfalls_midi_no_start", function(x) update_pitches(false) end)
   params:set_action("pitfalls_tuning", function(x) update_pitches(false) end)
   params:set_action("arpeggiate", function(x) update_arpeggiate() end)
 
@@ -147,7 +147,7 @@ function do_step()
 end
 
 function redraw()
-  display.redraw(params:get("pitfalls_tuning"), edit, params:get("octave"), arpeggiate.position(), scale, intervals, params:get("midi_start"), display == display_patch)
+  display.redraw(params:get("pitfalls_tuning"), edit, params:get("octave"), arpeggiate.position(), scale, intervals, params:get("pitfalls_midi_no_start"), display == display_patch)
 end
 
 function key(n,z)
@@ -194,7 +194,7 @@ function update_pitches(update_intervals)
     intervals = ScaleIntervals:new(scale)
     arpeggiate.reset_chord_positions()
   end
-  pitches = Pitches:new(scale, intervals, params:get("pitfalls_tuning"), params:get("midi_start"))
+  pitches = Pitches:new(scale, intervals, params:get("pitfalls_tuning"), params:get("pitfalls_midi_no_start"))
   patch.note_off_all()
   display_orig.all_degrees_off()
   g.update_grid(scale, intervals, pitches)
