@@ -68,7 +68,7 @@ local display = display_circle
 
 function init()
   -- see lib/parameters.lua for param setup
-  local sequence = params:get("sequence")
+  local sequence = params:get("pitfalls_sequence")
   if string.find(sequence, "M") then
     scale = Scale:new(params:get("pitfalls_L"), params:get("pitfalls_s"), sequence, params:get("pitfalls_M"))
   else
@@ -79,7 +79,7 @@ function init()
   scale:update_edo()
   params:set("pitfalls_tonic", scale.tonic, true)
 
-  params:set_action("cutoff", function(x) patch.cutoff(x) end)
+  params:set_action("pitfalls_cutoff", function(x) patch.cutoff(x) end)
   params:set_action("pitfalls_engine", function(x)
     local name = parameters.engine()
     patch.load_engine(name)
@@ -173,7 +173,7 @@ end
 
 function enc(n,d)
   if n == 1 then
-    params:delta("cutoff", d)
+    params:delta("pitfalls_cutoff", d)
   elseif n == 2 then
     change.edit_position(d)
   elseif n ==3 then
@@ -243,7 +243,7 @@ end
 
 function change.step(d)
   if scale:change_step(d, edit) then
-    params:set("sequence", scale:sequence(), true)
+    params:set("pitfalls_sequence", scale:sequence(), true)
     params:set("pitfalls_tonic", scale.tonic, true)
     update_pitches(true)
   end
@@ -300,7 +300,7 @@ function change.scale_name(d)
      scale = Scale:new(data.l, data.s, data.seq, data.m)
   end
   scale:update_edo()
-  params:set("sequence", scale:sequence(), true)
+  params:set("pitfalls_sequence", scale:sequence(), true)
   params:set("pitfalls_L", scale.large, true)
   params:set("pitfalls_M", scale.medium, true)
   params:set("pitfalls_s", scale.small, true)
@@ -317,7 +317,7 @@ function change.scale_size(d)
     if d == -1 then
       edit = util.clamp(edit - 1, scale.min_steps + display_orig.n_input(), edit)
     end
-    params:set("sequence", scale:sequence(), true)
+    params:set("pitfalls_sequence", scale:sequence(), true)
     params:set("pitfalls_mode", scale.mode, true)
     params:set("pitfalls_tonic", scale.tonic, true)
     update_pitches(true)
