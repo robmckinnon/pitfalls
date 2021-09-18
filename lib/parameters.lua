@@ -59,7 +59,7 @@ function parameters.init()
   params:add_option("pitfalls_grid_lib", "grid_lib", grid_libs, 3)
   params:add_option("pitfalls_arpeggiate", "arpeggiate", arp_opts, 1)
   params:add_option("pitfalls_engine", "engine", engines, 2)
-  params:add_option("patch", "patch", patches, 1)
+  params:add_option("pitfalls_patch", "patch", patches, 1)
   params:add_control("pitfalls_tempo_div", "tempo_div", controlspec.new(0.25, 64, 'lin', 0.25, 8, 'd'))
 
   -- add_midi_channel_params()
@@ -73,7 +73,7 @@ function parameters.engine()
 end
 
 function parameters.patch()
-  return patches[params:get("patch")]
+  return patches[params:get("pitfalls_patch")]
 end
 
 function parameters.grid_lib()
