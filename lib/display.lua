@@ -114,10 +114,10 @@ end
 local arp_symbols = {   "",        ">",          "<",     "*",      "+"}
 
 function display.draw_arp_symbol()
-  if params:get("arpeggiate") ~= 0 then
+  if params:get("pitfalls_arpeggiate") ~= 0 then
     pf.text(4,
         0, 5,
-        arp_symbols[params:get("arpeggiate")]
+        arp_symbols[params:get("pitfalls_arpeggiate")]
       )
   end
 end

@@ -57,7 +57,7 @@ function parameters.init()
   params:add_control("cutoff", "cutoff", controlspec.new(50, 5000, 'exp', 0, 555, 'hz'))
   params:add_number("pitfalls_octave", "octave", 0,8,3)
   params:add_option("pitfalls_grid_lib", "grid_lib", grid_libs, 3)
-  params:add_option("arpeggiate", "arpeggiate", arp_opts, 1)
+  params:add_option("pitfalls_arpeggiate", "arpeggiate", arp_opts, 1)
   params:add_option("engine", "engine", engines, 2)
   params:add_option("patch", "patch", patches, 1)
   params:add_control("pitfalls_tempo_div", "tempo_div", controlspec.new(0.25, 64, 'lin', 0.25, 8, 'd'))
@@ -81,12 +81,12 @@ function parameters.grid_lib()
 end
 
 function parameters.inc_arpeggiate()
-  local i = (params:get("arpeggiate") % #arp_opts) + 1
-  params:set("arpeggiate", i)
+  local i = (params:get("pitfalls_arpeggiate") % #arp_opts) + 1
+  params:set("pitfalls_arpeggiate", i)
 end
   
 function parameters.arpeggiate()
-  return arp_opts[params:get("arpeggiate")]
+  return arp_opts[params:get("pitfalls_arpeggiate")]
 end
 
 return parameters
