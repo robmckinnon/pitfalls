@@ -136,7 +136,7 @@ end
 
 function step()
   while run do
-    clock.sync(1/params:get("tempo_div"))
+    clock.sync(1/params:get("pitfalls_tempo_div"))
     do_step()
   end
 end
@@ -325,25 +325,25 @@ function change.scale_size(d)
 end
 
 function change.tempo_div(d)
-  if params:get("tempo_div") == 1 then
+  if params:get("pitfalls_tempo_div") == 1 then
     if d == -1 then
       d = -0.5
     end
-  elseif params:get("tempo_div") == 0.5 then
+  elseif params:get("pitfalls_tempo_div") == 0.5 then
     if d == -1 then
       d = -0.25
     elseif d == 1 then
       d = 0.5
     end
-  elseif params:get("tempo_div") == 0.25 then
+  elseif params:get("pitfalls_tempo_div") == 0.25 then
     if d == 1 then
       d = 0.25
     end
   end
 
-  params:set("tempo_div",
+  params:set("pitfalls_tempo_div",
     util.clamp(
-      params:get("tempo_div") + d,
+      params:get("pitfalls_tempo_div") + d,
       0.25,
       64
     )
