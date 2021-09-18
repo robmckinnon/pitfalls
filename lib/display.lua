@@ -401,7 +401,7 @@ local position = {
   [D_INPUT] = "mode",
   [O_INPUT] = "pitfalls_octave",
   [TD_INPUT] = "tempo_div",
-  [E_INPUT] = "engine",
+  [E_INPUT] = "pitfalls_engine",
   [P_INPUT] = "patch"
 }
 
