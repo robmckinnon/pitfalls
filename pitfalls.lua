@@ -92,7 +92,7 @@ function init()
   params:set_action("pitfalls_tuning", function(x) update_pitches(false) end)
   params:set_action("arpeggiate", function(x) update_arpeggiate() end)
 
-  params:set_action("grid_lib", function(x)
+  params:set_action("pitfalls_grid_lib", function(x)
     print("writing grid_lib default params file", parameters.grid_lib())
     params:write()
   end)
