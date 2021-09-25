@@ -4,6 +4,10 @@ local position = 1
 local chord_positions = {}
 local last_degree = nil
 local remaining_positions = {}
+local degree
+local degrees
+local matches
+local values
 
 function positionrand() position = math.random(scale.length) end
 
@@ -52,9 +56,9 @@ function arpeggiate.chord(scale, intervals)
     position = (position % scale.length) + 1
     -- print("+1", position)
     remaining_positions = {}
-    local degree = position
-    local matches = chords.match(intervals:interval_labels(degree))
-    local values = {}
+    degree = position
+    matches = chords.match(intervals:interval_labels(degree))
+    values = {}
     for n,v in pairs(matches) do
       values[#values+1] = v
     end
@@ -89,14 +93,14 @@ function arpeggiate.chords(scale, intervals)
   position = math.random(scale.length)
   -- (position % scale.length) + 1
   if pf.tablelength(chord_positions) == 0 then
-    local degree = position
-    local matches = chords.match(intervals:interval_labels(degree))
-    local values = {}
+    degree = position
+    matches = chords.match(intervals:interval_labels(degree))
+    values = {}
     for n,v in pairs(matches) do
       values[#values+1] = v
     end
     if #values > 0 then
-      local degrees = values[math.random(#values)]
+      degrees = values[math.random(#values)]
       chord_positions[degree] = "P1"
       for deg,int_label in pairs(degrees) do
         chord_positions[(tonumber(deg) + degree) % scale.length + 1] = int_label
@@ -104,7 +108,6 @@ function arpeggiate.chords(scale, intervals)
     end
   end
   if chord_positions[position] ~= nil then
-    local f = nil
     pitches_off()
     for i,v in pairs(chord_positions) do
       pitch_on_position(i)
