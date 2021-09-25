@@ -168,6 +168,7 @@ function key(n,z)
     redraw()
   elseif n == 2 and z == 1 then
     parameters.inc_arpeggiate()
+    redraw()
   end
 end
 
