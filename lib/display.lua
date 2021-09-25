@@ -111,11 +111,11 @@ function display.redraw(base_freq, edit, octave, position, scale, intervals, mid
 end
 
 --                  {"off", "scale_up", "scale_down", "chord", "chords"}
-local arp_symbols = {   "",        ">",          "<",     "*",      "+"}
+local arp_symbols = {  "`",        ">",          "<",     "*",      "±"}
 
 function display.draw_arp_symbol()
   if params:get("pitfalls_arpeggiate") ~= 0 then
-    pf.text(4,
+    pf.text(params:get("pitfalls_arpeggiate") == 1 and 1 or 4,
         0, 5,
         arp_symbols[params:get("pitfalls_arpeggiate")]
       )
