@@ -37,6 +37,7 @@ chords.list = {
   ["7:8:13"] =               {"S2", "N7"},
   ["6:7:8"] =                {"s3", "P4"},
   ["18:21:25"] =             {"s3", "a4"},
+  ["18:21:26"] =             {"s3", "t5"},
   ["12:14:17"] =             {"s3", "d5"},
   ["minor triad"] =          {"s3", "P5"}, --      "6:7:9" Septimal subminor "The lowest numbers producing a minor triad in the harmonic series (McIntyre 2002)"
   ["6:7:10"] =               {"s3", "M6"},
