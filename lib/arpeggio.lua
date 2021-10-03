@@ -1,6 +1,7 @@
 local arpeggiate = {}
 
 local position = 1
+local positions
 local chord_positions = {}
 local last_degree = nil
 local remaining_positions = {}
@@ -26,6 +27,14 @@ end
 
 function arpeggiate.position()
   return position
+end
+
+function arpeggiate.position_or_positions(arp)
+  return arp == "chords" and positions or position
+end
+
+function arpeggiate.off(scale, intervals)
+  -- noop
 end
 
 function arpeggiate.scale_up(scale, intervals)
