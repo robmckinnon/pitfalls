@@ -63,6 +63,15 @@ end
 
 local degrees_on = {}
 
+function display.any_degrees_on()
+  for i, v in pairs(degrees_on) do
+    if v ~= nil then
+      return true
+    end
+  end
+  return false
+end
+
 function display.degree_on(deg)
   degrees_on[deg] = true
 end
@@ -86,11 +95,11 @@ function display.pageline(pg)
   pf.line_rel((pg == 4 and 3 or 1),     128,49,     0,12)
 end
 
-function display.redraw(base_freq, edit, octave, position, scale, intervals, midi_start, is_patch_view)
+function display.redraw(base_freq, edit, octave, step_position, scale, intervals, midi_start, is_patch_view)
   s.clear()
   display.pageline(2)
   display.draw_arp_symbol()
-  display.drawsteps(edit, position, scale)
+  display.drawsteps(edit, step_position, scale)
   local chords_on = display.drawintervals(scale, intervals)
 
   if chords_on == nil then
@@ -214,13 +223,17 @@ function pad_interval_ratio(intervals, i)
   end
 end
 
-function display.arp_position(i, position)
-  if i == position then
-    pf.line_rel(2, i*STEP_WIDTH -7, 22 + ADJ, 6, 0)
+function draw_under_position(i)
+  pf.line_rel(2, i*STEP_WIDTH -7, 22 + ADJ, 6, 0)
+end
+
+function display.arp_position(i, step_position)
+  if display.is_degree_on(i) then
+    draw_under_position(i)
   end
 end
 
-function display.drawsteps(edit, position, scale)
+function display.drawsteps(edit, step_position, scale)
   local x,y
   for i = 1,scale.length do
     x = i*STEP_WIDTH -8 + 2
@@ -233,7 +246,7 @@ function display.drawsteps(edit, position, scale)
       x, y,
       scale:step_size(i)
     )
-    display.arp_position(i, position)
+    display.arp_position(i, step_position)
   end
 end
 
