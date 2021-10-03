@@ -97,7 +97,7 @@ function arpeggiate.chord(scale, intervals)
     -- pf.dprint(position)
   end
 end
-
+local tmp
 function arpeggiate.chords(scale, intervals)
   position = math.random(scale.length)
   -- (position % scale.length) + 1
@@ -112,7 +112,15 @@ function arpeggiate.chords(scale, intervals)
       degrees = values[math.random(#values)]
       chord_positions[degree] = "P1"
       for deg,int_label in pairs(degrees) do
-        chord_positions[(tonumber(deg) + degree) % scale.length + 1] = int_label
+        --e.g.                           = 5 -> P1 
+        --e.g.[(5      + 2-1          )] = 6 -> M2 
+        --e.g.[(5      + 5-1          )] = 9 2 -> P5
+        tmp = (degree + tonumber(deg)-1)
+         
+        if tmp > scale.length then
+          tmp = tmp % scale.length
+        end
+        chord_positions[tmp] = int_label
       end
     end
   end
