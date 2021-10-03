@@ -25,6 +25,10 @@ function midi_in.event(data)
 end
 
 function midi_in.init(virtual_port, on_callback, off_callback)
+  midi.cleanup()
+  -- for i=1,16 do
+  --   table.insert(midi_in_channels,i)
+  -- end
   midi_in_device = midi.connect(virtual_port)
   midi_in_device.event = midi_in.event
   pitch_on = on_callback

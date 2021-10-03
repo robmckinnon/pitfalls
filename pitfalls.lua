@@ -97,16 +97,22 @@ function init()
     params:write()
   end)
 
+  params:set_action("pitfalls_in_virtual_port", function(port)
+    midi_in.init(port, pitch_on, pitch_off)
+    params:write()
+  end)
+  params:set_action("pitfalls_out_virtual_port", function(port)
+    midi_out.init(port)
+    params:write()
+  end)
+
   patch.load_engine(parameters.engine())
   patch.load_patch(parameters.patch())
   g.init(pitch_on, pitch_off)
   -- midi_out.init()
-  local in_virtual_port = 1
-  local out_virtual_port = 2
-  
-  midi_in.init(in_virtual_port, pitch_on, pitch_off)
-  
-  midi_out.init(out_virtual_port)
+
+  midi_in.init(params:get("pitfalls_in_virtual_port"), pitch_on, pitch_off)
+  midi_out.init(params:get("pitfalls_out_virtual_port"))
   
   update_pitches(true)
 
