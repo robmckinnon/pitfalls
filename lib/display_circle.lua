@@ -74,7 +74,11 @@ function display.draw_step_bars(scale, intervals)
   for i=1,steps do
     ratio = intervals:ratio(i)
     err = intervals:interval_error(i)
-    level = display_orig.is_degree_on(i) and pf.level_int(err) + 2 or (display_orig.any_degrees_on() and 1 or pf.level_int(err))
+    if i == 1 then
+      level =  display_orig.is_degree_on(i) and 8 or (display_orig.any_degrees_on() and 3 or 5)
+    else
+      level = display_orig.is_degree_on(i) and pf.level_int(err) + 2 or (display_orig.any_degrees_on() and 1 or pf.level_int(err))
+    end
     s.level(level > 2 and level - 1 or 1)
     radians = ratio * C - qC + tC
 
