@@ -45,7 +45,7 @@ end
 
 function parameters.init()
   -- params:add_group("PITFALLS", 7 + (18 * 4 + 1) + 2)
-  params:add_group("PITFALLS", 15)
+  params:add_group("PITFALLS", 17)
   params:add_text("pitfalls_sequence", "sequence", "LLsLLLs")
   params:add_number("pitfalls_L", "L", 2)
   params:add_number("pitfalls_M", "M", 2)
@@ -62,6 +62,8 @@ function parameters.init()
   params:add_option("pitfalls_patch", "patch", patches, 1)
   params:add_control("pitfalls_tempo_div", "tempo_div", controlspec.new(0.25, 64, 'lin', 0.25, 8, 'd'))
 
+  params:add_number("pitfalls_in_virtual_port", "midi in port", 1, 16, 1)
+  params:add_number("pitfalls_out_virtual_port", "midi out port", 1, 16,2)
   -- add_midi_channel_params()
 
   -- read default [scriptname]-01.pset from local data folder  
