@@ -62,7 +62,7 @@ function midi_out.stop()
 end
 
 function midi_out.init(virtual_port)
-  midi.cleanup()
+  -- midi.cleanup()
   midi_out_device = midi.connect(virtual_port)
   midi_out_device.event = function() end
   midi_out_channel = 1
