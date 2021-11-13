@@ -45,7 +45,7 @@ end
 
 function parameters.init()
   -- params:add_group("PITFALLS", 7 + (18 * 4 + 1) + 2)
-  params:add_group("PITFALLS", 17)
+  params:add_group("PITFALLS", 18)
   params:add_text("pitfalls_sequence", "sequence", "LLsLLLs")
   params:add_number("pitfalls_L", "L", 2)
   params:add_number("pitfalls_M", "M", 2)
@@ -64,6 +64,10 @@ function parameters.init()
 
   params:add_number("pitfalls_in_virtual_port", "midi in port", 1, 16, 1)
   params:add_number("pitfalls_out_virtual_port", "midi out port", 1, 16,2)
+
+  -- Standard MIDI Files use a pitch wheel range of +/-2 semitones = 200 cents
+  params:add_control("pitfalls_pitchbend_semitones", "pitchbend semitones ±", controlspec.new(1, 16, 'lin', 1, 2, '±'))
+
   -- add_midi_channel_params()
 
   -- read default [scriptname]-01.pset from local data folder  

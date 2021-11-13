@@ -23,8 +23,9 @@ function midi_out.pitch_bend_value(midi)
   if semitone_delta == 0 then
     return 0
   else
-    -- Standard MIDI Files use a pitch wheel range of +/-2 semitones = 200 cents
-    return (8192 * semitone_delta) / 2
+    pitchbend_semitones = params:get("pitfalls_pitchbend_semitones")
+    -- MIDI pitch bend is +8192/-8191.
+    return (8192 * semitone_delta) / pitchbend_semitones
   end
 end
 
