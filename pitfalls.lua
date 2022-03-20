@@ -43,8 +43,8 @@
 --           docs/modename.html
 -- .................................................................
 --
--- pitfalls 0.4.0 ostinato odington release
--- copyright 02021 robmckinnon
+-- pitfalls 0.4.1 ostinato odington release
+-- copyright 02022 robmckinnon
 -- GNU GPL v3.0
 -- .................................................................
 --
