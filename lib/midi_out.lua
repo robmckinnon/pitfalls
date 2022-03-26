@@ -18,12 +18,11 @@ function midi_out.all_notes_off()
   midi_out_device:pitchbend(0, midi_out_channel)
 end
 
-function midi_out.pitch_bend_value(midi)
+function midi_out.pitch_bend_value(midi, pitchbend_semitones)
   local semitone_delta = midi - math.floor(midi)
   if semitone_delta == 0 then
     return 0
   else
-    pitchbend_semitones = params:get("pitfalls_pitchbend_semitones")
     -- MIDI pitch bend is +8192/-8191.
     return (8192 * semitone_delta) / pitchbend_semitones
   end
@@ -46,7 +45,8 @@ function midi_out.note_on_pitch_bend(freq)
   if midi_out.use_midi() then
     -- midi_out.all_notes_off()
     local note_num = midi_out.hz_to_midi(freq)
-    local bend = midi_out.pitch_bend_value(note_num)
+    pitchbend_semitones = params:get("pitfalls_pitchbend_semitones")
+    local bend = midi_out.pitch_bend_value(note_num, pitchbend_semitones)
     midi_out_device:note_on(math.floor(note_num), 95, midi_out_channel)
     -- print(bend)
     midi_out_device:pitchbend(math.floor(bend), midi_out_channel)
