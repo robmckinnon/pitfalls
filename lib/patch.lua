@@ -22,6 +22,23 @@ for f in io.popen("ls -a /home/we/dust/audio"):lines() do
   end
 end
 
+function patch.installed_engines()
+  local engines = {"PolyPerc"}
+
+  for f in io.popen("ls -a /home/we/dust/code"):lines() do
+    if f == "molly_the_poly" then
+      table.insert(engines, "MollyThePoly")
+    elseif f == "mx.samples" then
+      if pf.isdir("/home/we/dust/audio/mx.samples") then
+        table.insert(engines, "MxSamples")
+      end
+    elseif f == "synthy" then
+      table.insert(engines, "Synthy")
+    end
+  end
+  return engines
+end
+
 function patch.mx_samples()
   return mx_samples
 end
@@ -83,11 +100,22 @@ function patch.note_kill_all()
   end
 end
 
+local patch_loading = false
 function patch.load_engine(name)
-  if name ~= engine.name then
+  if patch_loading then
+    return nil
+  elseif name ~= engine.name then
+    patch_loading = true
     print("load_engine: ", name, " previous_engine: ", engine.name)
     patch.note_off_all()
-    engine.load(name, patch.handle_load)
+    if pcall(engine.load, name, patch.handle_load) then
+      patch_loading = false
+      print("pcall ok")
+    else
+      patch_loading = false
+      print("pcall fail")
+      params:set("pitfalls_engine", 1)
+    end
   end
 end
 
