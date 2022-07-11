@@ -1,37 +1,43 @@
 local display = {}
 
+-- arp select
+local A_INPUT = 1
 -- reverse scale name
-local R_INPUT = 1
+local R_INPUT = 2
 -- number of notes
-local N_INPUT = 2
+local N_INPUT = 3
 -- L,M,s step sizes
-local L_INPUT = 3
-local M_INPUT = 4
-local S_INPUT = 5
+local L_INPUT = 4
+local M_INPUT = 5
+local S_INPUT = 6
 -- Base MIDI note
-local B_INPUT = 6
+local B_INPUT = 7
 -- Base freq Hz
-local F_INPUT = 7
+local F_INPUT = 8
 -- Tonic note
-local T_INPUT = 8
+local T_INPUT = 9
 -- Mode degree
-local D_INPUT = 9
+local D_INPUT = 10
 -- Octave
-local O_INPUT = 10
+local O_INPUT = 11
 
 -- Tempo division
-local TD_INPUT = 11
+local TD_INPUT = 12
 
 -- Engine
-local E_INPUT = 12
+local E_INPUT = 13
 -- Patch
-local P_INPUT = 13
+local P_INPUT = 14
 
 
 local TOP = 13
 local BOT = 28
 
 local s = screen
+
+function display.arp_input()
+  return A_INPUT
+end
 
 function display.scale_name_input()
   return R_INPUT
@@ -98,7 +104,7 @@ end
 function display.redraw(base_freq, edit, octave, step_position, scale, intervals, midi_start, is_patch_view)
   s.clear()
   display.pageline(2)
-  display.draw_arp_symbol()
+  display.draw_arp_symbol(edit, scale)
   display.drawsteps(edit, step_position, scale)
   local chords_on = display.drawintervals(scale, intervals)
 
@@ -122,12 +128,11 @@ end
 --                  {"off", "scale_up", "scale_down", "chord", "chords"}
 local arp_symbols = {  "`",        ">",          "<",     "*",      "±"}
 
-function display.draw_arp_symbol()
+function display.draw_arp_symbol(edit, scale)
   if params:get("pitfalls_arpeggiate") ~= 0 then
-    pf.text(params:get("pitfalls_arpeggiate") == 1 and 1 or 4,
-        0, 5,
-        arp_symbols[params:get("pitfalls_arpeggiate")]
-      )
+    pf.itext(A_INPUT, edit, scale,
+      0, 5,
+      arp_symbols[params:get("pitfalls_arpeggiate")])
   end
 end
 
@@ -403,6 +408,7 @@ function display.drawoctave(edit, octave, scale)
 end
 
 local position = {
+  [A_INPUT] = "pitfalls_arpeggiate",
   [R_INPUT] = "scale_name",
   [N_INPUT] = "scale_size",
   [L_INPUT] = "large",

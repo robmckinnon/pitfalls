@@ -5,7 +5,7 @@ local s = screen
 function display.redraw(base_freq, edit, octave, step_position, scale, intervals, midi_start, is_patch_view)
   s.clear()
   display_orig.pageline(3)
-  display_orig.draw_arp_symbol()
+  display_orig.draw_arp_symbol(edit, scale)
   display.drawsteps(edit, step_position, scale)
   display.drawintervals(scale, intervals)
   display_orig.drawname(edit, scale, 5, is_patch_view)
