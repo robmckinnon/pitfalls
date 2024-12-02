@@ -303,25 +303,29 @@ function pitches_off()
   end
 end
 
-function pitch_on(i)
-  local f = pitches:octdegfreq(params:get("octave"), i)
+function pitch_on(f)
   g.led_on(f)
   pitches_on[f] = i
   patch.pitch_on(f)
   -- midi_out.note_on_pitch_bend(f)
 end
 
+function pitch_on_position(i)
+  local f = pitches:octdegfreq(params:get("octave"), i)
+  pitch_on(f)
+end
+
 function arpeggiate.scale_up()
   position = (position % scale.length) + 1
   pitches_off()
-  pitch_on(position)
+  pitch_on_position(position)
 end
 
 function arpeggiate.scale_down()
   position = position - 1
   position = position < 1 and scale.length or position
   pitches_off()
-  pitch_on(position)
+  pitch_on_position(position)
 end
 
 local chord_positions = {}
@@ -359,7 +363,7 @@ function arpeggiate.chord()
       end
     end
     pitches_off()
-    pitch_on(position)
+    pitch_on_position(position)
     local count = pf.tablelength(chord_positions)
     position = count > 0 and remaining_positions[1] or math.random(scale.length)
     pf.dprint(position)
@@ -388,7 +392,7 @@ function arpeggiate.chords()
     local f = nil
     pitches_off()
     for i,v in pairs(chord_positions) do
-      pitch_on(i)
+      pitch_on_position(i)
       chord_positions[i] = nil
     end
   end
