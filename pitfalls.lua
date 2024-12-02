@@ -80,7 +80,7 @@ function init()
   params:set("pitfalls_tonic", scale.tonic, true)
 
   params:set_action("cutoff", function(x) patch.cutoff(x) end)
-  params:set_action("engine", function(x)
+  params:set_action("pitfalls_engine", function(x)
     local name = parameters.engine()
     patch.load_engine(name)
   end)
