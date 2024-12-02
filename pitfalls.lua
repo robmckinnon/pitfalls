@@ -210,8 +210,8 @@ function change.edit_position(d)
     edit = util.clamp(edit + d, 1, scale.length + clamp_input)
   end
 
-  if (input_index == display_orig.m_input() and scale:has_medium() == false) or
-    (is_scale_name_input and scale_name == nil) then
+  input_index = edit - scale.length
+  if (input_index == display_orig.m_input() and scale:has_medium() == false) then
     edit = edit + d
   end
 
