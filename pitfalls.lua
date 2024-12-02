@@ -70,7 +70,7 @@ function init()
   scale = Scale:new(2, 1, sequence)
   scale:update_edo()
 
-  params:set_action("cutoff", function(x) engine.cutoff(x) end)
+  params:set_action("cutoff", function(x) patch.cutoff(x) end)
   params:set_action("engine", function(x)
     local name = parameters.engine()
     patch.load_engine(name)
@@ -151,6 +151,7 @@ function update_pitches(update_intervals)
     chord_positions = {}
   end
   pitches = Pitches:new(scale, intervals, params:get("tuning"), params:get("midi_start"))
+  patch.note_off_all()
   g.update_grid(scale, intervals, pitches)
 end
 
@@ -263,16 +264,20 @@ function update_arpeggiate(x)
   if parameters.arpeggiate() == "off" then
     run = false
     counter:stop()
+    patch.note_off_all()
+    patch.note_kill_all()
   elseif parameters.arpeggiate() == "scale_up" then
     position = scale.length
     run = true
     counter:start()
   elseif parameters.arpeggiate() == "scale_down" then
     position = 1
+    patch.note_off_all()
   else
     chord_positions = {}
     last_degree = nil
     remaining_positions = {}
+    patch.note_off_all()
   end
 end
 
