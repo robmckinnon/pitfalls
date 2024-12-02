@@ -133,6 +133,7 @@ chords.list = {
   ["dominant seventh 2"] =   {"M3", "P5", "g7"}, -- 20:25:30:36
   ["dominant seventh"] =     {"M3", "P5", "m7"}, -- "7 dom"
   ["major seventh"] =        {"M3", "P5", "M7"}, -- "M7"
+  ["major seventh flat sixth"]={"M3","m6","M7"}, -- "maj7b6" "^7b6"
   ["9:10:14:16"] =           {"T2", "s6", "m7"}, --
   ["augmented seventh 2"] =  {"M3", "a5", "g7"}, -- 80:100:125:144
   ["augmented seventh"] =    {"M3", "A5", "M7"}, -- maj7+5
