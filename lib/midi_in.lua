@@ -50,8 +50,7 @@ function midi_in.pitch(note)
 end
 
 function midi_in.note_on(msg)
-  -- patch.pitch_on(midi_in.pitch(msg.note), msg.vel)
-  pitch_on(midi_in.pitch(msg.note))
+  pitch_on(midi_in.pitch(msg.note), msg.vel)
 end
 
 function midi_in.note_off(msg)
