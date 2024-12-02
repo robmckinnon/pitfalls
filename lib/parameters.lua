@@ -60,7 +60,7 @@ function parameters.init()
   params:add_option("arpeggiate", "arpeggiate", arp_opts, 1)
   params:add_option("engine", "engine", engines, 2)
   params:add_option("patch", "patch", patches, 1)
-  params:add_number("step_div", "step_div", 1, 16, 4)
+  params:add_number("tempo_div", "tempo_div", 1, 64, 8)
 
   -- add_midi_channel_params()
 
