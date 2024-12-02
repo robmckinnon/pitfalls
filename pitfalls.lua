@@ -72,13 +72,19 @@ function init()
 
   params:set_action("cutoff", function(x) engine.cutoff(x) end)
   params:set_action("engine", function(x)
-    local name = parameters.engine(x)
+    local name = parameters.engine()
     patch.load_engine(name)
+  end)
+  params:set_action("patch", function(x)
+    local name = parameters.patch()
+    patch.load_patch(name)
   end)
   params:set_action("midi_start", function(x) update_pitches(false) end)
   params:set_action("tuning", function(x) update_pitches(false) end)
   params:set_action("arpeggiate", function(x) update_arpeggiate() end)
 
+  patch.load_engine(parameters.engine())
+  patch.load_patch(parameters.patch())
   g.init()
   -- midi_out.init()
   update_pitches(true)
@@ -98,7 +104,7 @@ function count()
 end
 
 function redraw()
-  display.redraw(params:get("tuning"), edit, params:get("octave"), position, scale, intervals, params:get("midi_start"))
+  display.redraw(params:get("tuning"), edit, params:get("octave"), position, scale, intervals, params:get("midi_start"), display == display_patch)
 end
 
 function key(n,z)
@@ -161,15 +167,29 @@ function change_value(d)
 end
 
 function change.edit_position(d)
-  local clamp_input = (display == display_patch) and display_orig.patch_input() or display_orig.o_input();
-
-  edit = util.clamp(edit + d, 1, scale.length + clamp_input);
-
   local input_index = edit - scale.length
+  local is_display_patch = display == display_patch
+  local is_scale_name_input = input_index == display_orig.scale_name_input()
+
+  if is_display_patch and
+    is_scale_name_input and
+    d == 1 then
+    edit = display_orig.engine_input() + scale.length
+  elseif is_display_patch and
+    input_index == display_orig.engine_input() and
+    d == -1 then
+    edit = display_orig.scale_name_input() + scale.length
+  else
+    local clamp_input = is_display_patch and display_orig.patch_input() or display_orig.o_input()
+    edit = util.clamp(edit + d, 1, scale.length + clamp_input)
+  end
+
+  input_index = edit - scale.length
   if (input_index == display_orig.m_input() and scale:has_medium() == false) or
-    (input_index == display_orig.scale_name_input() and scale_name == nil) then
+    (is_scale_name_input and scale_name == nil) then
     edit = edit + d
   end
+
   redraw()
 end
 
