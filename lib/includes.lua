@@ -48,7 +48,7 @@ parameters = include("pitfalls/lib/parameters")
 -- init parameters before grid include
 parameters.init()
 
--- midi in from device - declare after patch
+-- midi in from device
 midi_in = include("pitfalls/lib/midi_in")
 
 -- midi out to device

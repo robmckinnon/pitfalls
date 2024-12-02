@@ -293,6 +293,11 @@ end
 
 local pitches_on = {}
 
+function pitch_off(f)
+  g.led_off(f)
+  patch.pitch_off(f)
+end
+
 function pitches_off()
   -- midi_out.all_notes_off()
   for f,i in pairs(pitches_on) do
@@ -301,11 +306,6 @@ function pitches_off()
       pitch_off(f)
     end
   end
-end
-
-function pitch_off(f)
-  g.led_off(f)
-  patch.pitch_off(f)
 end
 
 function pitch_on(f)
