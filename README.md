@@ -10,6 +10,10 @@
 
 ### Changelog
 
+#### v0.4.1
+
+- Fix to work when midigrid lib is not installed
+
 #### v0.4 _ostinato odington_
 
 * Add MIDI in keyboard support on virtual port 1
