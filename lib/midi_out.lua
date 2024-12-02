@@ -34,9 +34,16 @@ function midi_out.hz_to_midi(freq)
   return 12 * (math.log(freq / 440.0) / denom) + 69
 end
 
+function midi_out.note_off_pitch_bend(freq)
+  if midi_out.use_midi() then
+    local note_num = midi_out.hz_to_midi(freq)
+    midi_out_device:note_off(math.floor(note_num), nil, midi_out_channel)    
+  end
+end
+
 function midi_out.note_on_pitch_bend(freq)
   if midi_out.use_midi() then
-    midi_out.all_notes_off()
+    -- midi_out.all_notes_off()
     local note_num = midi_out.hz_to_midi(freq)
     local bend = midi_out.pitch_bend_value(note_num)
     midi_out_device:note_on(math.floor(note_num), 95, midi_out_channel)
@@ -54,8 +61,8 @@ function midi_out.stop()
   midi_out.all_notes_off()
 end
 
-function midi_out.init()
-  midi_out_device = midi.connect(1)
+function midi_out.init(virtual_port)
+  midi_out_device = midi.connect(virtual_port)
   midi_out_device.event = function() end
   midi_out_channel = 1
 
