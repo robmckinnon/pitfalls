@@ -13,6 +13,23 @@ function pf.dprint(t, s)
   end
 end
 
+--- Check if a file or directory exists in this path
+function pf.exists(file)
+   local ok, err, code = os.rename(file, file)
+   if not ok then
+      if code == 13 then
+         -- Permission denied, but it exists
+         return true
+      end
+   end
+   return ok, err
+end
+
+--- Check if a directory exists in this path
+function pf.isdir(path)
+   return pf.exists(path.."/")
+end
+
 function pf.gcd(a,b)
   while b~=0 do
     a,b=b,a%b
@@ -414,7 +431,9 @@ end
 function pf.text(l,x,y,t)
   s.level(l)
   s.move(x,y)
-  s.text(t)
+  if t ~= nil then
+    s.text(t)
+  end
 end
 
 local note = {
