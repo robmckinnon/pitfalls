@@ -318,6 +318,15 @@ function pf.tablelength(t)
   return count
 end
 
+function pf.is_empty(t)
+  for i,v in pairs(t) do
+    if v ~= nil then
+      return false
+    end
+  end
+  return true
+end
+
 function pf.sortedkeys(t)
   local tkeys = {}
   for k in pairs(t) do table.insert(tkeys, k) end
@@ -342,6 +351,23 @@ end
 
 function pf.tprint(t)
   tab.print(t)
+end
+
+function pf.ttprint(l,t)
+  if t == nil then
+    print(l, "-> nil")
+  else
+    print(l, "->")
+    for i,v in pairs(t) do
+      if v ~= nil then
+        if type(v) == "table" then
+          pf.ttprint("  "..i, v)
+        else
+          print(i, v)
+        end
+      end
+    end
+  end
 end
 
 local s = screen
