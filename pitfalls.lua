@@ -71,10 +71,12 @@ function init()
   -- see lib/parameters.lua for param setup
   local sequence = params:get("sequence")
   if string.find(sequence, "M") then
-    scale = Scale:new(params:get("L"), params:get("s"), sequence)
-  else
     scale = Scale:new(params:get("L"), params:get("s"), sequence, params:get("M"))
+  else
+    scale = Scale:new(params:get("L"), params:get("s"), sequence)
   end
+  scale:set_mode(params:get("mode"))
+  scale:set_tonic(params:get("tonic"))
   scale:update_edo()
 
   params:set_action("cutoff", function(x) patch.cutoff(x) end)
@@ -226,30 +228,35 @@ end
 
 function change.tonic(d)
   if scale:change_tonic(d) then
+    params:set("tonic", scale.tonic, true)
     update_pitches(false)
   end
 end
 
 function change.mode(d)
   if scale:change_mode(d) then
+    params:set("mode", scale.mode, true)
     update_pitches(true)
   end
 end
 
 function change.small(d)
   if scale:change_small(d) then
+    params:set("s", scale.small, true)
     update_pitches(true)
   end
 end
 
 function change.medium(d)
   if scale:change_medium(d) then
+    params:set("M", scale.medium, true)
     update_pitches(true)
   end
 end
 
 function change.large(d)
   if scale:change_large(d) then
+    params:set("L", scale.large, true)
     update_pitches(true)
   end
 end
