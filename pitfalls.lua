@@ -355,6 +355,7 @@ function change.tempo_div(d)
       64
     )
   )
+  params:write()
 end
 
 function update_arpeggiate(x)
