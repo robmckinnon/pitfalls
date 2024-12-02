@@ -123,7 +123,7 @@ function patch.pitch_on(f,vel)
   if f == nil or engine.is_loading or patch.no_engine() then
     return
   elseif patch.is_mx_samples() then
-    skeys:on({name=mx_sample,hz=f,midi=0,velocity=vel/2})
+    skeys:on({name=mx_sample,hz=f,midi=0,velocity=vel})
   elseif patch.is_molly() then
     engine.noteOn(f, f, vel/127)
   elseif patch.is_choir() then
