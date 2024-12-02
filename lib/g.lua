@@ -9,17 +9,23 @@ else
   g = grid.connect()
 end
 
-function g.init()
+local pitch_on
+local pitch_off
+
+function g.init(on_callback, off_callback)
   local grid_h = g.rows
   local grid_w = g.cols
   g.gfreqs = {}
   g.xleds = {}
   g.aleds = {}
   g.freqxy = {}
+  g.degs = {}
   for x = 1,grid_w do
     g.xleds[x] = {}
     g.aleds[x] = {}
   end
+  pitch_on = on_callback
+  pitch_off = off_callback
 end
 
 function g.led_on(f)
@@ -47,11 +53,11 @@ function g.key(x, y, z)
   if z > 0 then
     -- midi_out.note_on_pitch_bend(f)
     g.led_on(f)
-    patch.pitch_on(f)
+    pitch_on(f, 120, g.degs[f])
   else
     -- midi_out.all_notes_off()
     g.led_off(f)
-    patch.pitch_off(f)
+    pitch_off(f, g.degs[f])
   end
 end
 
@@ -62,6 +68,7 @@ function g.update_grid(scale, intervals, pitches)
   local index = 0
   local degree = nil
   local freqsxy = {}
+  local degs = {}
 
   for row = 1,grid_h do
     g.gfreqs[row] = {}
@@ -82,6 +89,7 @@ function g.update_grid(scale, intervals, pitches)
         if freqsxy[f] == nil then
           freqsxy[f] = {}
         end
+        degs[f] = degree
         freqsxy[f][#(freqsxy[f])+1] = {x, y}
       end
 
@@ -103,6 +111,7 @@ function g.update_grid(scale, intervals, pitches)
       index = index + 1
     end
   end
+  g.degs = degs
   g.freqxy = freqsxy
   g:refresh()
 end

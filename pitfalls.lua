@@ -90,7 +90,7 @@ function init()
 
   patch.load_engine(parameters.engine())
   patch.load_patch(parameters.patch())
-  g.init()
+  g.init(pitch_on, pitch_off)
   -- midi_out.init()
   midi_in.init(pitch_on, pitch_off)
   update_pitches(true)
