@@ -70,7 +70,11 @@ local display = display_circle
 function init()
   -- see lib/parameters.lua for param setup
   local sequence = params:get("sequence")
-  scale = Scale:new(2, 1, sequence)
+  if string.find(sequence, "M") then
+    scale = Scale:new(params:get("L"), params:get("s"), sequence)
+  else
+    scale = Scale:new(params:get("L"), params:get("s"), sequence, params:get("M"))
+  end
   scale:update_edo()
 
   params:set_action("cutoff", function(x) patch.cutoff(x) end)
@@ -173,6 +177,7 @@ function update_pitches(update_intervals)
   display_orig.all_degrees_off()
   g.update_grid(scale, intervals, pitches)
   midi_in.update_pitches(scale, intervals, pitches)
+  params:write()
 end
 
 function change_value(d)
@@ -262,6 +267,10 @@ function change.scale_name(d)
      scale = Scale:new(data.l, data.s, data.seq, data.m)
   end
   scale:update_edo()
+  params:set("sequence", scale:sequence(), true)
+  params:set("L", scale.large, true)
+  params:set("M", scale.medium, true)
+  params:set("s", scale.small, true)
   update_pitches(true)
 end
 
