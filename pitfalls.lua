@@ -70,7 +70,7 @@ function init()
   -- see lib/parameters.lua for param setup
   local sequence = params:get("sequence")
   if string.find(sequence, "M") then
-    scale = Scale:new(params:get("pitfalls_L"), params:get("s"), sequence, params:get("M"))
+    scale = Scale:new(params:get("pitfalls_L"), params:get("s"), sequence, params:get("pitfalls_M"))
   else
     scale = Scale:new(params:get("pitfalls_L"), params:get("s"), sequence)
   end
@@ -273,7 +273,7 @@ end
 
 function change.medium(d)
   if scale:change_medium(d) then
-    params:set("M", scale.medium, true)
+    params:set("pitfalls_M", scale.medium, true)
     params:set("tonic", scale.tonic, true)
     update_pitches(true)
   end
@@ -302,7 +302,7 @@ function change.scale_name(d)
   scale:update_edo()
   params:set("sequence", scale:sequence(), true)
   params:set("pitfalls_L", scale.large, true)
-  params:set("M", scale.medium, true)
+  params:set("pitfalls_M", scale.medium, true)
   params:set("s", scale.small, true)
   params:set("mode", scale.mode, true)
   params:set("tonic", scale.tonic, true)
