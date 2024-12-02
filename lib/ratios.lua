@@ -54,15 +54,23 @@ ratiointervals.list = {
 }
 
 function ratiointervals.key(ratio)
-  return ratiointervals.list[ratio][1]
+  return ratio == nil and "" or ratiointervals.list[ratio][1]
 end
 
 function ratiointervals.label(ratio)
-  return ratiointervals.list[ratio][2]
+  return ratio == nil and "" or ratiointervals.list[ratio][2]
 end
 
 function ratiointervals.fjs(ratio)
-  return ratiointervals.list[ratio][3]
+  return ratio == nil and "" or ratiointervals.list[ratio][3]
+end
+
+function ratiointervals.nom(ratio)
+  return ratio == nil and nil or ratiointervals.list[ratio][4]
+end
+
+function ratiointervals.denom(ratio)
+  return ratio == nil and nil or ratiointervals.list[ratio][5]
 end
 
 return ratiointervals
