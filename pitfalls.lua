@@ -92,7 +92,9 @@ function init()
   patch.load_patch(parameters.patch())
   g.init()
   -- midi_out.init()
+  midi_in.init()
   update_pitches(true)
+
   -- -- mixin the MusicUtil scale names
   -- pf.pop_named_sequences(named_scales.lookup)
   display.drawintervals(scale, intervals)
@@ -158,6 +160,7 @@ function update_pitches(update_intervals)
   pitches = Pitches:new(scale, intervals, params:get("tuning"), params:get("midi_start"))
   patch.note_off_all()
   g.update_grid(scale, intervals, pitches)
+  midi_in.update_pitches(scale, intervals, pitches)
 end
 
 function change_value(d)

@@ -94,7 +94,7 @@ function patch.cutoff(x)
 end
 
 function patch.pitch_on(f)
-  if engine.is_loading or patch.no_engine() then
+  if f == nil or engine.is_loading or patch.no_engine() then
     return
   elseif patch.is_mx_samples() then
     skeys:on({name=mx_sample,hz=f,midi=0,velocity=120})
@@ -106,7 +106,7 @@ function patch.pitch_on(f)
 end
 
 function patch.pitch_off(f)
-  if engine.is_loading or patch.no_engine() then
+  if f == nil or engine.is_loading or patch.no_engine() then
     return
   elseif patch.is_mx_samples() then
     skeys:off({name=mx_sample,hz=f})
