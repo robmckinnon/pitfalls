@@ -72,6 +72,14 @@ function display.drawintervals(scale, intervals)
         x, y,
         intervals:uniq_interval_label(i)
       )
+      if intervals:interval_ratio(i) ~= nil then
+        pf.text(
+          pf.level_int(err),
+          ( (i % 2 == 0) and 0 or 40 ),
+          ( (i % 2 == 0) and (34 + i*3) or (34 + (i-1)*3) ),
+          intervals:interval_label(i).." "..intervals:interval_ratio(i)
+        )
+      end
     end
   end
 end
