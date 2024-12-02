@@ -197,7 +197,7 @@ function Scale:change_length(d)
       self.step[self.length] = self.stepbackup[self.length] or L
     end
     if d == -1 then
-      if (self.length > self.min_steps) then
+      if (self.length >= self.min_steps) then
         table.remove(self.step, #self.step)
       end
     end
