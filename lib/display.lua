@@ -96,7 +96,7 @@ function display.redraw(base_freq, edit, octave, position, scale, intervals, mid
   if chords_on == nil then
     display.drawname(edit, scale, BOT + 3, 0, is_patch_view)
   else
-    display.drawchords(chords_on, 0, 30)
+    display.drawchords(chords_on, 0, 31)
   end
 
   display.drawLs(edit, scale)
