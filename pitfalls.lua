@@ -74,7 +74,7 @@ function init()
   else
     scale = Scale:new(params:get("pitfalls_L"), params:get("pitfalls_s"), sequence)
   end
-  scale:set_mode(params:get("mode"))
+  scale:set_mode(params:get("pitfalls_mode"))
   scale:set_tonic(params:get("pitfalls_tonic"))
   scale:update_edo()
   params:set("pitfalls_tonic", scale.tonic, true)
@@ -258,7 +258,7 @@ end
 
 function change.mode(d)
   if scale:change_mode(d) then
-    params:set("mode", scale.mode, true)
+    params:set("pitfalls_mode", scale.mode, true)
     update_pitches(true)
   end
 end
@@ -304,7 +304,7 @@ function change.scale_name(d)
   params:set("pitfalls_L", scale.large, true)
   params:set("pitfalls_M", scale.medium, true)
   params:set("pitfalls_s", scale.small, true)
-  params:set("mode", scale.mode, true)
+  params:set("pitfalls_mode", scale.mode, true)
   params:set("pitfalls_tonic", scale.tonic, true)
   update_pitches(true)
 end
@@ -318,7 +318,7 @@ function change.scale_size(d)
       edit = util.clamp(edit - 1, scale.min_steps + display_orig.n_input(), edit)
     end
     params:set("sequence", scale:sequence(), true)
-    params:set("mode", scale.mode, true)
+    params:set("pitfalls_mode", scale.mode, true)
     params:set("pitfalls_tonic", scale.tonic, true)
     update_pitches(true)
   end
