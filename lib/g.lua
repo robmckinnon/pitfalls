@@ -1,11 +1,17 @@
 local grid_lib = parameters.grid_lib()
 local g = nil
 
-if grid_lib ~= "grid" then
-  print("grid_lib", grid_lib)
-  local grid = include(grid_lib)
-  g = grid.connect()
+if string.find(grid_lib, "midigrid") then
+  print("loading grid_lib: ", grid_lib)
+  if pcall(function () include(grid_lib) end) then
+    local alt_grid = include(grid_lib)
+    g = alt_grid.connect()
+  else
+    print("grid_lib not installed: ", grid_lib)
+    g = grid.connect()
+  end
 else
+  print("loading grid")
   g = grid.connect()
 end
 
