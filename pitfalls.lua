@@ -197,7 +197,11 @@ function change_value(d)
 end
 
 function change.edit_position(d)
-  edit = util.clamp(edit + d, 1, scale.length + display_orig.o_input())
+  if (display == display_patch) then
+    edit = util.clamp(edit + d, 1, scale.length + display_orig.patch_input())
+  else
+    edit = util.clamp(edit + d, 1, scale.length + display_orig.o_input())
+  end
   local input_index = edit - scale.length
   if (input_index == display_orig.m_input() and scale:has_medium() == false) or
     (input_index == display_orig.scale_name_input() and scale_name == nil) then

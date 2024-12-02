@@ -4,7 +4,7 @@ local s = screen
 function display.redraw(base_freq, edit, octave, position, scale, intervals, midi_start)
   s.clear()
   display_orig.drawsteps(edit, position, scale)
-  display.drawpatch(edit)
+  display.drawpatch(edit, scale)
   display_orig.drawname(edit, scale, 5)
   display_orig.drawLs(edit, scale)
   display_orig.drawmidi(edit, scale, midi_start)
@@ -17,10 +17,10 @@ function display.redraw(base_freq, edit, octave, position, scale, intervals, mid
   s.update()
 end
 
-function display.drawpatch(edit)
-  pf.text(2,0,25,engine.name)
+function display.drawpatch(edit, scale)
+  pf.itext(display_orig.engine_input(), edit, scale, 0, 25, engine.name)
   if (engine.name == "MxSamples") then
-    pf.text(2,0,36,mx_sample)
+    pf.itext(display_orig.patch_input(), edit, scale, 0, 36, mx_sample)
   end
 end
 
