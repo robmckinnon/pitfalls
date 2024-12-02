@@ -335,6 +335,7 @@ function update_arpeggiate(x)
     arpeggiate.reset()
     patch.note_off_all()
   end
+  params:write()
 end
 
 local pitches_on = {}
