@@ -358,10 +358,10 @@ function update_arpeggiate(x)
     patch.note_off_all()
     patch.note_kill_all()
   elseif parameters.arpeggiate() == "scale_up" then
-    arpeggiate.set_position(scale.length)
+    -- arpeggiate.set_position(scale.length)
     start_arppegiate()
   elseif parameters.arpeggiate() == "scale_down" then
-    arpeggiate.set_position(1)
+    -- arpeggiate.set_position(1)
     patch.note_off_all()
   else
     arpeggiate.reset()
