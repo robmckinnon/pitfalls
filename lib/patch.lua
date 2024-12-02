@@ -6,6 +6,7 @@ local mx_sample=nil
 local skeys=nil
 
 local mollypoly=nil
+local mollypoly_types = {"lead", "pad", "perc"}
 
 for f in io.popen("ls -a /home/we/dust/audio"):lines() do
   if f == "mx.samples" then
@@ -73,12 +74,14 @@ function patch.load_patch(name)
 end
 
 function patch.cutoff(x)
-  if patch.is_molly() then
+  if engine.is_loading then
+    return
+  elseif patch.is_molly() then
     if mollypoly == nil then
       mollypoly = require "molly_the_poly/lib/molly_the_poly_engine"
       mollypoly.add_params()
     end
-    mollypoly.randomize_params("lead")
+    mollypoly.randomize_params(mollypoly_types[ math.random( #mollypoly_types ) ])
   elseif patch.is_mx_samples() then
   else
     engine.cutoff(x)
@@ -88,8 +91,7 @@ end
 function patch.pitch_on(f)
   if engine.is_loading then
     return
-  end
-  if patch.is_mx_samples() then
+  elseif patch.is_mx_samples() then
     skeys:on({name=mx_sample,hz=f,midi=0,velocity=120})
   elseif patch.is_molly() then
     engine.noteOn(f, f, 120)
@@ -101,8 +103,7 @@ end
 function patch.pitch_off(f)
   if engine.is_loading then
     return
-  end
-  if patch.is_mx_samples() then
+  elseif patch.is_mx_samples() then
     skeys:off({name=mx_sample,hz=f})
   elseif patch.is_molly() then
     engine.noteOff(f)
