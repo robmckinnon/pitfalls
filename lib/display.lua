@@ -94,6 +94,25 @@ local STEP_WIDTH = 7
 function display.drawintervals(scale, intervals)
   local err,x,y
 
+  local lowest_deg = pf.lowest(degrees_on)
+  if lowest_deg ~= nil then
+    print(lowest_deg)
+    local labs = intervals:interval_labels(lowest_deg)
+    local intervals_on = {}
+    for k in pairs(degrees_on) do
+      k = (k - lowest_deg) + 1
+      if k ~= 1 then
+        print(k)
+        intervals_on[k] = labs[k]
+        pf.tprint(intervals_on)
+      end
+    end
+    local matches = chords.match(intervals_on)
+    if pf.tablelength(matches) > 0 then
+      pf.tprint(matches)
+    end
+  end
+
   for i = 2,scale.length do
     err = intervals:interval_error(i)
     if (err ~= nil) then

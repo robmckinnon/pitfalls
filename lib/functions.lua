@@ -94,6 +94,17 @@ function pf.name_to_sequence(name)
   end
 end
 
+function pf.lowest(t)
+  local lowest = nil
+  for k in pairs(t) do
+    if lowest == nil then
+      lowest = k
+    end
+    lowest = k < lowest and k or lowest
+  end
+  return lowest
+end
+
 function pf.spairs(t, order)
   -- collect the keys
   local keys = {}
