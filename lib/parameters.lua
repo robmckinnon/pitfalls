@@ -56,7 +56,7 @@ function parameters.init()
   params:add_number("pitfalls_midi_no_start", "midi_start", 60, 71, 60)
   params:add_control("cutoff", "cutoff", controlspec.new(50, 5000, 'exp', 0, 555, 'hz'))
   params:add_number("pitfalls_octave", "octave", 0,8,3)
-  params:add_option("grid_lib", "grid_lib", grid_libs, 3)
+  params:add_option("pitfalls_grid_lib", "grid_lib", grid_libs, 3)
   params:add_option("arpeggiate", "arpeggiate", arp_opts, 1)
   params:add_option("engine", "engine", engines, 2)
   params:add_option("patch", "patch", patches, 1)
@@ -77,7 +77,7 @@ function parameters.patch()
 end
 
 function parameters.grid_lib()
-  return grid_libs[params:get("grid_lib")]
+  return grid_libs[params:get("pitfalls_grid_lib")]
 end
 
 function parameters.inc_arpeggiate()
