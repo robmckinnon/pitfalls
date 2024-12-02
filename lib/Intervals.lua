@@ -7,6 +7,7 @@ function Intervals:new(scale)
 
   s.scale = scale
   s.int_labels = {}
+  s.int_noms = {}
   s.int_ratios = {}
   s.uniq_labels = {}
   s.int_errors = {}
@@ -30,6 +31,7 @@ function Intervals:new(scale)
       local int_label = ratiointervals.key(ratio)
       s.int_labels[i+1] = int_label
       s.int_errors[i+1] = closeness
+      s.int_noms[i+1] = (ratio == nil and 0) or ratiointervals.nom(ratio)
       s.int_ratios[i+1] = (ratio == nil and "") or tostring(ratiointervals.nom(ratio)).."/"..tostring(ratiointervals.denom(ratio))
       s.uniq_labels[i+1] = BLANK
 
@@ -58,6 +60,10 @@ end
 
 function Intervals:interval_label(i)
   return self.int_labels[ i ]
+end
+
+function Intervals:interval_nominator(i)
+  return self.int_noms[ i ]
 end
 
 function Intervals:interval_ratio(i)

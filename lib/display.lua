@@ -113,25 +113,58 @@ function display.drawintervals(scale, intervals)
     end
   end
 
-  for i = 2,scale.length do
-    err = intervals:interval_error(i)
+  local offset = 0
+  local i = 0
+  for j = 2,scale.length do
+    err = intervals:interval_error(j)
+
+    if scale.length > 9 and j == 2 and err == nil then
+      offset = -1
+    end
+
     if (err ~= nil) then
+      i = j + offset
       x = i*STEP_WIDTH -11
       y = ( (i % 2 == 0) and BOT or TOP ) + ADJ
       pf.text(
         pf.level_int(err),
         x, y,
-        intervals:uniq_interval_label(i)
+        intervals:uniq_interval_label(j)
       )
-      if intervals:interval_ratio(i) ~= nil then
+      if intervals:interval_ratio(j) ~= nil then
         pf.text(
           pf.level_int(err),
           ( (i % 2 == 0) and 0 or 40 ),
           ( (i % 2 == 0) and (34 + i*3) or (34 + (i-1)*3) ),
-          intervals:interval_label(i).." "..intervals:interval_ratio(i)
+          intervals:interval_label(j)
+        )
+
+        pf.text(
+          pf.level_int(err),
+          pad_px_interval_ratio(intervals, j) + ( (i % 2 == 0) and 13 or 52 ),
+          ( (i % 2 == 0) and (34 + i*3) or (34 + (i-1)*3) ),
+          pad_interval_ratio(intervals, j)
         )
       end
     end
+  end
+end
+
+function pad_px_interval_ratio(intervals, i)
+  if intervals:interval_nominator(i) == 11 then
+    return 3
+  elseif intervals:interval_nominator(i) < 20 then
+    return 1
+  else
+    return 0
+  end
+end
+
+function pad_interval_ratio(intervals, i)
+  if intervals:interval_nominator(i) < 10 then
+    return " "..intervals:interval_ratio(i)
+  else
+    return intervals:interval_ratio(i)
   end
 end
 
