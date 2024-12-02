@@ -313,11 +313,11 @@ function pitch_off(f, deg)
 end
 
 function pitches_off()
-  midi_out.all_notes_off()
   for f,i in pairs(pitches_on) do
     if i ~= nil then
       pitches_on[f] = nil
       pitch_off(f, i)
+      midi_out.note_off_pitch_bend(f)
     end
   end
   display_orig.all_degrees_off()
