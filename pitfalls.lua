@@ -90,7 +90,7 @@ function init()
   end)
   params:set_action("pitfalls_midi_no_start", function(x) update_pitches(false) end)
   params:set_action("pitfalls_tuning", function(x) update_pitches(false) end)
-  params:set_action("arpeggiate", function(x) update_arpeggiate() end)
+  params:set_action("pitfalls_arpeggiate", function(x) update_arpeggiate() end)
 
   params:set_action("pitfalls_grid_lib", function(x)
     print("writing grid_lib default params file", parameters.grid_lib())
@@ -116,7 +116,7 @@ function init()
 
   arpeggiate.init(pitches_off, pitch_on_position)
 
-  if params:get("arpeggiate") ~= 0 then
+  if params:get("pitfalls_arpeggiate") ~= 0 then
     start_arppegiate()
   end
 end
