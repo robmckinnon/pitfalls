@@ -59,7 +59,7 @@ function parameters.init()
   add_midi_channel_params()
 
   -- read default [scriptname]-01.pset from local data folder  
-  params:read()
+  params:read(norns.state.data .. "pitfalls-01.pset", true)
 end
 
 function parameters.engine()

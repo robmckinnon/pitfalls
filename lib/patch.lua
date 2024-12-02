@@ -39,7 +39,7 @@ function patch.is_mx_samples()
 end
 
 function patch.handle_load(x)
-  print("handle_load"..engine.name)
+  print("handle_load ", engine.name)
   if patch.is_mx_samples() then
     if mxsamples == nil then
       mxsamples=include("mx.samples/lib/mx.samples")
@@ -49,19 +49,20 @@ function patch.handle_load(x)
 end
 
 function patch.note_off_all()
-  if patch.is_molly() then
+  if patch.is_molly() and not engine.is_loading then
     engine.noteOffAll()
   end  
 end
 
 function patch.note_kill_all()
-  if patch.is_molly() then
+  if patch.is_molly() and not engine.is_loading then
     engine.noteKillAll()
   end
 end
 
 function patch.load_engine(name)
   if name ~= engine.name then
+    print("load_engine: ", name, " previous_engine: ", engine.name)
     patch.note_off_all()
     engine.load(name, patch.handle_load)
   end
@@ -73,8 +74,12 @@ function patch.load_patch(name)
   end
 end
 
+function patch.no_engine()
+  return engine.name == "None"
+end
+
 function patch.cutoff(x)
-  if engine.is_loading then
+  if engine.is_loading or patch.no_engine() then
     return
   elseif patch.is_molly() then
     if mollypoly == nil then
@@ -89,7 +94,7 @@ function patch.cutoff(x)
 end
 
 function patch.pitch_on(f)
-  if engine.is_loading then
+  if engine.is_loading or patch.no_engine() then
     return
   elseif patch.is_mx_samples() then
     skeys:on({name=mx_sample,hz=f,midi=0,velocity=120})
@@ -101,7 +106,7 @@ function patch.pitch_on(f)
 end
 
 function patch.pitch_off(f)
-  if engine.is_loading then
+  if engine.is_loading or patch.no_engine() then
     return
   elseif patch.is_mx_samples() then
     skeys:off({name=mx_sample,hz=f})
