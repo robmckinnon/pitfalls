@@ -147,7 +147,7 @@ function do_step()
 end
 
 function redraw()
-  display.redraw(params:get("pitfalls_tuning"), edit, params:get("octave"), arpeggiate.position(), scale, intervals, params:get("pitfalls_midi_no_start"), display == display_patch)
+  display.redraw(params:get("pitfalls_tuning"), edit, params:get("pitfalls_octave"), arpeggiate.position(), scale, intervals, params:get("pitfalls_midi_no_start"), display == display_patch)
 end
 
 function key(n,z)
@@ -400,7 +400,7 @@ function pitch_on(f, vel, deg)
 end
 
 function pitch_on_position(i)
-  local f = pitches:octdegfreq(params:get("octave"), i)
+  local f = pitches:octdegfreq(params:get("pitfalls_octave"), i)
   pitches_on[f] = i
   pitch_on(f, 120, i)
 end
