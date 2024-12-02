@@ -31,9 +31,9 @@ function display.drawintervals(scale, intervals)
 end
 
 function display.drawpatch(edit, scale)
-  pf.itext(display_orig.engine_input(), edit, scale, 0, 36, engine.name)
+  pf.itext(display_orig.engine_input(), edit, scale, 0, 36, "engine: "..engine.name)
   if patch.is_mx_samples() then
-    pf.itext(display_orig.patch_input(), edit, scale, 0, 47, patch.mx_sample())
+    pf.itext(display_orig.patch_input(), edit, scale, 0, 47, "sample: "..patch.mx_sample())
   end
 end
 
