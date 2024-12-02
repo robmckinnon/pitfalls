@@ -30,6 +30,10 @@ function patch.mx_sample()
   return mx_sample
 end
 
+function patch.is_choir()
+  return engine.name and engine.name == "Choir" or false
+end
+
 function patch.is_molly()
   return engine.name and engine.name == "MollyThePoly" or false
 end
@@ -100,6 +104,8 @@ function patch.pitch_on(f)
     skeys:on({name=mx_sample,hz=f,midi=0,velocity=120})
   elseif patch.is_molly() then
     engine.noteOn(f, f, 120)
+  elseif patch.is_choir() then
+    engine.noteOn(f, 120/127, math.random(0,4), math.random(0,4))
   else
     engine.hz(f)
   end
@@ -111,6 +117,8 @@ function patch.pitch_off(f)
   elseif patch.is_mx_samples() then
     skeys:off({name=mx_sample,hz=f})
   elseif patch.is_molly() then
+    engine.noteOff(f)
+  elseif patch.is_choir() then
     engine.noteOff(f)
   end
 end
