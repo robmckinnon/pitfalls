@@ -54,7 +54,7 @@ function midi_in.note_on(msg)
 end
 
 function midi_in.note_off(msg)
-  pitch_off(midi_in.pitch(msg.note))
+  pitch_off(midi_in.pitch(msg.note), midi_in.deg(msg.note))
 end
 
 return midi_in

@@ -159,6 +159,7 @@ function update_pitches(update_intervals)
   end
   pitches = Pitches:new(scale, intervals, params:get("tuning"), params:get("midi_start"))
   patch.note_off_all()
+  display_orig.all_degrees_off()
   g.update_grid(scale, intervals, pitches)
   midi_in.update_pitches(scale, intervals, pitches)
 end
@@ -293,9 +294,11 @@ end
 
 local pitches_on = {}
 
-function pitch_off(f)
+function pitch_off(f, deg)
+  display_orig.degree_off(deg)
   g.led_off(f)
   patch.pitch_off(f)
+  redraw()
 end
 
 function pitches_off()
@@ -303,14 +306,18 @@ function pitches_off()
   for f,i in pairs(pitches_on) do
     if i ~= nil then
       pitches_on[f] = nil
-      pitch_off(f)
+      pitch_off(f, i)
     end
   end
+  display_orig.all_degrees_off()
+  redraw()
 end
 
 function pitch_on(f, vel, deg)
+  display_orig.degree_on(deg)
   g.led_on(f)
   patch.pitch_on(f, vel)
+  redraw()
   -- midi_out.note_on_pitch_bend(f)
 end
 
