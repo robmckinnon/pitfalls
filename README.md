@@ -10,6 +10,15 @@
 
 ### Changelog
 
+#### v0.4 _ostinato odington_
+
+* Add MIDI in keyboard support on virtual port 1
+* Add MIDI out monophonic pitch bend note play on virtual port 2
+* Add "MollyThePoly", "MxSamples" engine support
+* Autosave params on change
+* Load from saved params on init
+* Add new ratios display - show intervals/chords as played
+
 #### v0.3.1 _tutti terpstra_
 
 * Add "browse scale by name" input in norns screen UI
