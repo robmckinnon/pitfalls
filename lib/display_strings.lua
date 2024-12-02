@@ -54,7 +54,9 @@ function display.drawintervals(scale, intervals)
   local err, x, y, lab, level
   x = INTERVAL_WIDTH + 5
   y = INTERVAL_HEIGHT + 14
-  pf.line_rel(1, 0,MAX_H-y,     util.clamp(x-1,0,x),0)
+  pf.line_rel(
+    display_orig.is_degree_on(1) and 8 or (display_orig.any_degrees_on() and 3 or 5),
+    0,MAX_H-y,     util.clamp(x-1,0,x),0)
 
   for i = 2,scale.length do
     -- x = math.floor(intervals:ratio(i) * INTERVAL_WIDTH) - INTERVAL_WIDTH
@@ -64,14 +66,15 @@ function display.drawintervals(scale, intervals)
     err = intervals:interval_error(i)
     lab = intervals:uniq_interval_label(i)
     level = display_orig.is_degree_on(i) and pf.level_int(err) + 2 or (display_orig.any_degrees_on() and 1 or pf.level_int(err))
-    pf.line_rel(lab == "" and 1 or level,
+
+    pf.line_rel(lab == "" and (display_orig.is_degree_on(i) and level or 1) or level,
       0,MAX_H-y,
       util.clamp(x-1, 0, x),0)
     -- pf.line_rel(5, x+28,y-1, 0,3)
 
     if (err ~= nil) then
       pf.text(
-         pf.level_int(err),
+         level,
          x, MAX_H-y+2,
          lab
       )
