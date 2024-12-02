@@ -97,15 +97,16 @@ function patch.cutoff(x)
   end
 end
 
-function patch.pitch_on(f)
+function patch.pitch_on(f,vel)
+  vel = vel or 120
   if f == nil or engine.is_loading or patch.no_engine() then
     return
   elseif patch.is_mx_samples() then
-    skeys:on({name=mx_sample,hz=f,midi=0,velocity=120})
+    skeys:on({name=mx_sample,hz=f,midi=0,velocity=vel})
   elseif patch.is_molly() then
-    engine.noteOn(f, f, 120)
+    engine.noteOn(f, f, vel/127)
   elseif patch.is_choir() then
-    engine.noteOn(f, 120/127, math.random(0,4), math.random(0,4))
+    engine.noteOn(f, vel/127, math.random(0,4), math.random(0,4))
   else
     engine.hz(f)
   end
