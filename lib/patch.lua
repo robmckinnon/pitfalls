@@ -33,4 +33,18 @@ function patch.is_mx_samples()
   return engine.name and engine.name == "MxSamples" or false
 end
 
+function handle_load(x)
+  print("handle_load"..engine.name)
+  if engine.name == "MxSamples" then
+    mx_sample=mx_samples[2]
+    skeys = mxsamples:new()
+  end
+end
+
+function patch.load_engine(name)
+  if name ~= engine.name then
+    engine.load(name, handle_load)
+  end
+end
+
 return patch
