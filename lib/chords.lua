@@ -148,13 +148,13 @@ function chords.match(intervals)
   local matches = {}
   local match = nil
   local degrees = nil
-  for deg,interval in pairs(intervals) do
+  for deg, interval in pairs(intervals) do
     intdeg[interval] = deg
   end
-  for name,parts in pairs(chords.list) do
+  for name, parts in pairs(chords.list) do
     match = true
     degrees = {}
-    for i,part in pairs(parts) do
+    for i, part in pairs(parts) do
       if intdeg[part] == nil then
         match = false
       else

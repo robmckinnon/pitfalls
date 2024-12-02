@@ -2,11 +2,11 @@ local display = {}
 
 local s = screen
 
-function display.redraw(base_freq, edit, octave, position, scale, intervals, midi_start, is_patch_view)
+function display.redraw(base_freq, edit, octave, step_position, scale, intervals, midi_start, is_patch_view)
   s.clear()
   display_orig.pageline(3)
   display_orig.draw_arp_symbol()
-  display.drawsteps(edit, position, scale)
+  display.drawsteps(edit, step_position, scale)
   display.drawintervals(scale, intervals)
   display_orig.drawname(edit, scale, 5, is_patch_view)
   display_orig.drawLs(edit, scale)
@@ -26,7 +26,7 @@ local INTERVAL_HEIGHT = 4
 local STEP_WIDTH = 7
 local STEP_MARGIN = 1
 
-function display.drawsteps(edit, position, scale)
+function display.drawsteps(edit, step_position, scale)
   local x, y
   screen.font_size(8)
   for i = 1,scale.length do
@@ -36,7 +36,7 @@ function display.drawsteps(edit, position, scale)
         x, y,
         scale:step_size(i)
     )
-    display_orig.arp_position(i, position)
+    display_orig.arp_position(i, step_position)
   end
   screen.font_size(8)
 end
@@ -63,7 +63,7 @@ function display.drawintervals(scale, intervals)
     y = (i*INTERVAL_HEIGHT) + 14
     err = intervals:interval_error(i)
     lab = intervals:uniq_interval_label(i)
-    level = display_orig.is_degree_on(i) and pf.level_int(err) + 2 or pf.level_int(err)
+    level = display_orig.is_degree_on(i) and pf.level_int(err) + 2 or (display_orig.any_degrees_on() and 1 or pf.level_int(err))
     pf.line_rel(lab == "" and 1 or level,
       0,MAX_H-y,
       util.clamp(x-1, 0, x),0)
