@@ -48,12 +48,16 @@ parameters = include("pitfalls/lib/parameters")
 -- init parameters before grid include
 parameters.init()
 
+-- arpeggio functions
+arpeggiate = include("pitfalls/lib/arpeggio")
+
+-- MIDI keyboard mappings
 keyboard_mappings = include("pitfalls/lib/keyboard_mappings")
 
--- midi in from device
+-- MIDI in from device
 midi_in = include("pitfalls/lib/midi_in")
 
--- midi out to device
+-- MIDI out to device
 midi_out = include("pitfalls/lib/midi_out")
 
 -- grid interactions and leds
