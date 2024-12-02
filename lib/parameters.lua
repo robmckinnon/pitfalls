@@ -60,7 +60,7 @@ function parameters.init()
   params:add_option("arpeggiate", "arpeggiate", arp_opts, 1)
   params:add_option("engine", "engine", engines, 2)
   params:add_option("patch", "patch", patches, 1)
-  params:add_control("tempo_div", "tempo_div", controlspec.new(0.25, 64, 'lin', 0.25, 8, 'd'))
+  params:add_control("pitfalls_tempo_div", "tempo_div", controlspec.new(0.25, 64, 'lin', 0.25, 8, 'd'))
 
   -- add_midi_channel_params()
 

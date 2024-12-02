@@ -24,7 +24,7 @@ end
 function display.drawstepdivision(edit, scale)
   pf.itext(display_orig.tempo_division_input(), edit, scale,
     0, 25,
-    "tempo division: "..params:get("tempo_div"))
+    "tempo division: "..params:get("pitfalls_tempo_div"))
 end
 
 function display.drawintervals(scale, intervals)
