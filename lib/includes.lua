@@ -48,6 +48,8 @@ parameters = include("pitfalls/lib/parameters")
 -- init parameters before grid include
 parameters.init()
 
+keyboard_mappings = include("pitfalls/lib/keyboard_mappings")
+
 -- midi in from device
 midi_in = include("pitfalls/lib/midi_in")
 
