@@ -284,12 +284,7 @@ function pitches_off()
     if i ~= nil then
       g.led_off(f)
       pitches_on[f] = nil
-      if engine.is_loading then
-        return
-      end
-      if patch.is_mx_samples() then
-        skeys:off({name=mx_sample,hz=f})
-      end
+      patch.pitch_on(f)
     end
   end
 end
@@ -298,14 +293,7 @@ function pitch_on(i)
   local f = pitches:octdegfreq(params:get("octave"), i)
   g.led_on(f)
   pitches_on[f] = i
-  if engine.is_loading then
-    return
-  end
-  if patch.is_mx_samples() then
-    skeys:on({name=mx_sample,hz=f,midi=0,velocity=120})
-  else
-    engine.hz(f)
-  end
+  patch.pitch_on(f)
   -- midi_out.note_on_pitch_bend(f)
 end
 
