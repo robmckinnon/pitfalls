@@ -12,6 +12,9 @@
 
 #### v0.4.2
 
+- Set engine selection list with engines that are installed
+- Wait until engine is loaded before trying to load next engine
+- Do not offer mx.samples engine when there are no audio/mx.samples
 - For midi_out.pitch_bend_value() reuse, pass pitchbend semitones as 2nd argument
 
 #### v0.4.1
