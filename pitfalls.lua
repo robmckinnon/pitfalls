@@ -83,6 +83,11 @@ function init()
   params:set_action("tuning", function(x) update_pitches(false) end)
   params:set_action("arpeggiate", function(x) update_arpeggiate() end)
 
+  params:set_action("grid_lib", function(x)
+    print("writing grid_lib default params file", parameters.grid_lib())
+    params:write()
+  end)
+
   patch.load_engine(parameters.engine())
   patch.load_patch(parameters.patch())
   g.init()
